@@ -1,5 +1,147 @@
+
+ <style  scoped>
+.swiper-box{
+	position: relative;
+	width: 750px;
+	height: 750px;
+}
+.slider{
+width: 750px;
+height: 750px
+}
+.frame {
+width: 100%;
+height: 750px;
+}
+ .itemImg{
+	width: 750px;
+	height: 750px;
+ }
+
+ 
+.info-box {
+	width:  710px;
+	padding: 20px;
+	background-color: #fff;
+	margin-bottom: 20px;
+}
+.goods-info-price{
+	font-size: 46px;
+		font-weight: 600;
+		color: #f47925;
+}
+.goods-info-title{
+		font-size: 30px;
+}
+.spec-row{
+	width:670px;
+		align-items: center;
+		margin: 0 0 30px 0;
+	 flex-direction:row;
+}
+.spec-text{
+	font-size: 24px;
+			color: #a2a2a2;
+			margin-right: 20px;
+}
+.spec-content{
+		font-size: 28px;
+			flex-wrap: wrap;
+			 flex-direction:row;
+			  
+}
+.spec-serviceitem{
+	margin-right: 10px;
+}
+.spec-sp{
+	flex:1;
+ flex-direction:row;
+flex-wrap: wrap;
+}
+.spec-sp-item{
+background-color: #f6f6f6;
+					padding: 5px 15px;
+					color: #999;
+					margin-right: 10px;
+					font-size: 20px;
+					border-radius: 5px;
+}
+.spec-sp-item-on{
+	border: solid 1px #f47952;
+						padding: 4px 8px;
+}
+.sp-title{
+	 width:120px;
+	 padding:5px 0;
+}
+</style>
+
 <template>
 	<div>
+		
+		<!-- 商品主图轮播 -->
+		<div class="swiper-box">
+		 <slider class="slider" interval="3000" auto-play="true">
+			<div class="frame"  v-for="swiper in swiperList" :key="swiper.id">
+				<img class="itemImg" :src="swiper.img"></img>
+			</div>
+			<indicator></indicator>
+		</slider>
+			 
+		</div>
+		<!-- 标题 价格 -->
+		<div class="info-box ">
+			<text class="goods-info-price">￥{{goodsData.price}}</text>
+			<text class="goods-info-title"> {{goodsData.name}} </text>
+		</div>
+		<!-- 服务-规则选择 -->
+		<div class="info-box ">
+			<div class="spec-row" @tap="showService">
+				<text class="spec-text">服务</text>
+				<div class="spec-content">
+					<text class="spec-serviceitem" v-for="(item,index) in goodsData.service" :key="index">{{item.name}}</text>
+				</div>
+				<div class="spec-arrow"><div class="icon xiangyou"></div></div>
+			</div>
+			<div class="spec-row" @tap="showSpec(false)">
+				<text class="spec-text">选择</text>
+				<div class="spec-content">
+					<text class="sp-title">选择规格：</text>
+					<div class="spec-sp">
+						<text class="spec-sp-item" v-for="(item,index) in goodsData.spec" :key="index" :class="[index==selectSpec?'on':'']">{{item}}</text>
+					</div>
+					
+				</div>
+				<div class="spec-arrow"><div class="icon xiangyou"></div></div>
+			</div>
+		</div>
+		<!-- 评价 -->
+		<div class="info-box comments" id="comments">
+			<div class="row">
+				<text class="text">商品评价({{goodsData.comment.number}})</text>
+				<div class="arrow" @tap="toRatings">
+					<div class="show" @tap="showComments(goodsData.id)">
+						<text>查看全部</text>
+						<div class="icon xiangyou"></div>
+					</div>
+				</div>
+			</div>
+			<div class="comment" @tap="toRatings">
+				<div class="user-info">
+					<div class="face"><img :src="goodsData.comment.userface"></img></div>
+					<div class="username">{{goodsData.comment.username}}</div>
+				</div>
+				<div class="content">
+					{{goodsData.comment.content}}
+				</div>
+			</div>
+		</div>
+		<!-- 详情 -->
+		<div class="description">
+			<text class="title">———— 商品详情 ————</text>
+			<div class="content"><rich-text :nodes="descriptionStr"></rich-text></div>
+		</div>
+
 		<div class="status" :style="{ opacity: afterHeaderOpacity }"></div>
 		<div class="header">
 			<!-- 头部-默认显示 -->
@@ -122,67 +264,6 @@
 				</div>
 				<div class="btn"><text class="button" @tap="hideSpec">完成</text></div>
 			</div>
-		</div>
-		<!-- 商品主图轮播 -->
-		<div class="swiper-box">
-			<swiper circular="true" autoplay="true" @change="swiperChange">
-				<swiper-item v-for="swiper in swiperList" :key="swiper.id">
-					<image :src="swiper.img"></image>
-				</swiper-item>
-			</swiper>
-			<text class="indicator">{{currentSwiper+1}}/{{swiperList.length}}</text>
-		</div>
-		<!-- 标题 价格 -->
-		<div class="info-box goods-info">
-			<text class="price">￥{{goodsData.price}}</text>
-			<div class="title">
-				{{goodsData.name}}
-			</div>
-		</div>
-		<!-- 服务-规则选择 -->
-		<div class="info-box spec">
-			<div class="row" @tap="showService">
-				<text class="text">服务</text>
-				<div class="content"><div class="serviceitem" v-for="(item,index) in goodsData.service" :key="index">{{item.name}}</div></div>
-				<div class="arrow"><div class="icon xiangyou"></div></div>
-			</div>
-			<div class="row" @tap="showSpec(false)">
-				<text class="text">选择</text>
-				<div class="content">
-					<text>选择规格：</text>
-					<div class="sp">
-						<div v-for="(item,index) in goodsData.spec" :key="index" :class="[index==selectSpec?'on':'']">{{item}}</div>
-					</div>
-					
-				</div>
-				<div class="arrow"><div class="icon xiangyou"></div></div>
-			</div>
-		</div>
-		<!-- 评价 -->
-		<div class="info-box comments" id="comments">
-			<div class="row">
-				<text class="text">商品评价({{goodsData.comment.number}})</text>
-				<div class="arrow" @tap="toRatings">
-					<div class="show" @tap="showComments(goodsData.id)">
-						<text>查看全部</text>
-						<div class="icon xiangyou"></div>
-					</div>
-				</div>
-			</div>
-			<div class="comment" @tap="toRatings">
-				<div class="user-info">
-					<div class="face"><image :src="goodsData.comment.userface"></image></div>
-					<div class="username">{{goodsData.comment.username}}</div>
-				</div>
-				<div class="content">
-					{{goodsData.comment.content}}
-				</div>
-			</div>
-		</div>
-		<!-- 详情 -->
-		<div class="description">
-			<text class="title">———— 商品详情 ————</text>
-			<div class="content"><rich-text :nodes="descriptionStr"></rich-text></div>
 		</div>
 	</div>
 </template>
@@ -395,6 +476,4 @@ export default {
 	}
 };
 </script>
-<style  scoped>
  
-</style>
