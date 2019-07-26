@@ -1,100 +1,61 @@
 <template>
 	<div>
-		<!-- 收货地址 -->
-		<div class="addr" @tap="selectAddress">
-			<div class="icon">
-				<img src="../../static/img/addricon.png" mode=""></img>
-			</div>
-			<div class="right">
-				<div class="tel-name">
-					<div class="name">
-						{{recinfo.name}}
-					</div>
-					<div class="tel">
-						{{recinfo.tel}}
-					</div>
-				</div>
-				<div class="addres">
-					{{recinfo.address.region.label}}
-					{{recinfo.address.detailed}}
-				</div>
-			</div>
-		</div>
-		<!-- 购买商品列表 -->
-		<div class="buy-list">
-			<div class="row" v-for="(row,index) in buylist" :key="index">
-				<div class="goods-info">
-					<div class="img">
-						<img :src="row.img"></img>
-					</div>
-					<div class="info">
-						<div class="title">{{row.name}}</div>
-						<text class="spec">选择{{row.spec}} 数量:{{row.number}}</text>
-						<div class="price-number">
-							<text class="price">￥{{row.price*row.number}}</text>
-							<div class="number">
-								
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 提示-备注 -->
-		<div class="order">
-			<div class="row">
-				<text class="left">
-					积分 :
-				</text>
-				<text class="right">
-					已扣除{{int}}积分抵扣{{deduction|toFixed}}元
-				</text>
-			</div>
-			<div class="row">
-				<text class="left">
-					备注 :
-				</text>
-				<div class="right">
-					<input placeholder="选填,备注内容" v-model="note" />
-				</div>
-			</div>
-		</div>
-		<!-- 明细 -->
-		<div class="detail">
-			<div class="row">
-				<text class="nominal">
-					商品金额
-				</text>
-				<text class="content">
-					￥{{goodsPrice|toFixed}}
-				</text>
-			</div>
-			<div class="row">
-				<text class="nominal">
-					运费
-				</text>
-				<text class="content">
-					￥+{{freight|toFixed}}
-				</text>
-			</div>
-			<div class="row">
-				<text class="nominal">
-					积分抵扣
-				</text>
-				<text class="content">
-					￥-{{deduction|toFixed}}
-				</text>
-			</div>
-		</div>
-		<div class="blck">
-			
-		</div>
-		<div class="footer">
-			<div class="settlement">
-				<div class="sum"><text>合计:</text> <text class="money">￥{{sumPrice|toFixed}}</text></div>
-				<text class="btn" @tap="toPay">提交订单</text>
-			</div>
-		</div>
+		<!-- <image class="pageImg" src="root:img/page/13.png"></image> -->
+     <head :back="true" bgcolor="#303030" title="Order details" ></head> 
+    <div class="pageContent">
+    
+     <div class="orderDetail">
+        <div class="order_top">
+         <image class="googPic" src="root:img/goods.png"></image>
+         <div class="goods_info">
+            <text class="goods_title">AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed Skin and Single Shoulder Baggage Girls</text>
+            <div class="goods_spec">
+             <div class="priceInfo">
+                <text class="symbol">￥</text> <text class="money">{{sumPrice}}</text>
+             </div> 
+              <div class="specInfo">
+                <text class="specText">red</text>
+                <text class="iconDown">&#xe613;</text>
+              </div> 
+            </div>
+         </div>
+        </div> 
+
+   
+        
+     </div>
+      <div class="methodBox row jbew acen ">
+          <text class="meth_title">Shipping method</text>
+          <div class="meth_right row jend acen">
+            <text class="shipping">Free shipping</text>
+            <text class="shippingMoney">￥0.00</text>
+          </div> 
+        </div>
+        <div class="messagebox">
+         <div class="locationBox row jbew atop ">
+          <text class="meth_title locaTit">Location</text>
+          <div class="meth_right   row jend atop">
+            <text class="cityName">Hefei City ,Anhui Province</text>
+            <text class="rightIcon">&#xe6a1;</text>
+          </div> 
+        </div>
+        <div class="locationBox row jbew atop ">
+          <text class="meth_title locaTit">Address</text>
+          <div class="meth_right   row jend atop">
+            <text class="cityName">Hefei City ,Anhui Province AnhuiAnhuiAnhui</text>
+            <text class="rightIcon">&#xe6a1;</text>
+          </div> 
+        </div>
+        
+        </div>
+        
+      <div class="footer">
+        <div class="settlement">
+          <div class="sum"><text class="sumTitle">Order total:</text> <text class="symbol">￥</text> <text class="money">{{sumPrice}}</text></div>
+          <text class="btn" @tap="toPay">confirm</text>
+        </div>
+      </div>
+    </div>
 	</div>
 </template>
 
@@ -102,241 +63,157 @@
 export default {
   data() {
     return {
-      buylist: [], //订单列表
-      goodsPrice: 0.0, //商品合计价格
-      sumPrice: 0.0, //用户付款价格
-      freight: 12.0, //运费
-      note: "", //备注
-      int: 1200, //抵扣积分
-      deduction: 0, //抵扣价格
-      recinfo: {
-        id: 1,
-        name: "大黑哥",
-        head: "大",
-        tel: "18816881688",
-        address: {
-          region: {
-            label: "广东省-深圳市-福田区",
-            value: [18, 2, 1],
-            cityCode: "440304"
-          },
-          detailed: "深南大道1111号无名摩登大厦6楼A2"
-        },
-        isDefault: true
-      }
+      sumPrice: "52.30"
     };
   },
-  onShow() {
-    //页面显示时，加载订单信息
-    uni.getStorage({
-      key: "buylist",
-      success: ret => {
-        this.buylist = ret.data;
-        this.goodsPrice = 0;
-        //合计
-        let len = this.buylist.length;
-        for (let i = 0; i < len; i++) {
-          this.goodsPrice =
-            this.goodsPrice + this.buylist[i].number * this.buylist[i].price;
-        }
-        this.deduction = this.int / 100;
-        this.sumPrice = this.goodsPrice - this.deduction + this.freight;
-      }
-    });
-    uni.getStorage({
-      key: "selectAddress",
-      success: e => {
-        this.recinfo = e.data;
-        uni.removeStorage({
-          key: "selectAddress"
-        });
-      }
-    });
-  },
-  onHide() {},
-  onBackPress() {
-    //页面后退时候，清除订单信息
-    this.clearOrder();
-  },
-  filters: {
-    toFixed: function(x) {
-      return parseFloat(x).toFixed(2);
-    }
-  },
-  methods: {
-    clearOrder() {
-      uni.removeStorage({
-        key: "buylist",
-        success: res => {
-          this.buylist = [];
-          console.log("remove buylist success");
-        }
-      });
-    },
-    toPay() {
-      //商品列表
-      let paymentOrder = [];
-      let goodsid = [];
-      let len = this.buylist.length;
-      for (let i = 0; i < len; i++) {
-        paymentOrder.push(this.buylist[i]);
-        goodsid.push(this.buylist[i].id);
-      }
-      if (paymentOrder.length == 0) {
-        uni.showToast({ title: "订单信息有误，请重新购买", icon: "none" });
-        return;
-      }
-      //本地模拟订单提交UI效果
-      uni.showLoading({
-        title: "正在提交订单..."
-      });
-      setTimeout(() => {
-        uni.setStorage({
-          key: "paymentOrder",
-          data: paymentOrder,
-          success: () => {
-            uni.hideLoading();
-            uni.redirectTo({
-              url: "../pay/payment/payment?amount=" + this.sumPrice
-            });
-          }
-        });
-      }, 1000);
-    },
-    //选择收货地址
-    selectAddress() {
-      uni.navigateTo({
-        url: "../user/address/address?type=select"
-      });
-    }
-  }
+
+  methods: {}
 };
 </script>
 
 <style  scoped>
-.addr {
-  width: 86%;
-  padding: 20px 3%;
-  margin: 30px auto 20px auto;
-  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
+.pageImg {
+  width: 750px;
+  height: 1334px;
 }
-.icon {
-  width: 80px;
-  height: 80px;
-  align-items: center;
+.pageContent {
+  /* margin-top: -1334px; */
+  background-color: #f2f2f2;
+  flex: 1;
+  width: 750px;
 }
-image {
-  width: 60px;
-  height: 60px;
+.orderDetail {
+  padding: 30px;
+  background-color: #fff;
 }
-.tel-name {
-  width: 100%;
-  font-size: 32px;
+.order_top {
+  flex: 1;
+  flex-direction: row;
+  border-bottom-style: solid;
+  border-bottom-color: #e6e6e6;
+  border-bottom-width: 2px;
+  padding-bottom: 40px;
 }
-.tel {
-  margin-left: 40px;
+.googPic {
+  width: 220px;
+  height: 220px;
 }
-.addres {
-  width: 100%;
-  font-size: 26px;
-  color: #999;
+.goods_info {
+  padding-left: 30px;
+  flex: 1;
 }
-.buy-list {
-  width: 86%;
-  padding: 10px 3%;
-  margin: 30px auto 20px auto;
-  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-}
-.row {
-  margin: 30px 0;
-}
-.goods-info {
-  width: 100%;
-}
-.img {
-  width: 22vw;
-  height: 22vw;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-right: 10px;
-}
-image {
-  width: 22vw;
-  height: 22vw;
-}
-.info {
-  width: 100%;
-  height: 22vw;
-  overflow: hidden;
-  flex-wrap: wrap;
-  position: relative;
-}
-.title {
-  width: 100%;
+.goods_title {
   font-size: 28px;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+  line-height: 36px;
 }
-.spec {
-  font-size: 22px;
-  background-color: #f3f3f3;
-  color: #a7a7a7;
-  height: 40px;
+.goods_spec {
+  padding-top: 30px;
+  flex-direction: row;
   align-items: center;
-  padding: 0 10px;
-  border-radius: 20px;
-  margin-bottom: 20vw;
-}
-.price-number {
-  position: absolute;
-  width: 100%;
-  bottom: 0px;
   justify-content: space-between;
-  align-items: flex-end;
-  font-size: 28px;
-  height: 40px;
+  padding-bottom: 30px;
 }
-.price {
-  color: #f06c7a;
-}
-.number {
-  justify-content: center;
+.priceInfo {
+  flex-direction: row;
   align-items: center;
 }
-.order {
-  width: 86%;
-  padding: 10px 3%;
-  margin: 30px auto 20px auto;
-  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
+.specInfo {
+  height: 42px;
+  justify-content: space-between;
+  padding: 0 5px;
+  align-items: center;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e6e6e6;
+  flex-direction: row;
+  /* background-color: #f2f22f; */
+}
+.specText {
+  font-size: 22px;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 10px;
+  margin-right: 25px;
+  color: #999;
+}
+.iconDown {
+  font-size: 22px;
+  font-family: iconfont;
+  line-height: 40px;
+  color: #999;
+}
+.methodBox {
+  width: 750px;
+  height: 80px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 0 32px;
+  background-color: #fff;
+}
+.messagebox {
+  width: 750px;
+  padding: 0 30px 30px;
+  background-color: #fff;
+}
+.locationBox {
+  width: 690px;
+
+  border-bottom-style: solid;
+  border-bottom-color: #e6e6e6;
+  border-bottom-width: 2px;
+  padding: 30px 0;
+}
+.meth_title {
+  color: #323232;
+  font-size: 30px;
+}
+.locaTit {
+  width: 230px;
+}
+.meth_right {
+  flex: 1;
+}
+
+.shipping {
+  margin-right: 30px;
+  font-size: 30px;
+  color: #999999;
+}
+
+.cityName {
+  margin-right: 30px;
+  font-size: 30px;
+  color: #666666;
+  flex: 1;
+}
+.shippingMoney {
+  color: #ed404c;
+  font-size: 30px;
+}
+.rightIcon {
+  font-family: iconfont;
+  font-size: 26px;
+  color: #999;
 }
 .row {
-  margin: 20px 0;
-  height: 40px;
+  flex-direction: row;
 }
-.left {
-  font-size: 28px;
+.jbew {
+  justify-content: space-between;
 }
-.right {
-  margin-left: 40px;
-  font-size: 26px;
-  color: #999;
+.jend {
+  justify-content: flex-end;
 }
-input {
-  font-size: 26px;
-  color: #999;
+.atop {
+  align-items: flex-start;
 }
-.blck {
-  width: 100%;
-  height: 100px;
+.acen {
+  align-items: center;
 }
+
 .footer {
-  width: 92%;
-  padding: 0 4%;
-  background-color: #fbfbfb;
+  width: 750px;
+  background-color: #ffffff;
   height: 100px;
   justify-content: flex-end;
   align-items: center;
@@ -345,46 +222,39 @@ input {
   bottom: 0px;
 }
 .settlement {
-  width: 80%;
-  justify-content: flex-end;
+  width: 750px;
+  height: 100px;
+  justify-content: space-between;
   align-items: center;
+  flex-direction: row;
 }
 .sum {
-  width: 50%;
+  flex: 1;
   font-size: 28px;
-  margin-right: 10px;
-  justify-content: flex-end;
+  padding-left: 30px;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+}
+.sumTitle {
+  font-size: 30px;
+  margin-right: 20px;
+}
+.symbol {
+  color: #ed404c;
 }
 .money {
   font-weight: 600;
+  color: #ed404c;
+  font-size: 36px;
 }
 .btn {
-  padding: 0 30px;
-  height: 60px;
-  background-color: #f06c7a;
+  width: 230px;
+  height: 100px;
+  line-height: 100px;
+  background-color: #303030;
   color: #fff;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   font-size: 30px;
-  border-radius: 40px;
-}
-.detail {
-  width: 86%;
-  padding: 10px 3%;
-  margin: 30px auto 20px auto;
-  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-}
-.detail .row {
-  height: 60px;
-  justify-content: space-between;
-  align-items: center;
-}
-.row .nominal {
-  font-size: 28px;
-}
-.row .content {
-  font-size: 26px;
-  color: #f06c7a;
 }
 </style>

@@ -4,8 +4,9 @@
 			<div class="backbg" v-if="!back" @click="letfClick" style="">
 				<slot name="left"></slot>
 			</div>
-			<div class="backbg" v-if="back" @click="backTo">
-				<image src="root:img/back.png" style="width: 70px;height: 70px;margin-top: 40px;margin-left: 22px"></image>
+			<div class="leftIcon" v-if="back" @click="backTo">
+				<!-- <image src="root:img/back.png" style="width: 70px;height: 70px;  "></image> -->
+        <text class="arricon">&#xe603;</text>
 			</div>
 			<text style="text-align: center;font-size: 36;" :style="{'color':titleColor}" @click="titleClick">{{title}}</text>
 			<div class="backbg" @click="rightClick"  >
@@ -54,7 +55,7 @@ export default {
       default: 135
     },
     top: {
-      default: 40
+      default: 50
     },
     titletop: {
       default: 10
@@ -110,12 +111,20 @@ export default {
 <style scoped>
 .backbg {
   width: 130;
-  height: 100%;
+
   justify-content: center;
   align-items: center;
 }
 
-.backbg:active {
+.leftIcon {
+  width: 80px;
+  justify-content: center;
+  align-items: center;
+}
+.arricon {
+  font-size: 44px;
+  font-family: iconfont;
+  color: #ffffff;
 }
 
 .layout {

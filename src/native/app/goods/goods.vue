@@ -74,7 +74,7 @@
 			</div>
 			<div class="btnBox">
 				<text class="joinCart" @tap="joinCart">Add to cart</text>
-				<text class="buy" @tap="buy">payment</text>
+				<text class="buy" @click="buy">payment</text>
 			</div>
 		</div>
  
@@ -83,6 +83,8 @@
 </template>
 
 <script>
+const navigator = weex.requireModule("navigator");
+
 export default {
   data() {
     return {
@@ -148,6 +150,9 @@ export default {
 
   mounted() {},
   methods: {
+    buy() {
+      navigator.push("root:app/order/confirmation.js");
+    },
     // 客服
     toChat() {
       uni.navigateTo({
