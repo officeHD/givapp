@@ -63,11 +63,11 @@
 		<!-- 底部菜单 -->
 		<div class="footer">
 			<div class="foot_icons">
-				<div class="iconsbox bright" @tap="share">
+				<div class="iconsbox bright" @click="toChat">
 					<text class="iconfont textIcon">&#xe605;</text>
 					<text class="boxtext">service</text>
 				</div>
-				<div class="iconsbox boxright" @tap="toChat">
+				<div class="iconsbox boxright" @click="toCart">
 					<text class="iconfont textIcon">&#xe64c;</text>
 					<text class="boxtext">Cart</text>
 				</div> 
@@ -155,9 +155,10 @@ export default {
     },
     // 客服
     toChat() {
-      uni.navigateTo({
-        url: "../msg/chat/chat?name=客服008"
-      });
+      navigator.push("root:app/msg/chat.js");
+    },
+    toCart() {
+      navigator.push("root:app/main/cart.js");
     },
 
     hideShare() {

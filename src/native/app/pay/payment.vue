@@ -1,187 +1,178 @@
 <template>
-	<div>
+	<div class="wrapper">
+   <head :back="true" bgcolor="#303030" title="Payment details"></head>
 		<div class="block">
-			<div class="content">
-				<div class="orderinfo">
-					<div class="row">
-						<text class="nominal">订单名称:</text><text class="text">{{orderName}}</text>
-					</div>
-					<div class="row">
-						<text class="nominal">订单金额:</text><text class="text">{{amount}}元</text>
-					</div>
-				</div>
-			</div>
+			 <text class="symbol">￥</text><text class="money">{{amount}}</text>
 		</div>
-		<div class="block">
-			<text class="title">
-				选择支付方式
-			</text>
-			<div class="content">
-				<div class="pay-list">
-					<div class="row" @tap="paytype='alipay'">
-							<div class="left">
-								<image src="/static/img/alipay.png"></image>
-							</div>
-							<text class="center">
-								支付宝支付
-							</text>
-							<div class="right">
-								<radio :checked="paytype=='alipay'" color="#f06c7a" />
-							</div>
-					</div>
-					<div class="row" @tap="paytype='wxpay'">
-							<div class="left">
-								<image src="/static/img/wxpay.png"></image>
-							</div>
-							<text class="center">
-								微信支付
-							</text>
-							<div class="right">
-								<radio :checked="paytype=='wxpay'" color="#f06c7a" />
-							</div>
-					</div>
-				</div>
-			</div>
+		<div class="paytypeBox"> 
+				<div class="row" @click="paytype='visa'">
+            <image class="visa" src="root:img/visa.png"> </image>
+            <text class="center">Visa</text>
+            <div class="right"> 
+              <text class="iconfont active" v-if="paytype=='visa'">&#xe60d;</text>
+              <text class="iconfont" v-else>&#xe67f;</text>
+            </div>
+        </div>
+        	<div class="row" @click="paytype='union'">
+            <image class="union" src="root:img/union.png"> </image>
+            <text class="center">Mastercard</text>
+            <div class="right"> 
+              <text class="iconfont active" v-if="paytype=='union'">&#xe60d;</text>
+              <text class="iconfont" v-else>&#xe67f;</text>
+            </div>
+        </div>
+			 
+			 
 		</div>
-		<div class="pay">
-			<text class="btn" @tap="doDeposit">立即支付</text>
-			<div class="tis"> 
-				<text class=""> 点击立即支付，即代表您同意 </text>
-				<text class="terms"> 《条款协议》 </text>
-			</div>
+    	<div class="paytypeBox"> 
+				<div class="row" @click="paytype='wechat'">
+            <image class="left" src="root:img/wechat.png"> </image>
+            <text class="center">WeChat pay</text>
+            <div class="right"> 
+              <text class="iconfont active" v-if="paytype=='wechat'">&#xe60d;</text>
+              <text class="iconfont" v-else>&#xe67f;</text>
+            </div>
+        </div> 
+        <div class="row" @click="paytype='alipay'">
+            <image class="left" src="root:img/alipay.png"> </image>
+            <text class="center">Alipay</text>
+            <div class="right"> 
+              <text class="iconfont active" v-if="paytype=='alipay'">&#xe60d;</text>
+              <text class="iconfont" v-else>&#xe67f;</text>
+            </div>
+        </div> 
+         <div class="row" @click="paytype='paypal'">
+            <image class="paypal" src="root:img/paypal.png"> </image>
+            <text class="center">Paypal</text>
+            <div class="right"> 
+              <text class="iconfont active" v-if="paytype=='paypal'">&#xe60d;</text>
+              <text class="iconfont" v-else>&#xe67f;</text>
+            </div>
+        </div> 
+			 
+		</div>
+		<div class="save" @click="save">
+			<text class="btn">confirm</text>
 		</div>
 	</div>
 </template>
 
 <script>
+const navigator = weex.requireModule("navigator");
+
 export default {
   data() {
     return {
       amount: 0,
-      orderName: "",
       paytype: "alipay" //支付类型
     };
   },
-  onLoad(e) {
-    this.amount = parseFloat(e.amount).toFixed(2);
-    uni.getStorage({
-      key: "paymentOrder",
-      success: e => {
-        if (e.data.length > 1) {
-          this.orderName = "多商品合并支付";
-        } else {
-          this.orderName = e.data[0].name;
-        }
-        uni.removeStorage({
-          key: "paymentOrder"
-        });
-      }
-    });
-  },
+  onLoad(e) {},
   methods: {
-    doDeposit() {
-      //模板模拟支付，实际应用请调起微信/支付宝
-      uni.showLoading({
-        title: "支付中..."
-      });
-      setTimeout(() => {
-        uni.hideLoading();
-        uni.showToast({
-          title: "支付成功"
-        });
-        setTimeout(() => {
-          uni.redirectTo({
-            url: "../../pay/success/success?amount=" + this.amount
-          });
-        }, 300);
-      }, 700);
+    save() {
+      navigator.push("root:app/pay/success.js");
     }
   }
 };
 </script>
 
 <style scoped>
-.block {
-  width: 94%;
-  padding: 0 3% 40px 3%;
-}
-.title {
-  width: 100%;
+.iconfont {
+  font-family: iconfont;
   font-size: 34px;
 }
-.orderinfo {
-  width: 100%;
-  border-bottom: solid 1px #eee;
+.iconfont {
+  color: #ba8733;
 }
-.row {
-  width: 100%;
-  height: 90px;
-  align-items: center;
+.wrapper {
+  background-color: #f5f5f5;
 }
-.nominal {
-  font-size: 32px;
-  color: #7d7d7d;
-}
-.text {
-  width: 70%;
-  margin-left: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 32px;
-}
-.pay-list {
-  width: 100%;
-  border-bottom: solid 1px #eee;
-}
-.row {
-  width: 100%;
+.block {
+  width: 750px;
   height: 120px;
+  justify-content: center;
   align-items: center;
+  flex-direction: row;
 }
-.left {
-  width: 100px;
+.symbol {
+  color: #ec414d;
+  font-size: 24px;
+}
+.money {
+  color: #ec414d;
+  font-size: 38px;
+  font-weight: 600;
+}
+.paytypeBox {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 0 20px;
+}
 
+.row {
+  width: 710px;
+  height: 95px;
   align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
 }
-image {
-  width: 80px;
-  height: 80px;
+.bb {
+  border-bottom-color: #e6e6e6;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.left {
+  width: 50px;
+  height: 50px;
+  margin-right: 30px;
+  margin-left: 10px;
+}
+.paypal {
+  width: 61px;
+  height: 16px;
+  margin-right: 25px;
+  margin-left: 5px;
+}
+.visa {
+  width: 60px;
+  height: 18.3px;
+  margin-right: 25px;
+  margin-left: 5px;
+}
+.union {
+  width: 51px;
+  height: 32px;
+  margin-right: 30px;
+  margin-left: 10px;
 }
 .center {
-  width: 100%;
+  flex: 1;
   font-size: 30px;
+  color: #333333;
 }
 .right {
   width: 100px;
-
   justify-content: flex-end;
+  flex-direction: row;
 }
-.pay {
-  margin-top: 20px;
-  width: 100%;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.btn {
-  width: 70%;
-  height: 80px;
-  border-radius: 80px;
+
+.save {
+  position: fixed;
+  bottom: 0;
+  width: 750px;
+  height: 120px;
   justify-content: center;
   align-items: center;
+}
+.btn {
+  width: 690px;
+  height: 80px;
+  line-height: 80px;
+  border-radius: 10px;
+  background-color: #303030;
   color: #fff;
-  background-color: #f06c7a;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-}
-.tis {
-  margin-top: 10px;
-  width: 100%;
-  font-size: 24px;
-  justify-content: center;
-  align-items: flex-end;
-  color: #999;
-}
-.terms {
-  color: #5a9ef7;
+  text-align: center;
+  font-size: 30px;
 }
 </style>

@@ -110,8 +110,7 @@ export default {
 </script>
 <style scoped>
 .backbg {
-  width: 130;
-
+  width: 130; 
   justify-content: center;
   align-items: center;
 }

@@ -1,39 +1,29 @@
 <template>
-	<div>
-		<div class="content">
-			<div class="list">
-				<div class="row" v-for="(row,index) in addressList" :key="index" @tap="select(row)">
+	<div class="wrapper">
+		<div class="wrapper_content">
+			<div class="contentList">
+				<div class="listrow" v-for="(row,index) in addressList" :key="index" @tap="select(row)">
 					<div class="left">
-						<div class="head">
-							{{row.head}}
-						</div>
+						<text class="head"> {{row.head}} </text>
 					</div>
-					<div class="center">
+					<div class="listCenter">
 						<div class="name-tel">
-							<div class="name">{{row.name}}</div>
-							<div class="tel">{{row.tel}}</div>
-							<text class="default" v-if="row.isDefault">
-								默认
-							</text>
+							<text class="name">{{row.name}}</text>
+							<text class="tel">{{row.tel}}</text>
+							<text class="default" v-if="row.isDefault"> 默认 </text>
 						</div>
-						<div class="address">
-							{{row.address.region.label}} {{row.address.detailed}}
-						</div>
+						<text class="address"> {{row.address.region.label}} {{row.address.detailed}} </text>
 					</div>
 					<div class="right">
-						<div class="icon bianji" @tap.stop="edit(row)">
-							
-						</div>
+						<div class="icon bianji" @tap.stop="edit(row)">  </div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="add">
-			<div class="btn" @tap="add"> 
-			<text class="icon tianjia"></text>
-			<text class="">text新增地址</text>
-			
-			
+			<div class="btn" @tap="add">
+				<text class="icon tianjia"></text>
+				<text class="">text新增地址</text>
 			</div>
 		</div>
 	</div>
@@ -187,7 +177,20 @@ export default {
 };
 </script>
 
-<style  scoped>
+<style scoped>
+.wrapper {
+ 
+  width: 750px;
+}
+.wrapper_content {
+  width: 750px;
+}
+
+.contentList {
+  flex-wrap: wrap;
+  width: 750px;
+
+}
 .add {
   position: fixed;
   bottom: 0;
@@ -196,9 +199,10 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .btn {
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
-  width: 70%;
+  width: 150px;
   height: 80px;
   border-radius: 80px;
   background-color: #f06c7a;
@@ -208,6 +212,7 @@ export default {
 
   font-size: 30px;
 }
+
 .icon {
   height: 80px;
   color: #fff;
@@ -215,17 +220,20 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.list {
-  flex-wrap: wrap;
+
+
+.listrow {
+  width: 700px;
+  padding: 20px;
+  flex-direction: row;
 }
-.row {
-  width: 96%;
-  padding: 20px 2%;
-}
+
 .left {
   width: 90px;
   align-items: center;
+  flex-direction: row;
 }
+
 .head {
   width: 70px;
   height: 70px;
@@ -236,22 +244,27 @@ export default {
   border-radius: 60px;
   font-size: 35px;
 }
-.center {
-  width: 100%;
+
+.listCenter {
+ flex: 1;
   flex-wrap: wrap;
 }
+
 .name-tel {
-  width: 100%;
+  flex-direction: row;
   align-items: flex-end;
 }
+
 .name {
   font-size: 34px;
 }
+
 .tel {
   margin-left: 30px;
   font-size: 24px;
   color: #777;
 }
+
 .default {
   font-size: 22px;
 
@@ -261,16 +274,19 @@ export default {
   border-radius: 24px;
   margin-left: 20px;
 }
+
 .address {
-  width: 100%;
+   flex: 1;
   font-size: 24px;
   align-items: flex-end;
   color: #777;
 }
+
 .right {
   align-items: center;
   margin-left: 20px;
 }
+
 .icon {
   justify-content: center;
   align-items: center;

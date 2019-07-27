@@ -1,57 +1,47 @@
 <template>
-	<div>
+	<div class="wrapper">
+    <head :back="true" bgcolor="#303030" :title="title"></head>
 		<div class="content">
 			<div class="row">
-				<text class="nominal">
-					收件人
-				</text>
-				<div class="input">
-					<input placeholder="请输入收件人姓名" type="text" v-model="name" />
+				<text class="nominal">Name</text>
+				<div class="inputbox">
+					<input  class="input"  placeholder="Enter receive name" type="text" :value="name" />
 				</div>
 			</div>
 			<div class="row">
-				<text class="nominal">
-					电话号码
-				</text>
-				<div class="input">
-					<input placeholder="请输入收件人电话号码" type="text" v-model="tel" />
+				<text class="nominal">Phone number</text>
+				<div class="inputbox">
+					<input class="input" placeholder="Enter receive phone"  type="text" v-model="tel" />
 				</div>
 			</div>
 			<div class="row">
-				<text class="nominal">
-					所在地区
-				</text>
-				<div class="input" @tap="chooseCity">
-					{{region.label}}
-				</div>
-				
+				<text class="nominal">Location</text>
+				<div class="inputbox" @click="chooseCity"> 
+          <text class="input" v-if="region.label"></text>
+          <text class="input c999" v-else>Picker receive location</text>
+         
+        </div> 
 			</div>
 			<div class="row">
-				<text class="nominal">
-					详细地址
-				</text>
-				<div class="input">
-					<textarea v-model="detailed" auto-height="true" placeholder="输入详细地址"></textarea>
+				<text class="nominal">Address</text>
+				<div class="inputbox ">
+					<textarea class="input" v-model="detailed" auto-height="true" placeholder="Enter receive address"></textarea>
 				</div>
-			</div>
-			<div class="row">
-				<text class="nominal">
-					设置默认地址
-				</text>
+			</div> 
+			<!-- <div class="row" v-if="editType=='edit'" @tap="del">
+				<text class="delloca"> 	删除收货地址 </text>
+			</div> -->
+		</div>
+    <div class="content mt20">
+      	<div class="row">
+				<text class="longtitle">Set the default address</text>
 				<div class="input switch">
 					<switch color="#f06c7a" :checked="isDefault" @change=isDefaultChange />
 				</div>
 			</div>
-			<div class="row" v-if="editType=='edit'" @tap="del">
-				<text class="del">
-					删除收货地址
-				</text>
-			</div>
-		</div>
+    </div>
 		<div class="save" @tap="save">
-			<text class="btn">
-				保存地址
-			</text>
+			<text class="btn">confirm</text>
 		</div>
 		<!-- <mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValue" @onCancel="onCancel" @onConfirm="onConfirm"></mpvue-city-picker> -->
 	</div>
@@ -65,15 +55,16 @@ export default {
   },
   data() {
     return {
+      title: "Receiving address",
       editType: "edit",
       id: "",
-      name: "",
+      name: "Li Li",
       tel: "",
       detailed: "",
       isDefault: false,
       cityPickerValue: [0, 0, 1],
       themeColor: "#007AFF",
-      region: { label: "请点击选择地址", value: [], cityCode: "" }
+      region: { label: "", value: [], cityCode: "" }
     };
   },
   methods: {
@@ -81,14 +72,15 @@ export default {
       console.log(e);
     },
     chooseCity() {
-      this.$refs.mpvueCityPicker.show();
+      // this.$refs.mpvueCityPicker.show();
+      this.toast("城市选择");
     },
     onConfirm(e) {
       this.region = e;
       this.cityPickerValue = e.value;
     },
     isDefaultChange(e) {
-      this.isDefault = e.detail.value;
+      // this.isDefault = e.detail.value;
     },
     del() {
       uni.showModal({
@@ -185,26 +177,6 @@ export default {
 };
 </script>
 <style scoped>
-.save {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 120px;
-  justify-content: center;
-  align-items: center;
-}
-.btn {
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
-  width: 70%;
-  height: 80px;
-  border-radius: 80px;
-  background-color: #f06c7a;
-  color: #fff;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 30px;
-}
 .icon {
   height: 80px;
   color: #fff;
@@ -212,43 +184,86 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.wrapper {
+  background-color: #f5f5f5;
+}
 .content {
-  flex-wrap: wrap;
+  padding: 0 30px;
+  background-color: #fff;
+}
+.mt20 {
+  margin-top: 20px;
 }
 .row {
-  width: 94%;
-
-  margin: 0 3%;
-  border-top: solid 1px #eee;
+  width: 690px;
+  flex-direction: row;
+  background-color: #fff;
+  align-items: center;
+  border-bottom-color: #e6e6e6;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  min-height: 100px;
 }
 .nominal {
-  width: 30%;
-  height: 120px;
-  font-weight: 200;
+  width: 220px;
   font-size: 30px;
-  align-items: center;
 }
-.input {
-  width: 70%;
+.inputbox {
+  flex: 1;
   padding: 20px 0;
   align-items: center;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 30px;
+}
+.input {
+  flex: 1;
+  height: 60px;
+  line-height: 60px;
+   font-size: 30px;
+}
+.c999{
+  color: #999;
+   font-size: 30px;
+}
+.longtitle {
+  flex: 1;
   font-size: 30px;
 }
 .switch {
   justify-content: flex-end;
+  flex-direction: row;
 }
 .textarea {
   margin: 20px 0;
   min-height: 120px;
 }
-.del {
-  width: 100%;
+.delloca {
+  width: 700px;
   height: 100px;
-  justify-content: center;
-  align-items: center;
+  line-height: 100px;
+  text-align: center;
   font-size: 36px;
   color: #f06c7a;
   background-color: rgba(255, 0, 0, 0.05);
-  border-bottom: solid 1px #eee;
+  /* border-bottom: solid 1px #eee; */
+}
+.save {
+  position: fixed;
+  bottom: 0;
+  width: 750px;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  width: 690px;
+  height: 80px;
+  line-height: 80px;
+  border-radius: 10px;
+  background-color: #303030;
+  color: #fff;
+  text-align: center;
+  font-size: 30px;
 }
 </style>

@@ -16,7 +16,8 @@
 						<div class="icon shanchu"></div>
 					</div>
 					<!-- content -->
-					<div class="carrier" :class="[typeClass=='goods'?theIndex==index?'open':oldIndex==index?'close':'':'']" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
+					<div class="carrier" :class="[typeClass=='goods'?theIndex==index?'open':oldIndex==index?'close':'':'']"
+           @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
 						<div class="goods-info" @tap="toGoods(row)">
 							<div class="img">
 								<image :src="row.img"></image>
@@ -97,10 +98,7 @@ export default {
         }
       ],
       shopList: [
-        { id: 1, name: "冰鲜专卖店", img: "/static/img/shop/1.jpg" },
-        { id: 2, name: "果蔬天下", img: "/static/img/shop/2.jpg" },
-        { id: 3, name: "办公耗材用品店", img: "/static/img/shop/3.jpg" },
-        { id: 4, name: "天天看好书", img: "/static/img/shop/4.jpg" }
+        
       ],
       headerTop: 0,
       //控制滑动效果

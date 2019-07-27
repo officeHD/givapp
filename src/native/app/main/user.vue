@@ -24,11 +24,11 @@
         </div>
         <div class="sectionItem">
           <text class="itemNum">6</text>
-          <text class="itemTitle">like</text>
+          <text class="itemTitle">following</text>
         </div>
         <div class="sectionItem">
           <text class="itemNum">6</text>
-          <text class="itemTitle">like</text>
+          <text class="itemTitle">follower</text>
         </div>
       </div>
     </div>
@@ -36,12 +36,12 @@
     <x-cell title="My order" :hasArrow="true" class="list-margin">
       <text slot="value" style="color:#999;font-size:30px;">View my orders</text>
     </x-cell>
-    <x-cell title="Selling" :hasArrow="true">
+    <x-cell title="Selling" :hasArrow="true" @cellClick="gonext('root:app/selling/selling.js')">
       <div slot="label" class="list-icon">
         <text class="iconfont" :style="{fontSize:40}">&#xe670;</text>
       </div>
     </x-cell>
-    <x-cell title="Sold" :hasArrow="true" @cellClick="gonext('messageSeting')">
+    <x-cell title="Sold" :hasArrow="true" @cellClick="gonext('root:app/selling/sold.js')">
       <div slot="label" class="list-icon">
         <text class="iconfont" :style="{fontSize:40}">&#xe685;</text>
       </div>
@@ -71,7 +71,7 @@
         <text class="iconfont" :style="{fontSize:40}">&#xe6cf;</text>
       </div>
     </x-cell>
-    <x-cell title="Customer service" :hasArrow="true" @cellClick="gonext('share')">
+    <x-cell title="Customer service" :hasArrow="true" @cellClick="gonext('root:app/msg/msg.js')">
       <div slot="label" class="list-icon">
         <text class="iconfont" :style="{fontSize:40}">&#xe605;</text>
       </div>
@@ -81,7 +81,7 @@
         <text class="iconfont" :style="{fontSize:40}">&#xe63f;</text>
       </div>
     </x-cell>
-    <x-cell title="Setting" :hasArrow="true" @cellClick="gonext('setting')">
+    <x-cell title="Setting" :hasArrow="true" @cellClick="gonext('root:app/user/setting/setting.js')">
       <div slot="label" class="list-icon">
         <text class="iconfont" :style="{fontSize:38}">&#xe615;</text>
       </div>
@@ -102,7 +102,8 @@ export default {
       refreshing: false,
       user: {
         name: "JAck",
-        phone: "1321526262"
+        phone: "1321526262",
+        face: "root:img/user.jpg"
       }
     };
   },
@@ -118,6 +119,7 @@ export default {
     gonext(url) {
       //this.push('test.js',{name:"ssss"})
       this.log("jdksdjsk", "error");
+      this.log("333", "error");
       navigator.push(url);
     }
   },
@@ -154,11 +156,19 @@ export default {
   border-bottom-style: dashed;
   flex-direction: row;
   align-items: center;
-  padding: 10px 0;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 .userImg {
   width: 100px;
   height: 100px;
+  margin-left: 40px;
+  margin-right: 20px;
+}
+.avator {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
 }
 .userInfo {
   flex: 1;
