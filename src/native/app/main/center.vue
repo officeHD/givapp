@@ -1,33 +1,22 @@
 <template>
 <div class="layout">
-  <head :back="false" bgcolor="#303030" :hasleft="false"  @rightClick="rightClick">
+  <head :back="false" bgcolor="#303030" @letfClick="letfClick" @rightClick="rightClick">
+    <text class="leftIcon iconfont" slot="left">&#xe64a;</text>
     <text class="leftIcon iconfont" slot="right">&#xe600;</text>
-    <div slot="center" class="inputbox" @click="searchClick">
+  </head> 
+  <scroller class="scroller">
+    <slider class="slider" interval="3000" auto-play="false">
+      <div class="frame" v-for="(img,index) in imageList" :key="index">
+        <image class="image" resize="cover" :src="img.src" />
+      </div>
+    </slider>
+    <div class="header">
+      <div class="inputbox" @click="searchClick">
         <text class="searchIcon iconfont">&#xe62a;</text>
         <text class="tips">noteBook</text>
       </div>
-  </head>
-  <div class="pageContent">
-  <div class="header">
-      
-  </div>
-  <scroller class="scroller">
-    <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
-      <loading-indicator class="indicator"></loading-indicator>
-    </refresh>
-    <div class="cicle">
-
     </div>
-    <div class="cicleContent">
-        <div class="silderBox">
-        <slider class="slider" interval="3000" auto-play="false">
-          <div class="frame" v-for="(img,index) in imageList" :key="index">
-            <image class="image" resize="cover" :src="img.src" />
-          </div>
-        </slider>
-      </div>
-      <div class="bgcf">
-      <div class="tabSection">
+    <div class="tabSection">
       <div class="tabItem"  v-for="(item,index) in tabSection" :key="index">
         <image class="tabImg" :src="item.img" />
         <text class="tips">{{item.title}}</text>
@@ -70,14 +59,7 @@
         </div>
       </div>
     </div>
-      
-      </div>
-    
-    </div>
-   
   </scroller>
-  </div>
-  
 </div>
 </template>
 <script>
@@ -86,7 +68,6 @@ const navigator = weex.requireModule("navigator");
 export default {
   data() {
     return {
-      refreshing: false,
       imageList: [
         {
           src:
@@ -139,13 +120,6 @@ export default {
   },
   props: {},
   methods: {
-    onrefresh(event) {
-      var s = this;
-      s.refreshing = true;
-      setTimeout(() => {
-        s.refreshing = false;
-      }, 1000);
-    },
     onLoad(p) {},
     gonext(url) {
       //this.push('test.js',{name:"ssss"})
@@ -160,9 +134,7 @@ export default {
       this.toast("左边按钮跳转");
     },
     rightClick() {
-      // this.toast("右边边按钮跳转");
-
-      navigator.push("root:app/msg/msg.js");
+      this.toast("右边边按钮跳转");
     }
   },
   created() {}
@@ -178,52 +150,30 @@ export default {
   background-color: #ffffff;
   flex: 1;
 }
-.pageContent {
-  flex: 1;
-   position: relative;
-}
 
 .scroller {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
- 
+  flex: 1;
+
+  background-color: #f2f2f2;
 }
+
 .header {
-  height: 340px;
-  /* padding-top: 45px; */
+  height: 310px;
+  padding-top: 45px;
   justify-content: flex-start;
   align-items: center;
-  background-color: #303030;
+  margin-top: -310px;
 }
 
-.refresh {
-  width: 750px;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  align-items: center;
-}
-
-.indicator {
-  margin-top: 30px;
-  margin-bottom: 20px;
-  height: 70px;
-  width: 70px;
-  color: #ce2020;
-}
 .inputbox {
   background-color: #fff;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  flex: 1;
-  border-radius: 40px;
-  height: 80px;
-  padding: 0 40px;
-  margin-left: 32px;
+  width: 680px;
+  border-radius: 70px;
+  height: 70px;
+  padding: 0 35px;
 }
 
 .searchIcon {
@@ -232,18 +182,6 @@ export default {
   font-size: 30px;
 }
 
-.cicle {
-  background-color: #f2f2f2;
-  border-top-left-radius: 550px;
-  border-bottom-right-radius: 550px;
-  width: 750px;
-  height: 750px;
-  transform: rotate(45deg);
-  margin-top: 60px;
-}
-.cicleContent {
-  margin-top: -750px;
-}
 .tips {
   color: #666;
 }
@@ -268,42 +206,24 @@ export default {
 }
 
 .image {
-  width: 690px;
-  height: 290px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  overflow: hidden;
+  width: 750px;
+  height: 310px;
 }
-.silderBox {
-  width: 690px;
-  height: 290px;
-  margin-left: 30px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  overflow: hidden;
-}
+
 .slider {
-  flex: 1;
+  margin-top: 0;
+  margin-left: 0;
+  width: 750px;
+  height: 310px;
 }
 
 .frame {
-  width: 690px;
-  height: 290px;
+  width: 750px;
+  height: 310px;
 
   position: relative;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  overflow: hidden;
 }
-.bgcf {
-  background-color: #f2f2f2;
-}
+
 .tabSection {
   width: 690px;
   height: 350px;

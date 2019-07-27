@@ -1,15 +1,17 @@
 <template>
 	<div class="layout" :style="{'background-color':bgcolor,'height':height+'px','padding-top':top}">
 		<div style="flex-direction: row;align-items: center;flex: 1; justify-content:space-between ">
-			<div class="backbg" v-if="!back" @click="letfClick" style="">
+			<div class="backbg" v-if="!back&&hasleft" @click="letfClick" style="">
 				<slot name="left"></slot>
 			</div>
 			<div class="leftIcon" v-if="back" @click="backTo">
 				<!-- <image src="root:img/back.png" style="width: 70px;height: 70px;  "></image> -->
         <text class="arricon">&#xe603;</text>
 			</div>
-			<text style="text-align: center;font-size: 36;" :style="{'color':titleColor}" @click="titleClick">{{title}}</text>
-			<div class="backbg" @click="rightClick"  >
+      <slot name="center"></slot>
+			<text v-if="title" style="text-align: center;font-size: 36;" :style="{'color':titleColor}" @click="titleClick">{{title}}</text>
+			
+      <div class="backbg" @click="rightClick"  >
 				<slot name="right"></slot>
 			</div>
 		</div>
@@ -18,6 +20,9 @@
 <script>
 export default {
   props: {
+    hasleft: {
+      default: true
+    },
     title: {
       default: ""
     },
@@ -52,7 +57,7 @@ export default {
       default: 20
     },
     height: {
-      default: 135
+      default: 140
     },
     top: {
       default: 50
@@ -110,7 +115,7 @@ export default {
 </script>
 <style scoped>
 .backbg {
-  width: 130; 
+  width: 120;
   justify-content: center;
   align-items: center;
 }
