@@ -99,7 +99,7 @@
 		},
 		methods: {
 			toSeling() {
-				navigator.push("root:app/selling/selling.js");
+				navigator.present("root:app/selling/selling.js");
 			},
 			next() {
 				let page = this.currentPage;
