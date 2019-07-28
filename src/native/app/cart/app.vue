@@ -4,7 +4,7 @@
 			<text class="leftIcon iconfont" slot="left">&#xe64a;</text>
 			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
 		</head>
-		 <scroller class="scroller"></scroller>
+		<scroller class="scroller"></scroller>
 		<tabnav active="Cart"></tabnav>
 	</div>
 </template>
