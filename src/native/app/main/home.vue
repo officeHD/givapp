@@ -172,7 +172,7 @@
 				s.refreshing = true;
 				setTimeout(() => {
 					s.refreshing = false;
-				}, 1000);
+				}, 1000); 
 			},
 			onLoad(p) {},
 			gonext(url) {

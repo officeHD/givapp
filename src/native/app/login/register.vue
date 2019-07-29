@@ -2,28 +2,26 @@
 	<div>
 		<image class="bgimg" src="root:img/bg.png"> </image>
 		<scroller class="wrapper">
-			<text class="title" v-if="loginType=='email'">Registered mail</text>
-			<text class="title" v-if="loginType=='phone'">Registered mobile phone number</text>
+			<text class="title" >{{loginType=='email'?"Registered mail":"Registered mobile phone number"}}</text>
 
-			<div class="inputBox bb" v-if="loginType=='phone'">
-				<text class="phoneType">+86</text>
-				<input type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
-			</div>
-			<div class="inputBox bb" v-if="loginType=='email'"> 
-				<input type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
-			</div>
-			<div class="inputBox bb" v-if="loginType=='phone'">
+			<div class="inputBox bb">
+				<text v-if="loginType=='phone'" class="phoneType">+86</text>
+				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
 
+				<input v-if="loginType=='email'" type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
+			</div>
+
+			<div class="inputBox bb" v-if="loginType=='phone'"> 
 				<input type="text" class="input" placeholder="" placeholder-color="#F2f2f2" />
 				<text class="codeBtn">Send verification code</text>
 			</div>
-			<div class="inputBox bb"> 
+			<div class="inputBox bb">
 				<input type="text" class="input" placeholder="Please enter password" placeholder-color="#F2f2f2" />
-			</div> 
+			</div>
 			<div class="radioBox">
 				<text class="iconfont radio">&#xe67f;</text>
 				<text class="loginType">User agreement</text>
-			</div> 
+			</div>
 			<text class="singnIn" @click="regist">Register and log in</text>
 			<text class="logintip" @click="loginType='phone'" v-if="loginType=='email'">Registered mobile phone number</text>
 			<text class="logintiphone" @click="loginType='email'" v-if="loginType=='phone'">Registered mail</text>
@@ -44,7 +42,7 @@
 				passwd: "",
 				loginType: "email"
 			};
-		}, 
+		},
 		methods: {
 			regist() {
 				pref.set('userInfo', obj);

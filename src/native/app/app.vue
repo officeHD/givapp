@@ -53,20 +53,17 @@
 			}
 		},
 		beforeCreate() {
-		 /* 判断是否登录过和是否超时(超时将自动从登) */
-		     asCore.getBsessionid(sessionid =>{
-			  if (!sessionid) {
-				navigator.push(asCore.localpath + "login.js");
-			  } else {
-				s.indexShow = true;
-				/* 所有操作请在appinital 之后操作 */
-				asCore.appInitial(() =>{
-				  /* 加载context */
-				  s.$refs.myinfo.isLogin();
-				});
-			  }
+
+			/* 判断是否登录过和是否超时(超时将自动从登) */
+			asCore.getBsessionid(sessionid => {
+				if (!sessionid) {
+					this.log("判断是否登录了");
+					navigator.push("root:app/login/login.js");
+				} else {
+
+				}
 			});
-		 
+
 		},
 		created() {
 			const tabPageHeight = Utils.env.getPageHeight();
@@ -76,7 +73,6 @@
 			this.contentStyle = {
 				height: tabPageHeight + 10 + "px"
 			};
-			var self = this;
 			var globalEvent = weex.requireModule("globalEvent");
 			globalEvent.addEventListener("onPageInit", function(e) {
 				navigator.setRoot("A");

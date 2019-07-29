@@ -10,7 +10,7 @@
         },
         methods: {
             onLoad(){
-                let url = 'root:app/app/app.js'
+                let url = 'root:app/app.js'
                 this.goToMain(url)
             },
             goToMain(url){
@@ -29,5 +29,6 @@
         }
     }
 </script>
-<style scoped>
+<style>
+	
 </style>

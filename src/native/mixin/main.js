@@ -12,8 +12,8 @@ Mixins.install = (Vue, options) => {
 			wraper,
 			head,
 			button,
-			page ,
-			tabnav
+			page,
+			tabnav 
 		},
 		data() {
 			return {
@@ -84,7 +84,7 @@ Mixins.install = (Vue, options) => {
 				if (param && p.param && p.bubbles)
 					p = p.param
 				if (this.onLoad != undefined)
-					this.onLoad(p) 
+					this.onLoad(p)
 
 			});
 			globalEvent.addEventListener("viewWillDisappear", (param) => {
