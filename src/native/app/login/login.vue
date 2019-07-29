@@ -7,16 +7,16 @@
 			<text class="title">Welcome to your account</text>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe782;</text>
-				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter account" @change="onChange"
+				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter account" @input="onChange"
 				 placeholder-color="#c3c3c3" />
-				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter phone" @change="onChangeN"
+				<input v-if="loginType=='phone'" type="text" :value="phone_number" class="input" placeholder="Enter phone" @input="changePhone"
 				 placeholder-color="#c3c3c3" />
 			</div>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe635;</text>
-				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter password" @change="changep"
+				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter password" @input="changep"
 				 placeholder-color="#c3c3c3" />
-				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter verify" @change="changeV"
+				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter verify" @input="changeV"
 				 placeholder-color="#c3c3c3" />
 				<text class="codeBtn" v-if="loginType=='phone'" @click="send_verify">Receive Sms code</text>
 			</div>
@@ -24,7 +24,8 @@
 			<text class="loginType" v-if="loginType=='phone'" @click="loginType='account'">Account login</text>
 			<text class="singnIn" @click="login">Sign in</text>
 			<div class="rowBox">
-				<text class="boxItem br" @click="register">User registration</text>
+				<text class="boxItem" @click="register">User registration</text>
+				<text class="br h20"></text>
 				<text class="boxItem">Forgot password</text>
 			</div>
 			<div v-if="loading" class="mask" @click="event=> event.stopPropagation()">
@@ -70,12 +71,13 @@
 			changeV(e) {
 				this.verify = e.value
 			},
-			onChangeN(e) {
+			changePhone(e) {
+				console.log(e)
 				this.phone_number = e.value
 
 			},
 			send_verify() {
-				let that = this;
+				let that = this; 
 				if (!that.phone_number) {
 					that.toast("Enter your phoneNumber");
 					return false
@@ -102,7 +104,7 @@
 					account: that.account,
 					password: that.password
 				};
-				if (this.loginType == 'account') {
+				if (this.loginType !== 'account') {
 					if (!that.phone_number) {
 						that.toast("Enter your phoneNumber");
 						return false
@@ -111,6 +113,7 @@
 						that.toast("Enter your verify");
 						return false
 					}
+					// 836669
 					data = {
 						phone_number: that.phone_number,
 						verify: that.verify
@@ -158,7 +161,9 @@
 	.iconfont {
 		font-family: iconfont;
 	}
-
+	.h20{
+		height: 20px;
+	}
 	.codeBtn {
 		height: 60px;
 		color: #FFFFFF;
@@ -227,8 +232,9 @@
 		padding-right: 97px;
 		color: #FFFFFF;
 		width: 750px;
-		;
-		margin-top: 32px;
+		 height: 60px;
+		 line-height: 60px;
+		margin-top: 20px;
 		font-size: 22px;
 	}
 
@@ -264,6 +270,8 @@
 	}
 
 	.boxItem {
+		height: 60px;
+		line-height: 60px;
 		padding: 0 34px;
 		font-size: 20px;
 		color: #FFFFFF;

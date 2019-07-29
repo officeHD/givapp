@@ -30,7 +30,7 @@
 							</div>
 						</div>
 						<div class="subSection">
-							<div class="leftSub">
+							<div class="leftSub" @click="gonext('root:app/active/secKill.js')" >
 								<div class="subTop">
 									<text class="topTitle">Seckill</text>
 									<div class="timeOut">
@@ -43,13 +43,13 @@
 								</div>
 								<image class="limitImg" src="root:img/limit.png"></image>
 							</div>
-							<div class="rightSub">
+							<div class="rightSub" @click="gonext('root:app/active/preferential.js')" >
 								<text class="rightTitle">Annie Oakley</text>
 								<text class="rightContent">Detonate low-cost fire and fight for it </text>
 								<text class="rightBtn">199subtract100</text>
 							</div>
 						</div>
-						<image class="luckImg" src="root:img/luck.png"></image>
+						<image @click="gonext('root:app/active/luck.js')" class="luckImg" src="root:img/luck.png"></image>
 						<div class="secondHand">
 							<div class="secondTitle" @click="gonext('root:app/main/center.js')">
 								<text class="titleName">second-hand</text>

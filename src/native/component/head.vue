@@ -6,7 +6,7 @@
 			</div>
 			<div class="leftIcon" v-if="back" @click="backTo">
 				<!-- <image src="root:img/back.png" style="width: 70px;height: 70px;  "></image> -->
-        <text class="arricon">&#xe603;</text>
+        <text class="arricon" :style="{'color':titleColor}">&#xe603;</text>
 			</div>
       <slot name="center"></slot>
 			<text v-if="title" style="text-align: center;font-size: 36;" :style="{'color':titleColor}" @click="titleClick">{{title}}</text>

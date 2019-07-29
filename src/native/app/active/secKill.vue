@@ -1,6 +1,6 @@
 <template>
 	<div>
-		 <text>优惠商品列表</text>
+		 <text>秒杀列表</text>
 	</div>
 </template>
 
