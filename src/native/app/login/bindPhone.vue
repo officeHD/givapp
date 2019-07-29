@@ -2,52 +2,30 @@
 	<div>
 		<image class="bgimg" src="root:img/bg.png"> </image>
 		<scroller class="wrapper">
-			<text class="title">Welcome to your account</text>
-			<div class="inputBox bb">
-				<text class="iconfont inputIcon br">&#xe782;</text>
-				<input type="text" class="input" placeholder="Enter account" placeholder-color="#c3c3c3" />
-			</div>
-			<div class="inputBox bb">
-				<text class="iconfont inputIcon br">&#xe635;</text>
-				<input type="password" class="input" placeholder="Enter password" placeholder-color="#c3c3c3" />
-			</div>
-			<text class="loginType">Verification code login</text>
-			<text class="loginType">Account login</text>
-			<text class="singnIn" @click="login">Sign in</text>
-			<div class="rowBox">
-				<text class="boxItem br" @click="register">User registration</text>
-				<text class="boxItem">Forgot password？</text>
-			</div>
-		</scroller>
+			<text class="emailtitle">Bind phone number</text>
 
+			<div class="inputBox bb">
+				<text class="phoneType">+86</text>
+				<input type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
+			</div>
+			<text class="singnIn" @click="next">Next step</text> 
+		</scroller> 
 	</div>
 </template>
 
 <script>
 	const navigator = weex.requireModule("navigator");
-	var pref = weex.requireModule("static")
 	export default {
 		data() {
 			return {
-				phoneNumber: "",
 				passwd: "",
-				isShowOauth: false,
-				showProvider: {
-					weixin: false,
-					qq: false,
-					sinaweibo: false,
-					xiaomi: false
-				}
+				loginType: "email"
 			};
 		},
 
 		methods: {
-			login() {
-				pref.set('userInfo',obj);
-				navigator.backTo("A");
-			},
-			register(){
-					navigator.push("root:app/login/register.js");
+			next() {
+				navigator.push("root:app/login/vertifyCode.js");
 			}
 		}
 	};
@@ -82,35 +60,94 @@
 
 	}
 
-	.title {
+	.emailtitle {
 		color: #FFFFFF;
-		font-size: 32px;
-		margin-top: 370px;
+		font-size: 48px;
+		margin-top: 167px;
+		height: 200px;
+		width: 556px;
+		text-align: left;
+	}
+
+	.phonetitle {
+		color: #FFFFFF;
+		font-size: 48px;
+		margin-top: 167px;
+		margin-bottom: 100px;
+		width: 556px;
+		text-align: left;
 	}
 
 	.input {
 		flex: 1;
 		height: 60px;
-		padding-left: 20px;
+		padding-left: 5px;
 		color: #FFFFFF;
+		font-size: 30px;
 	}
 
 	.inputBox {
-		margin-top: 60px;
-		height: 60px;
+		margin-top: 40px;
+		height: 80px;
 		width: 556px;
 		flex-direction: row;
+		align-items: flex-end;
+		padding-bottom: 2px;
+
+	}
+
+	.phoneType {
+		height: 60px;
+		color: #FFFFFF;
+		line-height: 60px;
+		font-size: 30px;
+		margin-right: 20px;
+	}
+
+	.codeBtn {
+		height: 60px;
+		color: #FFFFFF;
+		line-height: 60px;
+		font-size: 30px;
+	}
+
+	.radioBox {
+		flex-direction: row;
+		margin-top: 32px;
+		justify-content: flex-start;
 		align-items: center;
+		width: 556px;
+		height: 40px;
+	}
+
+	.radio {
+		color: #FFFFFF;
+		font-size: 34px;
+		margin-right: 20px;
+
 	}
 
 	.loginType {
-		text-align: right;
-		padding-right: 97px;
 		color: #FFFFFF;
-		width: 750px;
-		;
-		margin-top: 32px;
+		font-size: 26px;
+	}
+
+	.logintip {
 		font-size: 22px;
+		margin-top: 32px;
+		height: 30px;
+		line-height: 30px;
+		color: #FFFFFF;
+		margin-bottom: 220px;
+	}
+
+	.logintiphone {
+		font-size: 22px;
+		margin-top: 32px;
+		height: 30px;
+		line-height: 30px;
+		color: #FFFFFF;
+		margin-bottom: 100px;
 	}
 
 	.singnIn {
@@ -129,7 +166,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		margin-top: 300px;
+
 	}
 
 	.br {
@@ -145,9 +182,13 @@
 	}
 
 	.boxItem {
-		padding: 0 34px;
-		font-size: 20px;
+
+		font-size: 32px;
 		color: #FFFFFF;
 		text-align: center;
+	}
+
+	.ccc {
+		color: #CCCCCC;
 	}
 </style>

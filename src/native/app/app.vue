@@ -17,67 +17,86 @@
 	</div>
 </template>
 <script>
-const navigator = weex.requireModule("navigator");
-import Utils from "../mixin/utils";
-export default {
-  components: {
-    "x-tabbar": require("../component/mainpage.vue"),
-    home: require("./main/home.vue"),
-    category: require("./main/category.vue"),
-    cart: require("./main/cart.vue"),
-    user: require("./main/user.vue")
-  },
-  data() {
-    return {
-      currentPage: 0
-    };
-  },
+	const navigator = weex.requireModule("navigator");
+	import Utils from "../mixin/utils";
+	import asCore from "../mixin/core";
+	export default {
+		components: {
+			"x-tabbar": require("../component/mainpage.vue"),
+			home: require("./main/home.vue"),
+			category: require("./main/category.vue"),
+			cart: require("./main/cart.vue"),
+			user: require("./main/user.vue")
+		},
+		data() {
+			return {
+				currentPage: 0
+			};
+		},
 
-  methods: {
-    onLoad(param) {},
-    gonext(url) {
-      //this.push('test.js',{name:"ssss"})
+		methods: {
+			onLoad(param) {},
+			gonext(url) {
+				//this.push('test.js',{name:"ssss"})
 
-      navigator.push(url);
-    },
+				navigator.push(url);
+			},
 
-    searchClick() {
-      this.toast("搜索跳转");
-    },
-    letfClick() {
-      this.toast("左边按钮跳转");
-    },
-    rightClick() {
-      this.toast("右边边按钮跳转");
-    }
-  },
-  created() {
-    const tabPageHeight = Utils.env.getPageHeight();
-    const { tabStyles } = this;
-    this.contentStyle = {
-      height: tabPageHeight + 10 + "px"
-    };
-    var self = this;
-    var globalEvent = weex.requireModule("globalEvent");
-    globalEvent.addEventListener("onPageInit", function(e) {
-      navigator.setRoot("A");
-      navigator.setPageId("A");
-    });
-  }
-};
+			searchClick() {
+				this.toast("搜索跳转");
+			},
+			letfClick() {
+				this.toast("左边按钮跳转");
+			},
+			rightClick() {
+				this.toast("右边边按钮跳转");
+			}
+		},
+		beforeCreate() {
+		 /* 判断是否登录过和是否超时(超时将自动从登) */
+		     asCore.getBsessionid(sessionid =>{
+			  if (!sessionid) {
+				navigator.push(asCore.localpath + "login.js");
+			  } else {
+				s.indexShow = true;
+				/* 所有操作请在appinital 之后操作 */
+				asCore.appInitial(() =>{
+				  /* 加载context */
+				  s.$refs.myinfo.isLogin();
+				});
+			  }
+			});
+		 
+		},
+		created() {
+			const tabPageHeight = Utils.env.getPageHeight();
+			const {
+				tabStyles
+			} = this;
+			this.contentStyle = {
+				height: tabPageHeight + 10 + "px"
+			};
+			var self = this;
+			var globalEvent = weex.requireModule("globalEvent");
+			globalEvent.addEventListener("onPageInit", function(e) {
+				navigator.setRoot("A");
+				navigator.setPageId("A");
+			});
+		}
+	};
 </script>
 <style scoped>
-.layout {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
+	.layout {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
 
-.item-container {
-  flex: 1;
-  width: 750px;
-  background-color: #f5f5f5;
-}
+	.item-container {
+		flex: 1;
+		width: 750px;
+		background-color: #f5f5f5;
+	}
 </style>
