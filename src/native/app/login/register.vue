@@ -2,15 +2,12 @@
 	<div>
 		<image class="bgimg" src="root:img/bg.png"> </image>
 		<scroller class="wrapper">
-			<text class="title" >{{loginType=='email'?"Registered mail":"Registered mobile phone number"}}</text>
-
+			<text class="title" >{{loginType=='email'?"Registered mail":"Registered mobile phone number"}}</text> 
 			<div class="inputBox bb">
 				<text v-if="loginType=='phone'" class="phoneType">+86</text>
-				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
-
+				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" /> 
 				<input v-if="loginType=='email'" type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
-			</div>
-
+			</div> 
 			<div class="inputBox bb" v-if="loginType=='phone'"> 
 				<input type="text" class="input" placeholder="" placeholder-color="#F2f2f2" />
 				<text class="codeBtn">Send verification code</text>

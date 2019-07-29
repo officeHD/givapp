@@ -7,12 +7,18 @@
 			<text class="title">Welcome to your account</text>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe782;</text>
-				<input type="text" class="input" placeholder="Enter account" @change="onChange" placeholder-color="#c3c3c3" />  
+				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter account" @change="onChange"
+				 placeholder-color="#c3c3c3" />
+				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter phone" @change="onChangeN"
+				 placeholder-color="#c3c3c3" />
 			</div>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe635;</text>
-				<input type="text" class="input" placeholder="Enter password" @change="changep" placeholder-color="#c3c3c3" />
-				<text class="codeBtn" v-if="loginType=='phone'">Receive Sms code</text>
+				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter password" @change="changep"
+				 placeholder-color="#c3c3c3" />
+				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter verify" @change="changeV"
+				 placeholder-color="#c3c3c3" />
+				<text class="codeBtn" v-if="loginType=='phone'" @click="send_verify">Receive Sms code</text>
 			</div>
 			<text class="loginType" v-if="loginType=='account'" @click="loginType='phone'">Verification code login</text>
 			<text class="loginType" v-if="loginType=='phone'" @click="loginType='account'">Account login</text>
@@ -40,7 +46,8 @@
 			return {
 				loading: false,
 				loginType: "account",
-				phoneNumber: "",
+				phone_number: "",
+				verify: "",
 				account: "",
 				password: "",
 				isShowOauth: false,
@@ -60,21 +67,71 @@
 			changep(e) {
 				this.password = e.value
 			},
-			login() {
+			changeV(e) {
+				this.verify = e.value
+			},
+			onChangeN(e) {
+				this.phone_number = e.value
+
+			},
+			send_verify() {
 				let that = this;
-				if (!that.account) {
-					that.toast("Enter your account");
-					return false
-				}
-				if (!that.password) {
-					that.toast("Enter your password");
+				if (!that.phone_number) {
+					that.toast("Enter your phoneNumber");
 					return false
 				}
 				this.loading = true;
-				asCore.post("web/login/index", {
+				asCore.post("web/login/send_verify", {
+					mobile: that.phone_number,
+					type: "2"
+				}, res => {
+					this.loading = false;
+					if (res.code == "200") {
+						that.toast(res.message)
+					} else {
+						that.toast(res.message)
+					}
+
+				})
+
+			},
+			login() {
+				let that = this;
+				let url = "web/login/index";
+				let data = {
 					account: that.account,
 					password: that.password
-				}, res => {
+				};
+				if (this.loginType == 'account') {
+					if (!that.phone_number) {
+						that.toast("Enter your phoneNumber");
+						return false
+					}
+					if (!that.verify) {
+						that.toast("Enter your verify");
+						return false
+					}
+					data = {
+						phone_number: that.phone_number,
+						verify: that.verify
+					}
+					url = "/web/login/verify_login"
+
+
+				} else {
+					if (!that.account) {
+						that.toast("Enter your account");
+						return false
+					}
+					if (!that.password) {
+						that.toast("Enter your password");
+						return false
+					}
+				}
+
+				this.loading = true;
+				asCore.post(url, data, res => {
+					this.loading = false;
 					if (res.code == "200") {
 						this.log(res)
 						navigator.back();
@@ -84,7 +141,6 @@
 					}
 
 				})
-
 			},
 			register() {
 				navigator.push("root:app/login/register.js");
@@ -102,6 +158,7 @@
 	.iconfont {
 		font-family: iconfont;
 	}
+
 	.codeBtn {
 		height: 60px;
 		color: #FFFFFF;
