@@ -1,8 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head :back="true" bgcolor="#303030" title="preferential" ></head>
-		 
-	 
+		<head :back="true" bgcolor="#303030" title="preferential" ></head> 
 		<div class="curActC">
 			<scroller class="shopType"  scroll-direction="horizontal">
 				<text class="typeItem " 
@@ -13,7 +11,7 @@
 			<text class="iconfont search">&#xe62a;</text>
 		</div>
 		<scroller class="shopScro">
-			<div class="shopItem" v-for="(item,index) in [1,1,1,1,1,1]" :key="index">
+			<div class="shopItem" v-for="(item,index) in [1,1,1,1,1,1]" :key="index" @click="detail">
 				 <image class="shopImg" src="root:img/goods.png"></image>
 				 <div class="shopCon">
 				 	<div class="shopTop">
@@ -67,8 +65,8 @@ export default {
     navbar.setStatusBarStyle("white");
   },
   methods: {
-    next() {
-      navigator.push("root:app/login/vertifyCode.js");
+    detail() {
+      navigator.push("root:app/goods/goods.js");
     }
   }
 };

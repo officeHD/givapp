@@ -29,7 +29,7 @@
 			<text class="iconfont search">&#xe62a;</text>
 		</div>
 		<scroller class="shopScro">
-			<div class="shopItem" v-for="(item,index) in [1,1,1,1,1,1]" :key="index">
+			<div class="shopItem" v-for="(item,index) in [1,1,1,1,1,1]" :key="index" @click="detail">
 				 <image class="shopImg" src="root:img/goods.png"></image>
 				 <div class="shopCon">
 				 	<div class="shopTop">
@@ -83,8 +83,8 @@ export default {
     navbar.setStatusBarStyle("white");
   },
   methods: {
-    next() {
-      navigator.push("root:app/login/vertifyCode.js");
+    detail() {
+      navigator.push("root:app/active/secKillDetail.js");
     }
   }
 };
