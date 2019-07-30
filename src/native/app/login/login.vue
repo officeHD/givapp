@@ -7,14 +7,14 @@
 			<text class="title">Welcome to your account</text>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe782;</text>
-				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter account" @input="onChange"
+				<input v-if="loginType=='account'" type="text" :value="account" class="input" placeholder="Enter account" @input="onChange"
 				 placeholder-color="#c3c3c3" />
 				<input v-if="loginType=='phone'" type="text" :value="phone_number" class="input" placeholder="Enter phone" @input="changePhone"
 				 placeholder-color="#c3c3c3" />
 			</div>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe635;</text>
-				<input v-if="loginType=='account'" type="text" class="input" placeholder="Enter password" @input="changep"
+				<input v-if="loginType=='account'" type="text"  :value="password"  class="input" placeholder="Enter password" @input="changep"
 				 placeholder-color="#c3c3c3" />
 				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter verify" @input="changeV"
 				 placeholder-color="#c3c3c3" />
@@ -32,14 +32,12 @@
 				<floading class="indicator" color="#303030"> </floading>
 			</div>
 		</scroller>
-
-
 	</div>
 </template>
 
 <script>
 	const navigator = weex.requireModule("navigator");
-	var pref = weex.requireModule("static")
+	var pref = weex.requireModule("storage")
 	import asCore from "../../mixin/core";
 
 	export default {
@@ -60,6 +58,19 @@
 				}
 			};
 		},
+		created(){
+			let that=this;
+			pref.getItem("as_username", event => {
+				if(event.result=="success"){
+					that.account=event.data;
+				}
+			})
+			pref.getItem("as_password", event => {
+				if(event.result=="success"){
+					that.password=event.data;
+				}
+			})
+		},
 
 		methods: {
 			onChange(e) {
@@ -77,7 +88,7 @@
 
 			},
 			send_verify() {
-				let that = this; 
+				let that = this;
 				if (!that.phone_number) {
 					that.toast("Enter your phoneNumber");
 					return false
@@ -136,9 +147,17 @@
 				asCore.post(url, data, res => {
 					this.loading = false;
 					if (res.code == "200") {
-						this.log(res)
+						that.log(res)
+						 
+						asCore.setBsessionid(res.data.users_uuid);
+						if (that.loginType == 'account'){
+							pref.setItem('as_username', that.account);
+							pref.setItem('as_password', that.password);
+						}
+						
+						
 						navigator.back();
-						asCore.setBsessionid(res.data.users_uuid)
+						
 					} else {
 						that.toast(res.message)
 					}
@@ -161,9 +180,11 @@
 	.iconfont {
 		font-family: iconfont;
 	}
-	.h20{
+
+	.h20 {
 		height: 20px;
 	}
+
 	.codeBtn {
 		height: 60px;
 		color: #FFFFFF;
@@ -232,8 +253,8 @@
 		padding-right: 97px;
 		color: #FFFFFF;
 		width: 750px;
-		 height: 60px;
-		 line-height: 60px;
+		height: 60px;
+		line-height: 60px;
 		margin-top: 20px;
 		font-size: 22px;
 	}

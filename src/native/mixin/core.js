@@ -20,66 +20,64 @@ var asCore = {
 	docPath: docPath,
 	otherRootPath: otherRootPath,
 	bsessionid: bsessionid,
-	/* 获取context */
-	appInitial: function(callback) {
-		var s = this;
 
-	},
 	/* 自动登录代码 */
 	autoLogin: function(callback) {
 		const progress = weex.requireModule('progress');
 		var s = this;
 		/* 判断当前是否记住了密码，没有记住密码那只能跳出登录界面自行登录 */
 		pref.getItem("as_username", event => {
+
 			var username = event.data;
-			var checkPass = '';
-			pref.getItem("as_password_checkbox", event => {
-				checkPass = event.data;
-				if (checkPass == '1') {
-					pref.getItem("encryptedPass", event => {
-						var ps = event.data;
-						//progress.showFull("自动登录中...");
-						/* 自动登录 */
-						stream.fetch({
-								method: "POST",
-								url: s.rootPath + "/loginAsAction",
-								type: "json",
-								body: s.toParams({
-									username: username,
-									password: ps
-								})
-							},
-							ret => {
-								if (!ret.ok) {
-									s.toast("自动登录失败,请手动登录");
-									//progress.dismiss();
-									navigator.push(s.localpath + "login.js");
-								} else {
-									var re = ret.data;
-									if (re.status == "SUCCESS") {
-										//progress.dismiss();
-										s.setBsessionid(re.data.bsessionid);
-										if (callback) callback();
-									} else {
-										var index = re.msg.indexOf("信息有误");
-										if (index > -1) {
-											s.toast("用户账号信息有误,请手动登录");
-											// progress.dismiss();
-											navigator.push(s.localpath + "login.js");
-										} else {
-											s.toast(re.msg);
-											//progress.dismiss();
-											navigator.push(s.localpath + "login.js");
-										}
-									}
-								}
-							});
-					});
-				} else {
-					/* 手动登录 */
-					s.toast('登录超时,请重新登录');
-					navigator.push(s.localpath + "login.js");
+			if (event.result != "success") {
+				navigator.push("root:app/login/login.js");
+				return false
+			}
+			pref.getItem("as_password", res => {
+				if (res.result != "success") {
+					navigator.push("root:app/login/login.js");
+					return false
 				}
+				var ps = res.data;
+				//progress.showFull("自动登录中...");
+				/* 自动登录 */
+				
+				
+				stream.fetch({
+						method: "POST",
+						url: basePath + "web/login/index", 
+						type: "json",
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+						},
+						body: s.toParams({
+							account: username,
+							password: ps
+						})
+					},
+					ret => {
+						if (!ret.ok) {
+							s.toast("自动登录失败,请手动登录");
+							//progress.dismiss();
+							navigator.push("root:app/login/login.js");
+						} else {
+							weex.requireModule('log').log({
+								msg: ret.data,
+								level: "warn"
+							})
+							var re = ret.data;
+							if (re.code == "200") {
+								//progress.dismiss();
+								s.setBsessionid(re.data.users_uuid);
+								if (callback) callback();
+							} else {
+								s.toast("自动登录失败,请重新登录");
+								//progress.dismiss();
+								navigator.push("root:app/login/login.js");
+							}
+						}
+					});
+
 			});
 		});
 	},
@@ -103,7 +101,7 @@ var asCore = {
 		pref.setItem('users_id', value);
 	},
 	getBsessionid: function(callback) {
-		pref.getItem('users_id3', event => {
+		pref.getItem('users_id', event => {
 			var value = event.data;
 			if (event.result != "success") {
 				value = "";
@@ -126,14 +124,14 @@ var asCore = {
 	},
 	/* 与web端的ajax用法一致 */
 	post: function(action, param, callBack) {
-		let that=this;
+		let that = this;
 		stream.fetch({
 				method: "POST",
 				url: basePath + action,
 				type: "json",
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-				}, 
+				},
 				body: that.toParams(param)
 			},
 			function(ret) {
@@ -156,7 +154,7 @@ var asCore = {
 				}
 			});
 	},
-	 
+
 	/* 解析URL */
 	rendUrl: function(url, callback) {
 		var s = this;
