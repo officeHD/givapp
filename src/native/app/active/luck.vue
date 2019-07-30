@@ -1,18 +1,17 @@
 <template>
 	<div>
     	<head :back="true" bgcolor="transparent" title="raffle" titleColor="#333"></head>
-        <div class="wrapper"> 
-            <text class="title">Luck whell</text>
-            <div class="wheel">
-                <image  ref="wheels"  class="wheelImg" src="root:img/activity/whell.png"></image>
-            </div>
-            <text class="starBtn" @click="rotate">Exhibitors</text>
-            <looper font-size="25" @click="ok" :data="items"  color="#BA8833"  style="  border-radius: 30px;width: 602;height: 50;background-color:#FDF2E9;padding-left:20px"> 
-            </looper>
-        </div>
-		
+      <div class="wrapper"> 
+          <text class="title">Luck whell</text>
+          <div class="wheel">
+              <image  ref="wheels" class="wheelImg" src="root:img/activity/whell.png"></image>
+          </div>
+          <text class="starBtn" @click="rotate">Exhibitors</text>
+          <looper font-size="25" @click="ok" :data="items"  color="#BA8833"  style="  border-radius: 30px;width: 602;height: 50;background-color:#FDF2E9;padding-left:20px"> 
+          </looper>
+      </div> 
 	</div>
-</template>
+</template> 
 
 <script>
 const navigator = weex.requireModule("navigator");
@@ -42,10 +41,10 @@ export default {
         ref1,
         {
           duration: 5000, //ms
-          timingFunction: "ease",
-          needLayout: false, 
-          styles: { 
-            transform: "rotate(1)",
+          timingFunction: "ease-out",
+          needLayout: false,
+          styles: {
+            transform: "rotate(3600deg)"
           },
           delay: 0 //ms
         },
@@ -53,6 +52,7 @@ export default {
           that.toast({ message: "animation finished." });
         }
       );
+     
     }
   }
 };
