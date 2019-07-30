@@ -57,16 +57,14 @@
 							</div>
 							<scroller scroll-direction="horizontal" class="secondContent">
 
-								<div class="listItem" v-for="item in 10" :key="item" @click="gonext('root:app/goods/goods.js')">
+								<div class="listItem" v-for="item in secondList" :key="item" @click="gonext('root:app/goods/goods.js')">
 									<image class="SecondImg" src="root:img/goods.png" />
 									<view class="secondItem">
 										<text class="goodsTitle">Baobao Women's New Style Of Small</text>
 										<view class="secondPrice">
 											<text class="symbol mr5">$</text>
-											<text class="money">52.3</text>
-
-										</view>
-
+											<text class="money">52.3</text> 
+										</view> 
 									</view>
 								</div>
 							</scroller>
@@ -120,8 +118,7 @@
 		data() {
 			return {
 				refreshing: false,
-				bannerList: [],
-
+				bannerList: [], //banner图
 				tabSection: [{
 						img: "root:img/nav1.png",
 						title: "phone"
@@ -155,7 +152,21 @@
 						title: "baby"
 					}
 				],
-				countdown: {},
+				countdown: {}, //倒计时
+				secondList: [{
+					"id": 25,
+					"users_id": "2cf751e717424373b99dc74c68927ee2",
+					"title": "用户二手商品1",
+					"price": "10.50",
+					"old_price": "0.00",
+					"thumb": "",
+					"type": 2,
+					"status": 0,
+					"create_time": "2019-07-05 15:32:44",
+					"nickname": null,
+					"headimgurl": null
+				}],
+				shopList:[]
 			};
 		},
 		props: {},
@@ -179,21 +190,36 @@
 						that.toast(res.message)
 					}
 				})
+				// 二手商品
 				asCore.post("web/goods/get_goods_list", {
 					users_id: users_id,
 					keywords: "",
 					categoryid: "",
-					type: "0,1,2",
+					type: "1,2",
 					status: "2",
 					page: 1,
 				}, res => {
 					if (res.code == "200") {
-						that.log(res)
+						that.secondList = res.data.list;
 					} else {
 						that.toast(res.message)
 					}
 				})
-
+				// 推荐商品
+				asCore.post("web/goods/get_goods_list", {
+					users_id: users_id,
+					keywords: "",
+					categoryid: "",
+					type: "0",
+					status: "2",
+					page: 1,
+				}, res => {
+					if (res.code == "200") {
+						that.shopList = res.data.list;
+					} else {
+						that.toast(res.message)
+					}
+				})
 
 			},
 			gonext(url) {
@@ -277,7 +303,7 @@
 					m: m,
 					s: s
 				};
-				this.Timer();
+				// this.Timer();
 			}
 		},
 		created() {
