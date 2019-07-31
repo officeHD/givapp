@@ -1,176 +1,73 @@
 <template>
 	<div class="wrapper">
-		<div class="wrapper_content">
-			<div class="contentList">
-				<div class="listrow" v-for="(row,index) in addressList" :key="index" @tap="select(row)">
-					<div class="left">
-						<text class="head"> {{row.head}} </text>
+		<head title="My receipt address" @rightClick="add">
+			<text class=" addIcon" slot="right">&#xe601;</text>
+		</head>
+		<div class="contentList">
+			<div class="listrow" v-for="(row,index) in addressList" :key="index" @click="select(row)" bubble="true">
+				<div class="left">
+					<text class="head"> {{row.name[0]}} </text>
+				</div>
+				<div class="listCenter">
+					<div class="name-tel">
+						<text class="name">{{row.name}}</text>
+						<text class="tel">{{row.phone}}</text>
 					</div>
-					<div class="listCenter">
-						<div class="name-tel">
-							<text class="name">{{row.name}}</text>
-							<text class="tel">{{row.tel}}</text>
-							<text class="default" v-if="row.isDefault"> 默认 </text>
+					<div class="defaulAdd">
+						<text class="default" v-if="row.is_default=='2'"> default </text>
+						<text class="address">{{row.province}} {{row.city}} {{row.area}} {{row.address}} </text>
+						<div class="right" @click="edit(row)">
+							<text class="bianji">edit</text>
 						</div>
-						<text class="address"> {{row.address.region.label}} {{row.address.detailed}} </text>
-					</div>
-					<div class="right">
-						<div class="icon bianji" @tap.stop="edit(row)"> </div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="add">
-			<div class="btn" @tap="add">
-				<text class="icon tianjia"></text>
-				<text class="">text新增地址</text>
-			</div>
-		</div>
+		</div> 
 	</div>
 </template>
 <script>
+	const navigator = weex.requireModule("navigator");
 	export default {
 		data() {
 			return {
 				isSelect: false,
 				addressList: [{
-						id: 1,
-						name: "大黑哥",
-						head: "大",
-						tel: "18816881688",
-						address: {
-							region: {
-								label: "广东省-深圳市-福田区",
-								value: [18, 2, 1],
-								cityCode: "440304"
-							},
-							detailed: "深南大道1111号无名摩登大厦6楼A2"
-						},
-						isDefault: true
+						"id": 10,
+						"name": "LiLi", 
+						"phone": "15145112434",
+						"province": "Anhui Province ",
+						"city": "Hefei City",
+						"area": "Shushan District",
+						"address": " Huangshan Road, Science Avenue",
+						"is_default": 2,
+						"create_time": "2019-04-18 15:09:22"
 					},
 					{
-						id: 2,
-						name: "大黑哥",
-						head: "大",
-						tel: "15812341234",
-						address: {
-							region: {
-								label: "广东省-深圳市-福田区",
-								value: [18, 2, 1],
-								cityCode: "440304"
-							},
-							detailed: "深北小道2222号有名公寓502"
-						},
-						isDefault: false
-					},
-					{
-						id: 3,
-						name: "老大哥",
-						head: "老",
-						tel: "18155467897",
-						address: {
-							region: {
-								label: "广东省-深圳市-福田区",
-								value: [18, 2, 1],
-								cityCode: "440304"
-							},
-							detailed: "深南大道1111号无名摩登大厦6楼A2"
-						},
-						isDefault: false
-					},
-					{
-						id: 4,
-						name: "王小妹",
-						head: "王",
-						tel: "13425654895",
-						address: {
-							region: {
-								label: "广东省-深圳市-福田区",
-								value: [18, 2, 1],
-								cityCode: "440304"
-							},
-							detailed: "深南大道1111号无名摩登大厦6楼A2"
-						},
-						isDefault: false
+						"id": 11,
+						"name": "LiLi",
+						"phone": "15145112434",
+						"province": "Anhui Province ",
+						"city": "Hefei City",
+						"area": "Shushan District",
+						"address": " Huangshan Road, Science Avenue",
+						"is_default": 1,
+						"create_time": "2019-04-18 15:09:22"
 					}
 				]
 			};
 		},
-		onShow() {
-			uni.getStorage({
-				key: "delAddress",
-				success: e => {
-					let len = this.addressList.length;
-					if (e.data.hasOwnProperty("id")) {
-						for (let i = 0; i < len; i++) {
-							if (this.addressList[i].id == e.data.id) {
-								this.addressList.splice(i, 1);
-								break;
-							}
-						}
-					}
-					uni.removeStorage({
-						key: "delAddress"
-					});
-				}
-			});
-			uni.getStorage({
-				key: "saveAddress",
-				success: e => {
-					let len = this.addressList.length;
-					if (e.data.hasOwnProperty("id")) {
-						for (let i = 0; i < len; i++) {
-							if (this.addressList[i].id == e.data.id) {
-								this.addressList.splice(i, 1, e.data);
-								break;
-							}
-						}
-					} else {
-						let lastid = this.addressList[len - 1];
-						lastid++;
-						e.data.id = lastid;
-						this.addressList.push(e.data);
-					}
-					uni.removeStorage({
-						key: "saveAddress"
-					});
-				}
-			});
-		},
-		onLoad(e) {
-			if (e.type == "select") {
-				this.isSelect = true;
-			}
-		},
+
 		methods: {
 			edit(row) {
-				uni.setStorage({
-					key: "address",
-					data: row,
-					success() {
-						uni.navigateTo({
-							url: "edit/edit?type=edit"
-						});
-					}
-				});
+				navigator.push("root:app/user/address/edit.js");
 			},
 			add() {
-				uni.navigateTo({
-					url: "edit/edit?type=add"
-				});
+				navigator.push("root:app/user/address/edit.js");
 			},
 			select(row) {
-				//是否需要返回地址(从订单确认页跳过来选收货地址)
-				if (!this.isSelect) {
-					return;
-				}
-				uni.setStorage({
-					key: "selectAddress",
-					data: row,
-					success() {
-						uni.navigateBack();
-					}
-				});
+				const selectAddress = new BroadcastChannel("selectAddress");
+				selectAddress.postMessage(row);
+				navigator.back();
 			}
 		}
 	};
@@ -180,39 +77,21 @@
 	.wrapper {
 
 		width: 750px;
+		background-color: #F5F5F5;
 	}
 
-	.wrapper_content {
-		width: 750px;
-	}
 
 	.contentList {
-		flex-wrap: wrap;
 		width: 750px;
-
 	}
 
-	.add {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		height: 120px;
-		justify-content: center;
-		align-items: center;
+	.addIcon {
+		font-size: 40px;
+		color: #FFFFFF;
+		font-family: iconfont;
 	}
 
-	.btn {
-		box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
-		width: 150px;
-		height: 80px;
-		border-radius: 80px;
-		background-color: #f06c7a;
-		color: #fff;
-		justify-content: center;
-		align-items: center;
 
-		font-size: 30px;
-	}
 
 	.icon {
 		height: 80px;
@@ -224,77 +103,91 @@
 
 
 	.listrow {
-		width: 700px;
-		padding: 20px;
+		margin-bottom: 20px;
+		width: 750px;
+		padding: 32px;
+		/* height: 240px; */
 		flex-direction: row;
+		align-items: flex-start;
+		background-color: #FFFFFF;
 	}
 
 	.left {
 		width: 90px;
-		align-items: center;
 		flex-direction: row;
+
 	}
 
 	.head {
-		width: 70px;
-		height: 70px;
-		background: linear-gradient(to right, #ccc, #aaa);
-		color: #fff;
-		justify-content: center;
-		align-items: center;
-		border-radius: 60px;
-		font-size: 35px;
+		width: 45px;
+		height: 45px;
+		background-color: #EBDEC8;
+		color: #333333;
+		line-height: 45px;
+		text-align: center;
+		border-radius: 45px;
+		font-size: 28px;
 	}
 
 	.listCenter {
 		flex: 1;
-		flex-wrap: wrap;
+
 	}
 
 	.name-tel {
 		flex-direction: row;
-		align-items: flex-end;
+		align-items: center;
+		margin-bottom: 20px;
 	}
 
 	.name {
-		font-size: 34px;
+		font-size: 28px;
+		color: #666666;
 	}
 
 	.tel {
-		margin-left: 30px;
+		margin-left: 28px;
 		font-size: 24px;
-		color: #777;
+		color: #999;
+	}
+
+	.defaulAdd {
+		flex-direction: row;
+		flex: 1;
+		padding-top: 5px;
 	}
 
 	.default {
-		font-size: 22px;
+		font-size: 20px;
+		background-color: #FCF3E9;
+		color: #ED6A38;
+		padding: 5px 10px;
+		margin-right: 15px;
 
-		background-color: #f06c7a;
-		color: #fff;
-		padding: 0 18px;
-		border-radius: 24px;
-		margin-left: 20px;
 	}
 
 	.address {
 		flex: 1;
 		font-size: 24px;
-		align-items: flex-end;
-		color: #777;
+		line-height: 33px;
+		color: #666666;
+		lines: 4;
+		text-overflow: ellipsis;
 	}
 
 	.right {
+		width: 90px;
+		padding: 20px 0 30px;
+		flex-direction: row;
 		align-items: center;
-		margin-left: 20px;
+		justify-content: flex-end;
+
 	}
 
-	.icon {
+	.bianji {
 		justify-content: center;
 		align-items: center;
-		width: 80px;
-		height: 60px;
-		border-left: solid 1px #aaa;
-		font-size: 40px;
-		color: #777;
+		font-size: 24px;
+		color: #999999;
 	}
 </style>

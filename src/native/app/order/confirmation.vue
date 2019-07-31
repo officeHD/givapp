@@ -31,14 +31,14 @@
 				<div class="locationBox row jbew atop ">
 					<text class="meth_title locaTit">Location</text>
 					<div class="meth_right   row jend atop">
-						<text class="cityName">Hefei City ,Anhui Province</text>
+						<text class="cityName">{{addressData.province}} {{addressData.city}} {{addressData.area}}</text>
 						<text class="rightIcon">&#xe6a1;</text>
 					</div>
 				</div>
 				<div class="locationBox row jbew atop ">
 					<text class="meth_title locaTit">Address</text>
 					<div class="meth_right   row jend atop">
-						<text class="cityName">Hefei City ,Anhui Province AnhuiAnhuiAnhui</text>
+						<text class="cityName">{{addressData.address}}</text>
 						<text class="rightIcon">&#xe6a1;</text>
 					</div>
 				</div>
@@ -55,16 +55,35 @@
 
 <script>
 	const navigator = weex.requireModule("navigator");
+	const selectAddress = new BroadcastChannel("selectAddress");
 	export default {
 		data() {
 			return {
+				addressData:{
+					"id": 11,
+					"name": "LiLi",
+					"phone": "15145112434",
+					"province": "HuNan Province ",
+					"city": "ChangSha City",
+					"area": "Shushan District",
+					"address": " Huangshan Road, Science Avenue",
+					"is_default": 1,
+					"create_time": "2019-04-18 15:09:22"
+				},
 				sumPrice: "52.30",
 				goods_title: "AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed Skin and Single Shoulder Baggage Girls"
 			};
 		},
-		methods: {
+		created(){
+			selectAddress.onmessage = this.changeAddress;
+		},
+		methods: { 	
+			changeAddress(msg){
+				// this.log(msg.data)
+				this.addressData=msg.data
+			},
 			setAddress() {
-				navigator.push("root:app/user/address/edit.js");
+				navigator.push("root:app/user/address/address.js");
 			},
 			toPay() {
 				navigator.push("root:app/pay/payment.js");
