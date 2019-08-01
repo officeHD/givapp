@@ -196,10 +196,11 @@
 					keywords: "",
 					categoryid: "",
 					type: "1,2",
-					status: "2",
+					status: "",
 					page: 1,
 				}, res => {
 					if (res.code == "200") {
+							this.log(res.data)
 						that.secondList = res.data.list;
 					} else {
 						that.toast(res.message)
@@ -215,6 +216,7 @@
 					page: 1,
 				}, res => {
 					if (res.code == "200") {
+					
 						that.shopList = res.data.list;
 					} else {
 						that.toast(res.message)

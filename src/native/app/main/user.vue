@@ -90,7 +90,7 @@
 					<text class="iconfont" :style="{fontSize:38}">&#xe615;</text>
 				</div>
 			</x-cell>
-			<x-cell title="appointment time" :hasArrow="true" @cellClick="gonext('share')">
+			<x-cell title="appointment time" :hasArrow="true" @cellClick="gonext('root:app/user/appointment/index.js')">
 				<div slot="label" class="list-icon">
 					<text class="iconfont" :style="{fontSize:40}">&#xe63f;</text>
 				</div>
@@ -156,9 +156,7 @@
 				}, 1000);
 			},
 			gonext(url) {
-				//this.push('test.js',{name:"ssss"})
-				this.log("jdksdjsk", "error");
-				this.log("333", "error");
+				 
 				navigator.push(url);
 			}
 		},

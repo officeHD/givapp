@@ -1,33 +1,24 @@
 <template>
 	<div class="wrapper">
-		<head title="Setting"> </head>
-		<div class="locationBox "  @click="gonext('root:app/user/address/address.js')">
-			<text class="meth_title">My receipt address</text>
-			<text class="rightIcon">&#xe6a1;</text>
+		<head title="appointment time"> </head>
+		<div class="locationBox     ">
+			<text class="meth_title">Visit time</text>
+			<div class="meth_right ">
+				<text class="cityName">9 a.m-11 a.m. on September 1</text>
+				<text class="rightIcon">&#xe6a1;</text>
+			</div>
 		</div>
-		<div class="locationBox row jbew atop ">
-			<text class="meth_title">return address</text>
-			<text class="rightIcon">&#xe6a1;</text>
+		<div class="locationBox">
+			<text class="meth_title">delivery time</text>
+			<div class="meth_right ">
+				<text class="cityName">Saturday and Sunday</text>
+				<text class="rightIcon">&#xe6a1;</text>
+			</div>
 		</div>
-		<div class="locationBox row jbew atop ">
-			<text class="meth_title">Accounts and Security</text>
-			<text class="rightIcon">&#xe6a1;</text>
-		</div>
-		
 	</div>
 </template>
 
 <script>
-	const navigator = weex.requireModule("navigator");
-	export default {
-		methods: {
-			gonext(url) {
-				 
-				navigator.push(url);
-			}
-		}
-	}
-	
 </script>
 
 <style>
@@ -52,7 +43,7 @@
 	.meth_title {
 		color: #323232;
 		font-size: 30px;
-		flex: 1;
+		width: 230px;
 	}
 
 	.meth_right {

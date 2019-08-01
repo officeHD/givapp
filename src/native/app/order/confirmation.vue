@@ -23,7 +23,7 @@
 			<div class="methodBox row jbew acen ">
 				<text class="meth_title">Shipping method</text>
 				<div class="meth_right row jend acen" @click="changeAlert('show')">
-					<text class="shipping">Free shipping</text>
+					<text class="shipping">{{selected.label}}</text>
 					<text class="shippingMoney">￥0.00</text>
 				</div>
 			</div>
@@ -51,24 +51,15 @@
 			</div>
 		</div>
 		<div :class="[showMask?'maskAlert':'hidemask']" @click="changeAlert('hide')"></div>
-		<!-- 购买弹出框 -->
+		<!-- 邮费弹出框 -->
 		<div class="shopAlert" ref="shopAlert" @click="e=>e.stopPropagation()">
 			<text class="alertTop">Shipping method</text>
 			<scroller class="alertScroll">
-				<div class="selectLi">
-					<text class="liIcon selected">&#xe67f;</text>
-					<text class="liTxt selected">Australia post</text>
+				<div class="selectLi" v-for="item in shippWay"  :key="item.value" @click="selected=item">
+					<text class="liIcon" :class="[selected.value==item.value?'selected':'']">{{selected.value==item.value?"&#xe602;":"&#xe67f;"}}</text>
+					<text class="liTxt" :class="[selected.value==item.value?'selected':'']">{{item.label}}</text>
 				</div>
-				<div class="selectLi">
-					<text class="liIcon">&#xe67f;</text>
-					<text class="liTxt">Giv delivery</text>
-				</div>
-				<div class="selectLi">
-					<text class="liIcon">&#xe67f;</text>
-					<text class="liTxt">Local pick up</text>
-				</div>
-
-
+				 
 			</scroller>
 			<text class="sureBtn" @click="confirm">confirm</text>
 		</div>
@@ -85,6 +76,12 @@
 			return {
 				//是否显示遮罩层
 				showMask: false,
+				selected:{ value:"1", label:"Australia post" },
+				shippWay:[
+					{ value:"1", label:"Australia post" },
+					{ value:"2", label:"Giv delivery" },
+					{ value:"3", label:"Local pick up" }
+				],
 				addressData: {
 					"id": 11,
 					"name": "LiLi",
@@ -397,8 +394,8 @@
 		flex: 1;
 	}
 	.selectLi{
-		margin-bottom: 30px;
-		height: 40px;
+		/* margin-bottom: 30px; */
+		height: 70px;
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;

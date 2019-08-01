@@ -21,6 +21,17 @@
 					<text class="iconfont" v-else>&#xe67f;</text>
 				</div>
 			</div>
+			<div class="addCard" v-if="paytype=='union'">
+				<text class="addTit">Add credit card</text>
+				<input class="inputCard" placeholder="Name" />
+				<input class="inputCard bt0" placeholder="Card number" />
+				<text class="addTit">Card expiry date</text>
+				<div class="inputBox">
+					<input class="boxItem"  type="date"/> 
+					<input class="boxItem" /> 
+				</div>
+				<text class="btn">Add credit card</text>
+			</div>
 
 
 		</div>
@@ -64,7 +75,7 @@
 		data() {
 			return {
 				amount: 0,
-				paytype: "alipay" //支付类型
+				paytype: "union" //支付类型
 			};
 		},
 		onLoad(e) {},
@@ -109,10 +120,53 @@
 		font-weight: 600;
 	}
 
+	.addCard {
+		width: 686px;
+		padding: 0 0 40px;
+
+	}
+
+	.addTit {
+		color: #666666;
+		margin: 20px 0;
+		font-size: 26px;
+	}
+
+	.inputCard {
+		border-width: 1px;
+		border-style: solid;
+		border-color: #D8D8D8;
+		width: 686px;
+		height: 100px;
+		padding-left: 32px;
+		;
+	}
+
+	.inputBox {
+		width: 686px;
+		margin-bottom: 40px;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.boxItem {
+		border-width: 1px;
+		border-style: solid;
+		border-color: #D8D8D8;
+		width: 310px;
+		height: 100px;
+	}
+
+	.bt0 {
+		border-top-width: 0;
+
+	}
+
 	.paytypeBox {
 		margin-top: 20px;
 		background-color: #fff;
 		padding: 0 20px;
+		align-items: center;
 	}
 
 	.row {
