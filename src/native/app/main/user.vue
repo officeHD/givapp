@@ -1,9 +1,8 @@
 <template>
 	<div class="layout">
 		<head :back="false" bgcolor="#303030" title="mine"></head>
-		<scroller class="scroller" :show-scrollbar="false">
-
-			<div class="userhead">
+		<scroller class="scroller" :show-scrollbar="false"> 
+			<div class="userhead" @click="gonext('root:app/user/myQR/myQR.js')">
 				<div class="userTop">
 					<div class="userImg">
 						<image class="avator" :src="user.face" />
@@ -35,8 +34,7 @@
 				<div class="sectionItem ">
 					<text class="iconfont itemIcon">&#xe616;</text>
 					<text class="itemTitle">After sale</text>
-				</div>
-
+				</div> 
 			</div>
 			<x-cell title="Selling" :hasArrow="true" @cellClick="gonext('root:app/selling/selling.js')">
 				<div slot="label" class="list-icon">
@@ -49,12 +47,12 @@
 				</div>
 			</x-cell>
 
-			<x-cell title="Collection" :hasArrow="true" @cellClick="gonext('root:app/selling/sold.js')">
+			<x-cell title="Collection" :hasArrow="true" @cellClick="gonext('root:app/user/keep/keep.js')">
 				<div slot="label" class="list-icon">
 					<text class="iconfont" :style="{fontSize:40}">&#xe634;</text>
 				</div>
 			</x-cell>
-			<x-cell title="Coupon" :hasArrow="true" @cellClick="gonext('root:app/selling/sold.js')">
+			<x-cell title="Coupon" :hasArrow="true" @cellClick="gonext('root:app/user/coupon/coupon.js')">
 				<div slot="label" class="list-icon">
 					<text class="iconfont" :style="{fontSize:40}">&#xe617;</text>
 				</div>
@@ -138,12 +136,12 @@
 						asCore.getContext(context => {
 							s.user.name = context.name;
 							s.user.phone = context.phone;
-							s.user.face = context.face; 
+							s.user.face = context.face;
 						});
 					}
 				});
 
-			}, 
+			},
 			/* 更新头像 */
 			updateImg(event) {
 				this.isLogin();
@@ -156,7 +154,7 @@
 				}, 1000);
 			},
 			gonext(url) {
-				 
+
 				navigator.push(url);
 			}
 		},

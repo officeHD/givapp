@@ -1,68 +1,29 @@
 <template>
 	<div>
-		<div class="tabr" :style="{top:headerTop}">
-			<text :class="{on:typeClass=='valid'}" @tap="switchType('valid')">可用({{couponValidList.length}})</text>
-			<text :class="{on:typeClass=='invalid'}" @tap="switchType('invalid')">已失效</text>
-			<div class="border" :class="typeClass"></div>
-		</div>
-		<div class="place"></div>
+		<head title="Coupon"> </head>
+
 		<div class="list">
 			<!-- 优惠券列表 -->
 			<div class="sub-list valid" :class="subState">
 				<text class="tis" v-if="couponValidList.length==0">没有数据~</text>
-				<div class="row" v-for="(row,index) in couponValidList" :key="index">
-					<!-- 删除按钮 -->
-					<div class="menu" @tap.stop="deleteCoupon(row.id,couponValidList)">
-						<text class="icon shanchu"></text>
-					</div>
+				<div class="row" v-for="(row,index) in couponValidList" :key="index"> 
 					<!-- content -->
 					<div class="carrier" :class="[typeClass=='valid'?theIndex==index?'open':oldIndex==index?'close':'':'']"
-					 @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
+					  >
 						<div class="left">
 							<text class="title"> {{row.title}} </text>
 							<text class="term"> {{row.termStart}} ~ {{row.termEnd}} </text>
-							<div class="gap-top"></div>
-							<div class="gap-bottom"></div>
+							 
 						</div>
 						<div class="right">
-							<div class="ticket">
-								<text class="num"> {{row.ticket}} </text>
-								<text class="unit"> 元 </text>
-							</div>
-							<text class="criteria"> {{row.criteria}} </text>
+							 
+							 
 							<text class="use"> 去使用 </text>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="sub-list invalid" :class="subState">
-				<text class="tis" v-if="couponinvalidList.length==0">没有数据~</text>
-				<div class="row" v-for="(row,index) in couponinvalidList" :key="index">
-					<!-- 删除按钮 -->
-					<div class="menu" @tap.stop="deleteCoupon(row.id,couponinvalidList)">
-						<div class="icon shanchu"></div>
-					</div>
-					<!-- content -->
-					<div class="carrier" :class="[typeClass=='invalid'?theIndex==index?'open':oldIndex==index?'close':'':'']"
-					 @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
-						<div class="left">
-							<text class="title"> {{row.title}} </text>
-							<text class="term"> {{row.termStart}} ~ {{row.termEnd}} </text>
-							<div class="icon shixiao"> </div>
-							<div class="gap-top"></div>
-							<div class="gap-bottom"></div>
-						</div>
-						<div class="right invalid">
-							<div class="ticket">
-								<text class="num"> {{row.ticket}} </text>
-								<text class="unit"> 元 </text>
-							</div>
-							<text class="criteria"> {{row.criteria}} </text>
-							<text class="use"> 去查看 </text>
-						</div>
-					</div>
-				</div>
-			</div>
+			 
 		</div>
 
 	</div>
@@ -297,32 +258,15 @@
 	}
 
 	.list {
-		width: 100%;
+		width:750px;
 		position: relative;
 	}
 
-	@keyframes showValid {
-		0% {
-			transform: translateX(-100%);
-		}
-
-		100% {
-			transform: translateX(0);
-		}
-	}
-
-	@keyframes showInvalid {
-		0% {
-			transform: translateX(0);
-		}
-
-		100% {
-			transform: translateX(-100%);
-		}
-	}
+ 
+ 
 
 	.sub-list {
-		width: 100%;
+		width:750px;
 		padding: 20px 0 120px 0;
 	}
 
@@ -343,8 +287,8 @@
 	}
 
 	.row {
-		width: 92%;
-		height: 24vw;
+		width: 750px;
+		height: 200px;
 		margin: 20px auto 10px auto;
 		border-radius: 8px;
 		align-items: center;
@@ -372,31 +316,14 @@
 	.carrier {
 		background-color: #fff;
 		position: absolute;
-		width: 100%;
+		width: 750px;
 		padding: 0 0;
-		height: 100%;
+		height: 160px;
 		flex-wrap: nowrap;
+		flex-direction: row;
 	}
 
-	@keyframes showMenu {
-		0% {
-			transform: translateX(0);
-		}
-
-		100% {
-			transform: translateX(-28%);
-		}
-	}
-
-	@keyframes closeMenu {
-		0% {
-			transform: translateX(-28%);
-		}
-
-		100% {
-			transform: translateX(0);
-		}
-	}
+	 
 
 	.open {
 		animation: showMenu 0.25s linear both;
@@ -407,21 +334,18 @@
 	}
 
 	.left {
-		width: 100%;
-
+		 flex: 1;
 		position: relative;
 	}
 
 	.title {
-		padding-top: 3vw;
-		width: 90%;
-		margin: 0 5%;
+		 
+		margin: 0 10px;
 		font-size: 36px;
 	}
 
 	.term {
-		width: 90%;
-		margin: 0 5%;
+		 
 		font-size: 26px;
 		color: #999;
 	}
@@ -452,9 +376,9 @@
 	}
 
 	.right {
-		width: 28%;
+		width:  200px;
 		color: #fff;
-		background: linear-gradient(to right, #ec625c, #ee827f);
+		background-image: linear-gradient(to right, #ec625c, #ee827f);
 		justify-content: center;
 	}
 
