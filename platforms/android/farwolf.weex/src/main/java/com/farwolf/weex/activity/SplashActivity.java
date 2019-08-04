@@ -110,10 +110,17 @@ public class SplashActivity extends WeexActivity {
         }
         else
         {
-
-
+//            boolean isPotrait=  Config.isPortrait(this);
+//            Intent in=   new Intent(SplashActivity.this, EntryActivity_.class);
+//            this.mWXSDKInstance.setBundleUrl(entry);
+//            in.putExtra("url",entry);
+//            in.putExtra("isPortrait",isPotrait);
+//            startActivity(in);
+//            finish();
+//            releaseImageViewResouce(img);
             this.mWXSDKInstance.setBundleUrl(entry);
             gotoMain();
+
         }
 
     }
@@ -134,7 +141,7 @@ public class SplashActivity extends WeexActivity {
 
     public void gotoMain()
     {
-
+//        System.out.println("加载主页");
 
         weexFactory.preRender(getEntryUrl(), new WeexFactory.OnRenderFinishListener() {
             @Override
@@ -142,6 +149,7 @@ public class SplashActivity extends WeexActivity {
 
                 p.instance.fireGlobalEventCallback("onPageInit",null);
                 p.instance.onActivityCreate();
+
                 releaseImageViewResouce(img);
             }
 

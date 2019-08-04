@@ -18,7 +18,7 @@
 					<div class="silderBox">
 						<slider class="slider" interval="3000" auto-play="false">
 							<div class="frame" v-for="(img,index) in bannerList" :key="index">
-								<image class="image" resize="cover" src="https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg" />
+								<image class="image" resize="cover" src="root:img/banner.jpg" />
 							</div>
 						</slider>
 					</div>
@@ -186,6 +186,7 @@
 				}, res => {
 					if (res.code == "200") {
 						that.bannerList = res.data;
+						// this.log(res.data)
 					} else {
 						that.toast(res.message)
 					}

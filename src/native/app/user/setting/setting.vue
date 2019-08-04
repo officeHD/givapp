@@ -9,7 +9,7 @@
 			<text class="meth_title">return address</text>
 			<text class="rightIcon">&#xe6a1;</text>
 		</div>
-		<div class="locationBox row jbew atop ">
+		<div class="locationBox row jbew atop "   @click="gonext('root:app/user/setting/account.js')">
 			<text class="meth_title">Accounts and Security</text>
 			<text class="rightIcon">&#xe6a1;</text>
 		</div>

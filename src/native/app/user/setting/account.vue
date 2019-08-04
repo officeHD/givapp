@@ -8,14 +8,14 @@
 				 
 			</div>
 		</div>
-		<div class="locationBox bb ">
+		<div class="locationBox bb " @click="gonext('root:app/user/setting/changePh.js')">
 			<text class="meth_title">Modify mobile phone number</text>
 			<div class="meth_right ">
 				<text class="cityName">18156636363</text>
 				<text class="rightIcon">&#xe6a1;</text>
 			</div>
 		</div>
-		<div class="locationBox  bb">
+		<div class="locationBox  bb" @click="gonext('root:app/user/setting/changePw.js')">
 			<text class="meth_title">Modify login password</text>
 			<div class="meth_right ">
 				<text class="cityName"> </text>
@@ -33,6 +33,15 @@
 </template>
 
 <script>
+	const navigator = weex.requireModule("navigator");
+	export default {
+		methods: {
+			gonext(url) {
+				 
+				navigator.push(url);
+			}
+		}
+	}
 </script>
 
 <style>
@@ -58,8 +67,8 @@
 
 	.meth_title {
 		color: #323232;
-		font-size: 30px;
-		width: 230px;
+		font-size: 26px;
+		width: 353px;
 	}
 
 	.meth_right {
@@ -72,15 +81,17 @@
 
 	.cityName {
 		 
-		margin-right: 30px;
+		
 		font-size: 28px;
 		color: #999999;
 		flex: 1;
+		text-align: right;
 	}
 
 	.rightIcon {
 		font-family: iconfont;
 		font-size: 26px;
 		color: #999;
+		margin-left: 30px;
 	}
 </style>

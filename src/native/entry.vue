@@ -1,116 +1,40 @@
 <template>
-	<div class="layout">
-		<x-tabbar :currentPage="currentPage">
-			<div class="item-container" :style="contentStyle">
-				<home ref="messageCom"></home>
-			</div>
-			<div class="item-container" :style="contentStyle">
-				<category ref="appcenterCom"></category>
-			</div>
-			<div class="item-container" :style="contentStyle">
-				<cart ref="maillistCom"></cart>
-			</div>
-			<div class="item-container" :style="contentStyle">
-				<user ref="myinfo"></user>
-			</div>
-		</x-tabbar>
+	<div style="">
 	</div>
 </template>
 <script>
-	const navigator = weex.requireModule("navigator");
-	const loginBroad = new BroadcastChannel("login");
-
-	import Utils from "./mixin/utils";
-	import asCore from "./mixin/core";
 	export default {
-		components: {
-			"x-tabbar": require("./component/mainpage.vue"),
-			home: require("./app/main/home.vue"),
-			category: require("./app/main/category.vue"),
-			cart: require("./app/main/cart.vue"),
-			user: require("./app/main/user.vue")
-		},
+		props: {},
 		data() {
-			return {
-				currentPage: 0
-			};
+			return {}
 		},
-
 		methods: {
-			onLoad(param) {},
-			gonext(url) {
-				//this.push('test.js',{name:"ssss"})
-
-				navigator.push(url);
+			onLoad() {
+				const page = weex.requireModule("page");
+				page.doubleBack();
+				let url = 'root:index.js'
+				  this.goToMain(url)
 			},
-
-			searchClick() {
-				this.toast("搜索跳转");
-			},
-			letfClick() {
-				this.toast("左边按钮跳转");
-			},
-			rightClick() {
-				this.toast("右边边按钮跳转");
+			goToMain(url) {
+				let navigator = weex.requireModule('navigator')
+				this.log(weex.config.env.platform)
+				if (weex.config.env.platform != 'iOS') {
+					navigator.pushFull({
+						url: url,
+						animated: false
+					})
+				} else {
+					navigator.presentFull({
+						url: url,
+						animated: false
+					})
+				}
 			}
 		},
-		beforeCreate() {
-			let navbar = weex.requireModule("navbar");
-			let that = this;
-			navbar.setStatusBarStyle("white");
-			/* 判断是否登录过和是否超时(超时将自动从登) */
-			asCore.getBsessionid(sessionid => {
-				if (!sessionid) {
-					this.log("判断是否登录了"); 
-					navigator.push("root:app/login/login.js");
-				} else {
-					
-					that.$refs.messageCom.loadData(sessionid);
-					// 目前不需要自动登录
-					// asCore.autoLogin(() => {
-					// 	/* 加载context */
-					// 	that.$refs.myinfo.isLogin();
-					// });
-				}
-			});
-			/* 双击退出程序 */
-			const page = weex.requireModule("page");
-			page.doubleBack();
-			loginBroad.onmessage = function(event) {
-				var data = event.data;
-				if (data.success == 1) {
-					page.reload();
-				}
-			};
-		},
 		created() {
-			const tabPageHeight = Utils.env.getPageHeight();
-			const {
-				tabStyles
-			} = this;
-			this.contentStyle = {
-				height: tabPageHeight + 10 + "px"
-			};
-			var globalEvent = weex.requireModule("globalEvent");
-			globalEvent.addEventListener("onPageInit", function(e) {
-				navigator.setRoot("A");
-				navigator.setPageId("A");
-			});
+			// this.goToMain('root:index.js')
 		}
-	};
+	}
 </script>
 <style scoped>
-	.layout {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-	}
-
-	.item-container {
-		flex: 1;
-		width: 750px;
-		background-color: #f5f5f5;
-	}
 </style>
