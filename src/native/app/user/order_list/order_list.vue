@@ -6,46 +6,29 @@
 			 :class="[tabCurrentIndex === index?'current':'']">{{ item.text }}</text>
 		</scroller>
 		<slider class="slider" @change="slideChange">
-			<list class="listScroll" v-for="(tabItem, tabIndex) in navList" :key="tabIndex">
-				 <cell class"listItem" v-for="(item,inedx) in tabItem.orderList">
-					 <div class="listCenter">
-						 <text>sss</text>
-					 </div>
-				 </cell>
-			</list>
+			<scroller class="listScroll" v-for="(item, index) in navList">
+				<div v-for="(list, index) in item.orderList" class="listItem">
+					<div class="titList">
+						<div class="titLeft">
+							<text class="titname">{{list.nickname}}</text>
+							<text class="iconfont titIcon">&#xe6a1;</text>
+						</div>
+						<text class="status">{{ list.type==2?"Unpaid":list.type_2==1?"Waiting for shipping":list.type_2==2?"Waiting for Shipped":"Shipped" }}</text>
+					</div>
+					<div class="titList">
+						<image class="imgList" src="root:img/goods.png"></image>
+						<text class="iconfont imgIcon">&#xe6a1;</text>
+					</div>
+					<div class="bottomList">
+						<text class="num">{{list.number}}item</text>
+						<text class="total">Total</text>
+						<text class="symbol">$</text>
+						<text class="money">{{list.pay_price}}</text>
+					</div>
 
+				</div>
+			</scroller>
 		</slider>
-		<!-- <swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
-			<swiper-item class="tab-content" v-for="(tabItem, tabIndex) in navList" :key="tabIndex">
-				<scroll-view class="list-scroll-content" scroll-y @scrolltolower="loadData()">
-					<view v-for="(item, index) in tabItem.orderList" :key="index" class="order-item">
-						<view @click="navToDetail(item)">
-							<view class="i-top b-b">
-								<text class="time">{{ item.group_name }}</text>
-								<text class="state" :style="{ color: item.stateTipColor }">{{ item.type==2?"待付款":item.type_2==1?"待发货":item.type_2==2?"待收货":"已完成" }}</text>
-							</view>
-							<scroll-view v-if="item.list.length > 0" class="goods-box" scroll-x>
-								<view v-for="(goodsItem, goodsIndex) in item.list" :key="goodsIndex" class="goods-item">
-									<image class="goods-img" :src="goodsItem.thumb||defaultImg" mode="aspectFill" @error="imageError(tabIndex,index,goodsIndex)"></image>
-								</view>
-							</scroll-view>
-							<view class="price-box">
-								<text class="num">{{item.list.length}}</text>
-								件宝贝
-								合计
-								<text class="price">{{item.pay_price}}</text>
-							</view>
-						</view>
-						<view class="action-box b-t" v-if="item.type == 2">
-							<button class="action-btn" @click="cancelOrder(item)">取消订单</button>
-							<button class="action-btn recom" @click="payOrder(item)">立即支付</button>
-						</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-		</swiper> -->
-
-
 	</div>
 </template>
 
@@ -63,8 +46,29 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [1,1,1,1,1
-							 
+						orderList: [
+							{
+								"id": 161,
+								"co_id": "2",
+								"number": 5,
+								"total_price": "13.00",
+								"pay_price": "27.00",
+								"type": 3,
+								"type_2": 1,
+								"nickname": "指点村1",
+								"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+								"list": [{
+									"id": 51,
+									"goods_id": 24,
+									"option_id": 0,
+									"goods_option": "",
+									"thumb": "123.jpg",
+									"title": "模板标题1",
+									"number": 5,
+									"price": "13.00",
+									"total_price": "13.00",
+								}]
+							}
 						]
 					},
 					{
@@ -93,15 +97,6 @@
 						loadingType: 'more',
 						total: 0,
 						orderList: []
-					},
-					{
-						hasMore: true,
-						state: 4,
-						text: '已完成',
-						page: 1,
-						loadingType: 'more',
-						total: 0,
-						orderList: []
 					}
 				]
 			};
@@ -122,7 +117,9 @@
 				this.tabCurrentIndex = index.index;
 				const ref = this.$refs["item" + index.index]
 				const el = ref ? ref[0] : null;
-				dom.scrollToElement(el, {offset:-30})
+				dom.scrollToElement(el, {
+					offset: -250
+				})
 
 			}
 		}
@@ -138,7 +135,7 @@
 	.navbar {
 		height: 90px;
 		width: 750px;
-		flex-direction: row; 
+		flex-direction: row;
 	}
 
 	.nav-item {
@@ -160,23 +157,90 @@
 
 	.slider {
 		flex: 1;
-		/* height: 140px; */
 	}
 
 	.listScroll {
-		width: 750px;
 		flex: 1;
+		background-color: #F5F5F5;
 	}
-	.listItem{
-		width: 750px;
-		padding: 10px 0;
-		/* background-color: #FFFFFF; */
-		background-color: #F06C7A;
 
+	.listItem {
+		margin-top: 20px;
+		background-color: #FFFFFF;
+		padding: 32px;
 	}
-	.listCenter{
-		width: 750px;
-		height: 180px;
-		background-color: #F06C7A;
+
+	.titList {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.titLeft {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.imgList {
+		width: 120px;
+		height: 120px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.titname {
+		font-size: 28px;
+		color: #333;
+		margin-right: 20px;
+	}
+
+	.iconfont {
+		font-family: iconfont;
+	}
+
+	.titIcon {
+		font-size: 24px;
+		color: #999999;
+	}
+
+	.imgIcon {
+		font-size: 32px;
+		color: #999999;
+	}
+
+	.status {
+		font-size: 28px;
+		color: #EC414D;
+	}
+
+	.bottomList {
+		flex-direction: row;
+		align-items: center;
+		padding-bottom: 20px;
+		border-bottom-color: #E6E6E6;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+	}
+
+	.num {
+		margin-right: 40px;
+		font-size: 22px;
+		color: #8E8E93;
+	}
+
+	.total {
+		font-size: 22px;
+		color: #8E8E93;
+	}
+
+	.symbol {
+		font-size: 22px;
+		color: #EC414D;
+		margin: 0 10px;
+	}
+
+	.money {
+		font-size: 22px;
+		color: #EC414D;
 	}
 </style>

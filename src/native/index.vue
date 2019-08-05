@@ -47,8 +47,8 @@
 				this.toast("左边按钮跳转");
 			},
 			onLoad() {
-				const page = weex.requireModule("page");
-				page.doubleBack();
+				// const page = weex.requireModule("page");
+				// page.doubleBack();
 			},
 			rightClick() {
 				this.toast("右边边按钮跳转");
