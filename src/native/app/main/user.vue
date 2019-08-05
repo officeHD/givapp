@@ -15,23 +15,23 @@
 				</div>
 			</div>
 
-			<x-cell title="My order" :hasArrow="true" class="list-margin">
+			<x-cell title="My order" :hasArrow="true" class="list-margin"  @cellClick="gonext('root:app/user/order_list/order_list.js')">
 				<text slot="value" style="color:#999;font-size:30px;">View my orders</text>
 			</x-cell>
 			<div class="orderBox">
-				<div class="sectionItem">
+				<div class="sectionItem"  @click="gonext('root:app/user/order_list/order_list.js')">
 					<text class="iconfont itemIcon">&#xe626;</text>
 					<text class="itemTitle">Unpaid</text>
 				</div>
-				<div class="sectionItem ">
+				<div class="sectionItem "  @click="gonext('root:app/user/order_list/order_list.js')">
 					<text class="iconfont itemIcon">&#xe652;</text>
 					<text class="itemTitle">Waiting shipping</text>
 				</div>
-				<div class="sectionItem ">
+				<div class="sectionItem "  @click="gonext('root:app/user/order_list/order_list.js')">
 					<text class="iconfont itemIcon">&#xe668;</text>
 					<text class="itemTitle">Shipped</text>
 				</div>
-				<div class="sectionItem ">
+				<div class="sectionItem "  @click="gonext('root:app/user/order_list/order_list.js')">
 					<text class="iconfont itemIcon">&#xe616;</text>
 					<text class="itemTitle">After sale</text>
 				</div> 
