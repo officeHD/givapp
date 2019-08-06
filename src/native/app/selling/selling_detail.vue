@@ -1,6 +1,9 @@
 <template>
 	<div>
 		<head title="Detail"></head> 
+		<div>
+			
+		</div>
 	</div>
 </template>
 
