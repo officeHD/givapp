@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<head title="Sold"></head>
-
-
+		<head title="Detail"></head> 
 	</div>
 </template>
 

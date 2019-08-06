@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<head :back="true" bgcolor="#303030" title="Payment successful"></head>
+		<head title="Payment successful"></head>
 		<div class="icon">
 			<text class="iconfont">&#xe60d;</text>
 			<text class="status">Payment successful </text>

@@ -1,6 +1,6 @@
 <template>
 	<div class="layout">
-		<head :back="false" bgcolor="#303030" title="Categories"></head>
+		<head :hasleft="false" title="Categories"></head>
 		<view class="header">
 			<view class="input-box">
 				<input class="input" placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()" />

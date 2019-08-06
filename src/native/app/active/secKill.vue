@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head :back="true" bgcolor="#303030" title="secKill" ></head>
+		<head title="secKill" ></head>
 		<scroller class="titleScro" scroll-direction="horizontal">
 			<div class="item" v-for="(item,index) in timeArr" :key="index" @click="activeTime=item.value">
 				<text class="timeItem " :class="[activeTime==item.value?'active':'']" >{{item.time}}</text>

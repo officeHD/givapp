@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- <image class="pageImg" src="root:img/page/13.png"></image> -->
-		<head :back="true" bgcolor="#303030" title="Order details"></head>
+		<head  title="Order details"></head>
 		<div class="pageContent">
 			<div class="orderDetail">
 				<div class="order_top">

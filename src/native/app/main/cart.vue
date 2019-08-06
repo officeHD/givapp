@@ -1,6 +1,6 @@
 <template>
 	<div class="layout">
-		<head :back="false" bgcolor="#303030" title="Cart"></head>
+		<head :hasleft="false" title="Cart"></head>
 		<!-- 商品列表 -->
 		<scroller class="goods-list">
 			<div class="goods-tis" v-if="goodsList.length==0">购物车是空的哦~</div>

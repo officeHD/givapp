@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head :back="true" bgcolor="#303030" title="preferential" ></head> 
+		<head   bgcolor="#303030" title="preferential" ></head> 
 		<div class="curActC">
 			<scroller class="shopType"  scroll-direction="horizontal">
 				<text class="typeItem " 

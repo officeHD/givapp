@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head :back="true" bgcolor="#303030" title="Payment details"></head>
+		<head title="Payment details"></head>
 		<div class="block">
 			<text class="symbol">￥</text><text class="money">{{amount}}</text>
 		</div>

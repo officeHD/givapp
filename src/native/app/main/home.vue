@@ -1,6 +1,6 @@
 <template>
 	<div class="layout">
-		<head :back="false" bgcolor="#303030" :hasleft="false" @rightClick="rightClick">
+		<head  :hasleft="false" @rightClick="rightClick">
 			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
 			<div slot="center" class="inputbox" @click="searchClick">
 				<text class="searchIcon iconfont">&#xe62a;</text>

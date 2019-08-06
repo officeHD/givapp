@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head :back="true" bgcolor="#303030" :title="title"></head>
+		<head  :title="title"></head>
 		<div class="content">
 			<div class="row">
 				<text class="nominal">Name</text>

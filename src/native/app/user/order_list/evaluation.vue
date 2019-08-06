@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<head title="Order details"></head>
+		<head title="evaluation"></head>
 	</div>
 </template>
 

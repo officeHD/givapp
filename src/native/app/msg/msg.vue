@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head :back="true" bgcolor="#303030" :title="title"></head>
+		<head  :title="title"></head>
 		<list class="scroller">
 			<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
 				<loading-indicator class="indicator"></loading-indicator>

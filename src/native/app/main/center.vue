@@ -1,6 +1,6 @@
 <template>
 	<div class="layout">
-		<head bgcolor="#303030" @letfClick="letfClick" @rightClick="rightClick">
+		<head :hasleft="true" @letfClick="letfClick" @rightClick="rightClick">
 			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
 			<div slot="center" class="inputbox" @click="searchClick">
 				<text class="searchIcon iconfont">&#xe62a;</text>

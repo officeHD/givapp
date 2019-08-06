@@ -1,7 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head :back="true" bgcolor="#303030" :title="title"></head>
-
+		<head  :title="title"></head> 
 		<list class="chat-list">
 			<cell style="height:40px"></cell>
 			<cell class="chat-cell" v-for="(message, m) in chatMessages" :key="m">

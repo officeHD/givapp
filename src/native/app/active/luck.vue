@@ -1,6 +1,6 @@
 <template>
 	<div>
-    	<head :back="true" bgcolor="transparent" title="raffle" titleColor="#333"></head>
+    	<head  bgcolor="transparent" title="raffle" titleColor="#333"></head>
       <div class="wrapper"> 
           <text class="title">Luck whell</text>
           <div class="wheel">
