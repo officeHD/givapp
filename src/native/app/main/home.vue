@@ -118,7 +118,7 @@
 		data() {
 			return {
 				refreshing: false,
-				bannerList: [], //banner图
+				bannerList: [1,2], //banner图
 				tabSection: [{
 						img: "root:img/nav1.png",
 						title: "phone"
@@ -186,7 +186,7 @@
 				}, res => {
 					if (res.code == "200") {
 						that.bannerList = res.data;
-						// this.log(res.data)
+						this.log(res.data)
 					} else {
 						that.toast(res.message)
 					}

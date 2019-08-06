@@ -7,7 +7,7 @@
 		</scroller>
 		<slider class="slider" @change="slideChange">
 			<scroller class="listScroll" v-for="(item, index) in navList">
-				<div v-for="(list, index) in item.orderList" class="listItem">
+				<div v-for="(list, index) in item.orderList" class="listItem" @click="goDetail">
 					<div class="titList">
 						<div class="titLeft">
 							<text class="titname">{{list.nickname}}</text>
@@ -20,10 +20,14 @@
 						<text class="iconfont imgIcon">&#xe6a1;</text>
 					</div>
 					<div class="bottomList">
-						<text class="num">{{list.number}}item</text>
+						<text class="num">{{list.number}} item</text>
 						<text class="total">Total</text>
 						<text class="symbol">$</text>
 						<text class="money">{{list.pay_price}}</text>
+					</div>
+					<div class="actionBox">
+						<text class="actionItem">Delivery tracking</text>
+						<text  class="actionItem">Item received</text>
 					</div>
 
 				</div>
@@ -46,30 +50,70 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [
-							{
-								"id": 161,
-								"co_id": "2",
+						orderList: [{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
 								"number": 5,
+								"price": "13.00",
 								"total_price": "13.00",
-								"pay_price": "27.00",
-								"type": 3,
-								"type_2": 1,
-								"nickname": "指点村1",
-								"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-								"list": [{
-									"id": 51,
-									"goods_id": 24,
-									"option_id": 0,
-									"goods_option": "",
-									"thumb": "123.jpg",
-									"title": "模板标题1",
-									"number": 5,
-									"price": "13.00",
-									"total_price": "13.00",
-								}]
-							}
-						]
+							}]
+						},{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
+								"number": 5,
+								"price": "13.00",
+								"total_price": "13.00",
+							}]
+						},{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
+								"number": 5,
+								"price": "13.00",
+								"total_price": "13.00",
+							}]
+						}]
 					},
 					{
 						hasMore: true,
@@ -78,7 +122,28 @@
 						text: 'Unpaid',
 						loadingType: 'more',
 						total: 0,
-						orderList: []
+						orderList: [{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
+								"number": 5,
+								"price": "13.00",
+								"total_price": "13.00",
+							}]
+						}]
 					},
 					{
 						hasMore: true,
@@ -87,7 +152,28 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: []
+						orderList: [{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
+								"number": 5,
+								"price": "13.00",
+								"total_price": "13.00",
+							}]
+						}]
 					},
 					{
 						hasMore: true,
@@ -96,14 +182,81 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: []
+						orderList: [{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
+								"number": 5,
+								"price": "13.00",
+								"total_price": "13.00",
+							}]
+						},{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
+								"number": 5,
+								"price": "13.00",
+								"total_price": "13.00",
+							}]
+						},{
+							"id": 161,
+							"co_id": "2",
+							"number": 5,
+							"total_price": "13.00",
+							"pay_price": "27.00",
+							"type": 3,
+							"type_2": 1,
+							"nickname": "指点村1",
+							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
+							"list": [{
+								"id": 51,
+								"goods_id": 24,
+								"option_id": 0,
+								"goods_option": "",
+								"thumb": "123.jpg",
+								"title": "模板标题1",
+								"number": 5,
+								"price": "13.00",
+								"total_price": "13.00",
+							}]
+						}]
 					}
 				]
 			};
 		},
 
 		methods: {
+			goDetail() {
+				 this.push('root:app/user/order_list/order_details.js',{name:"ssss"})
 
+				 
+			},
 			tabClick(index) {
 				if (this.tabCurrentIndex == index) {
 					return false;
@@ -168,6 +321,9 @@
 		margin-top: 20px;
 		background-color: #FFFFFF;
 		padding: 32px;
+	}
+	.listItem:active{
+		background-color: #F2F2F2;
 	}
 
 	.titList {
@@ -242,5 +398,24 @@
 	.money {
 		font-size: 22px;
 		color: #EC414D;
+	}
+	.actionBox{
+		flex-direction: row;
+		justify-content: flex-end;
+		padding-top: 20px;
+	}
+	.actionItem{
+		font-size: 28px;
+		color: #333333;
+		padding: 5px 10px;
+		line-height: 40px;
+		border-width: 1px ;
+		border-style: solid;
+		border-color: #333333;
+		margin-left: 10px;
+	}
+	.actionItem:active{
+		border-color: #CCCCCC;
+		background-color: #CCCCCC;
 	}
 </style>
