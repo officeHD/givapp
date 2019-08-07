@@ -18,7 +18,7 @@
 				</div>
 				<div class="cellItem">
 					<text class="iconfont location">&#xe648;</text>
-					<text class="newType">brand new</text>
+					<text class="newType">Heifei High-tech Zone,Anhui Province</text>
 				</div>
 			</div>
 			<div class="selBox mt20"></div>
