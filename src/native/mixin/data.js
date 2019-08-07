@@ -1,217 +1,215 @@
 var data = {
-		returnExpress: {
-			"EBusinessID": "1109259",
-			"OrderCode": "",
-			"ShipperCode": "SF",
-			"LogisticCode": "118461988807",
-			"Success": true,
-			"State": 3,
-			"Reason": null,
-			"Traces": [{
-					"AcceptTime": "2014/06/25 08:05:37",
-					"AcceptStation": "正在派件..(派件人:邓裕富,电话:18718866310)[深圳 市]",
-					"Remark": null
-				},
-				{
-					"AcceptTime": "2014/06/25 04:01:28",
-					"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
-					"Remark": null
-				}
-			]
-		},
-		returnSucces: {
-			"code": 200,
-			"message": "验证码发送成功！",
-			"data": {}
-		},
-		returnLogin: {
-			"code": 200,
-			"message": "登录成功！",
-			"data": {
-				"id": 27,
-				"users_uuid": "2cf751e717424373b99dc74c68927ee2",
-				"account": "10000000134",
-				"status": 1,
-				"phone_number": "13635697675",
-				"email": "1059874248@qq.com",
-				"headimgurl": null,
-				"nickname": null
+	returnExpress: {
+		"EBusinessID": "1109259",
+		"OrderCode": "",
+		"ShipperCode": "SF",
+		"LogisticCode": "118461988807",
+		"Success": true,
+		"State": 3,
+		"Reason": null,
+		"Traces": [{
+				"AcceptTime": "2014/06/25 08:05:37",
+				"AcceptStation": "正在派件..(派件人:邓裕富,电话:18718866310)[深圳 市]",
+				"Remark": null
+			},
+			{
+				"AcceptTime": "2014/06/25 04:01:28",
+				"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
+				"Remark": null
 			}
-		},
-		userInfo: {
-			"code": 200,
-			"message": "登录成功！",
-			"data": {
-				"id": 27,
-				"account": "10000000134",
-				"status": 1,
-				"phone_number": "13635697675",
-				"headimgurl": "",
-				"nickname": "tll",
-				"email": "111111@qq.com",
-				"sex": 2,
-				"user_name": "檀玲玲",
-				"users_uuid": "2cf751e717424373b99dc74c68927ee2",
-				"refund_name": "檀",
-				"refund_phone": "13635697675",
-				"refund_address": "测试地址",
-				"take_time": "每天8:00-10:00",
-				"receive_time": "每天18:00-20:00",
-				"take_address": "测试地址",
-			}
-		},
-		shopList: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": {
-				"total": 1,
-				"list": [{
-					"id": 25,
-					"users_id": "2cf751e717424373b99dc74c68927ee2",
-					"title": "用户二手商品1",
-					"price": "10.50",
-					"old_price": "0.00",
-					"thumb": "",
-					"type": 2,
-					"status": 0,
-					"create_time": "2019-07-05 15:32:44",
-					"nickname": null,
-					"headimgurl": null
-				}]
-			}
-		},
-		shopInfo: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": {
-				"id": 27,
+		]
+	},
+	returnSucces: {
+		"code": 200,
+		"message": "验证码发送成功！",
+		"data": {}
+	},
+	returnLogin: {
+		"code": 200,
+		"message": "登录成功！",
+		"data": {
+			"id": 27,
+			"users_uuid": "2cf751e717424373b99dc74c68927ee2",
+			"account": "10000000134",
+			"status": 1,
+			"phone_number": "13635697675",
+			"email": "1059874248@qq.com",
+			"headimgurl": null,
+			"nickname": null
+		}
+	},
+	userInfo: {
+		"code": 200,
+		"message": "登录成功！",
+		"data": {
+			"id": 27,
+			"account": "10000000134",
+			"status": 1,
+			"phone_number": "13635697675",
+			"headimgurl": "",
+			"nickname": "tll",
+			"email": "111111@qq.com",
+			"sex": 2,
+			"user_name": "檀玲玲",
+			"users_uuid": "2cf751e717424373b99dc74c68927ee2",
+			"refund_name": "檀",
+			"refund_phone": "13635697675",
+			"refund_address": "测试地址",
+			"take_time": "每天8:00-10:00",
+			"receive_time": "每天18:00-20:00",
+			"take_address": "测试地址",
+		}
+	},
+	shopList: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": {
+			"total": 1,
+			"list": [{
+				"id": 25,
 				"users_id": "2cf751e717424373b99dc74c68927ee2",
-				"title": "用户二手商品3",
-				"subtitle": null,
-				"label": "八成新",
-				"postage": "6.00",
-				"content": "用户二手商品测试",
-				"video": null,
+				"title": "用户二手商品1",
 				"price": "10.50",
 				"old_price": "0.00",
 				"thumb": "",
-				"thumb_url": "",
-				"trade_type": 1,
-				"trade_address": "合肥市黄山路",
 				"type": 2,
-				"status": 1,
-				"create_time": "2019-07-12 13:24:12",
-				"stock": 1,
-				"sell": null,
-				"collection": null,
+				"status": 0,
+				"create_time": "2019-07-05 15:32:44",
 				"nickname": null,
-				"headimgurl": null,
-				"is_collection": 0
-			}
-		},
-		shopParam: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": [{
-					"id": 53,
-					"title": "品牌",
-					"description": "茵曼"
+				"headimgurl": null
+			}]
+		}
+	},
+	shopInfo: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": {
+			"id": 27,
+			"users_id": "2cf751e717424373b99dc74c68927ee2",
+			"title": "用户二手商品3",
+			"subtitle": null,
+			"label": "八成新",
+			"postage": "6.00",
+			"content": "用户二手商品测试",
+			"video": null,
+			"price": "10.50",
+			"old_price": "0.00",
+			"thumb": "",
+			"thumb_url": "",
+			"trade_type": 1,
+			"trade_address": "合肥市黄山路",
+			"type": 2,
+			"status": 1,
+			"create_time": "2019-07-12 13:24:12",
+			"stock": 1,
+			"sell": null,
+			"collection": null,
+			"nickname": null,
+			"headimgurl": null,
+			"is_collection": 0
+		}
+	},
+	shopParam: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": [{
+				"id": 53,
+				"title": "品牌",
+				"description": "茵曼"
+			},
+			{
+				"id": 54,
+				"title": "适用年龄",
+				"description": "18-25周岁"
+			},
+		]
+	},
+	shopSpec: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": [{
+			"id": 28,
+			"title": "颜色",
+			"content": [{
+					"id": 28,
+					"name": "白色"
 				},
 				{
-					"id": 54,
-					"title": "适用年龄",
-					"description": "18-25周岁"
-				},
+					"id": 29,
+					"name": "黑色"
+				}
 			]
-		},
-		shopSpec: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": [{
-				"id": 28,
-				"title": "颜色",
-				"content": [{
-						"id": 28,
-						"name": "白色"
-					},
-					{
-						"id": 29,
-						"name": "黑色"
-					}
-				]
-			}]
-		},
-		shopSpecPrice: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": {
-				"id": 1,
-				"goods_id": 24,
-				"title": "商品白色",
-				"price": "1.00",
-				"old_price": "234.00",
-				"thumb": null,
-				"stock": 0,
-				"sell": 0
-			}
-		},
-		categoryType: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": [{
-				"id": 22,
-				"name": "",
-				"level": 1,
-				"thumb": null,
-				"parentid": 0
-			}, {
-				"id": 20,
-				"name": "",
-				"level": 1,
-				"thumb": null,
-				"parentid": 0
-			}]
-		},
-		categoryTypeList: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": [{
-				"id": 5,
-				"name": "食用品",
-				"level": 1,
-				"thumb": "img/123.jpg",
-				"parentid": 0,
-				"two": [{
-					"id": 6,
-					"name": "大米",
-					"level": 2,
-					"thumb": "img/123.jpg",
-					"parentid": 5,
-					"three": [{
-						"id": 8,
-						"name": "蟹田米",
-						"level": 3,
-						"thumb": "img/123.jpg",
-						"parentid": 6
-					}]
-				}]
-			}]
-		},
-		collectionList: {
-			"code": 200,
-			"message": "获取信息成功！",
-			"data": {
-				"group_id": "2c918aee6a48c1df016a48cdc53a0002",
-				"group_name": "指点村1",
-				"list": [{
-						"id": 1,
-						"goods_id": "1",
-						"goods_name": 1,
-						"goods_image": 1
-					}
-				}]
+		}]
+	},
+	shopSpecPrice: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": {
+			"id": 1,
+			"goods_id": 24,
+			"title": "商品白色",
+			"price": "1.00",
+			"old_price": "234.00",
+			"thumb": null,
+			"stock": 0,
+			"sell": 0
 		}
-
+	},
+	categoryType: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": [{
+			"id": 22,
+			"name": "",
+			"level": 1,
+			"thumb": null,
+			"parentid": 0
+		}, {
+			"id": 20,
+			"name": "",
+			"level": 1,
+			"thumb": null,
+			"parentid": 0
+		}]
+	},
+	categoryTypeList: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": [{
+			"id": 5,
+			"name": "食用品",
+			"level": 1,
+			"thumb": "img/123.jpg",
+			"parentid": 0,
+			"two": [{
+				"id": 6,
+				"name": "大米",
+				"level": 2,
+				"thumb": "img/123.jpg",
+				"parentid": 5,
+				"three": [{
+					"id": 8,
+					"name": "蟹田米",
+					"level": 3,
+					"thumb": "img/123.jpg",
+					"parentid": 6
+				}]
+			}]
+		}]
+	},
+	collectionList: {
+		"code": 200,
+		"message": "获取信息成功！",
+		"data": {
+			"group_id": "2c918aee6a48c1df016a48cdc53a0002",
+			"group_name": "指点村1",
+			"list": [{
+				"id": 1,
+				"goods_id": "1",
+				"goods_name": 1,
+				"goods_image": 1
+			}]
+		}
 	},
 	collectionListGood: {
 		"code": 200,
@@ -425,8 +423,7 @@ var data = {
 					"thumb": "123.jpg",
 					"title": "模板标题1",
 					"number": 5,
-					price ":"
-					13.00 ",
+					"price": " 13.00 ",
 					"total_price": "13.00",
 				}]
 			}]
@@ -553,8 +550,7 @@ var data = {
 					"thumb": "123.jpg",
 					"title": "模板标题1",
 					"number": 5,
-					price ":"
-					13.00 ",
+					"price ": " 13.00 ",
 					"total_price": "13.00",
 				}]
 			}]

@@ -26,8 +26,8 @@
 						<text class="money">{{list.pay_price}}</text>
 					</div>
 					<div class="actionBox">
-						<text class="actionItem">Delivery tracking</text>
-						<text class="actionItem">Item received</text>
+						<text class="actionItem">Contact buyers</text>
+						<text class="actionItem">delete</text>
 					</div>
 
 				</div>
@@ -325,7 +325,7 @@
 
 		methods: {
 			goDetail() {
-				this.push('root:app/user/order_list/order_details.js', {
+				this.push('root:app/selling/refund_detail.js', {
 					name: "ssss"
 				})
 
@@ -483,17 +483,18 @@
 
 	.actionItem {
 		font-size: 28px;
-		color: #333333;
+		color: #FFFFFF;
 		padding: 5px 10px;
 		line-height: 40px;
 		border-width: 1px;
 		border-style: solid;
 		border-color: #333333;
+		background-color: #303030;
 		margin-left: 10px;
 	}
 
 	.actionItem:active {
-		border-color: #CCCCCC;
-		background-color: #CCCCCC;
+		border-color: #000;
+		background-color: #000;
 	}
 </style>
