@@ -8,7 +8,8 @@
 		<div class="section1">
 			<div class="shipNow">
 				<div class="wuliu">
-					<text class="location">[Shanghai] Express has been sent from Shanghai center, ready to send to Hefei Transit Department.</text>
+					<text class="location">[Shanghai] Express has been sent from Shanghai center, ready to send to Hefei Transit
+						Department.</text>
 					<text class="time">2018-03-15 06:32</text>
 				</div>
 				<text class="iconfont">&#xe6a1;</text>
@@ -21,11 +22,12 @@
 			<text class="address">Huangshan Road, Hefei High-tech Zone, Anhui Province</text>
 		</div>
 		<div class="section2">
- 
+
 			<div class="order_top">
 				<image class="googPic" src="root:img/goods.png"></image>
 				<div class="goods_info">
-					<text class="goods_title"> AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed Skin and Single Shoulder Baggage Girls</text>
+					<text class="goods_title"> AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed
+						Skin and Single Shoulder Baggage Girls</text>
 					<div class="goods_spec">
 						<text class="priceInfo"> red </text>
 						<text class="specInfo"> X 1 </text>
@@ -74,7 +76,7 @@
 			<div class="detailItem">
 				<div class="itemLeft">
 					<text class="detaTit">View Invoice</text>
-					<text class="detaInf">View</text>
+					<text class="detaInf viewBox" @click="gonext('root:app/user/order_list/invoice.js',{id:2})">View</text>
 				</div>
 				<text class=""></text>
 			</div>
@@ -88,6 +90,14 @@
 </template>
 
 <script>
+	export default {
+		methods: {
+			gonext(url, parma) {
+				this.push(url, parma)
+
+			}
+		},
+	}
 </script>
 
 <style scoped>
@@ -123,38 +133,47 @@
 		align-items: center;
 		margin-bottom: 5px;
 	}
-	.wuliu{
+
+	.wuliu {
 		flex: 1;
 	}
-	.location{
+
+	.location {
 		color: #BA8833;
 		font-size: 24px;
 	}
-	.time{
+
+	.time {
 		color: #B5B5B5;
 		font-size: 20px;
 	}
-	.iconfont{
+
+	.iconfont {
 		font-family: iconfont;
 	}
+
 	.user {
 		flex-direction: row;
 		align-items: center;
 		padding: 10px 0;
 	}
-	.userName{
+
+	.userName {
 		font-size: 24px;
 		color: #333333;
 		margin-right: 20px;
 	}
-	.userPhone{
+
+	.userPhone {
 		font-size: 24px;
 		color: #999;
 	}
-	.address{
+
+	.address {
 		font-size: 24px;
 		color: #333333;
 	}
+
 	.orderDetail {
 		padding: 30px;
 
@@ -269,6 +288,18 @@
 		font-size: 20px;
 	}
 
+	.viewBox {
+		border-width: 1px;
+		border-color: #979797;
+		border-style: solid;
+		height: 40px;
+		line-height: 40px;
+		padding-left: 20px;
+		padding-right: 20px;
+		text-align: center;
+		margin-top: 10px;
+	}
+
 	.copy {
 		background-color: #303030;
 		color: #FFFFFF;
@@ -277,10 +308,12 @@
 		line-height: 44px;
 		padding: 0 20px;
 	}
-	.copy:active{
+
+	.copy:active {
 		background-color: #CCCCCC;
 	}
-	.bottomBtn{
+
+	.bottomBtn {
 		height: 90px;
 		position: fixed;
 		bottom: 0;
@@ -290,25 +323,28 @@
 		flex-direction: row;
 		justify-content: flex-end;
 	}
-	.btn{
-		 height: 68px;
-		 line-height: 68px;
-		 border-width: 1px;
-		 border-style: solid;
-		 border-color: #303030;
-		 border-radius: 8px;
-		 margin: 0 10px;
-		 padding: 0 15px;
-		 min-width: 150px;
-		 text-align: center;
-		 font-size: 28px;
-		 color: #333333;
+
+	.btn {
+		height: 68px;
+		line-height: 68px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #303030;
+		border-radius: 8px;
+		margin: 0 10px;
+		padding: 0 15px;
+		min-width: 150px;
+		text-align: center;
+		font-size: 28px;
+		color: #333333;
 	}
-	.blackBtn{
-		background-color:#303030 ;
+
+	.blackBtn {
+		background-color: #303030;
 		color: #FFFFFF;
 	}
-	.blackBtn:active{
+
+	.blackBtn:active {
 		background-color: #EEEEEE;
 	}
 </style>

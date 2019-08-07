@@ -26,8 +26,11 @@
 						<text class="money">{{list.pay_price}}</text>
 					</div>
 					<div class="actionBox">
-						<text class="actionItem">Delivery tracking</text>
+						<text class="actionItem"  @click="goDelivery">Delivery tracking</text>
 						<text  class="actionItem">Item received</text>
+						<text  class="actionItem" @click="refund">refund</text>
+						
+						
 					</div>
 
 				</div>
@@ -252,11 +255,17 @@
 		},
 
 		methods: {
-			goDetail() {
-				 this.push('root:app/user/order_list/order_details.js',{name:"ssss"})
-
-				 
+			goDelivery(){
+				this.push('root:app/user/order_list/delivery.js',{name:"ssss"})
+				
 			},
+			goDetail() {
+				 this.push('root:app/user/order_list/order_details.js',{name:"ssss"})  
+			},
+			refund() {
+				 this.push('root:app/user/order_list/refund.js',{name:"ssss"})  
+			},
+			
 			tabClick(index) {
 				if (this.tabCurrentIndex == index) {
 					return false;
