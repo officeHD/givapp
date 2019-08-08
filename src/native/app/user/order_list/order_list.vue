@@ -5,7 +5,7 @@
 			<text v-for="(item, index) in navList" :key="index" class="nav-item" :ref="'item'+index" @click="tabClick(index)"
 			 :class="[tabCurrentIndex === index?'current':'']">{{ item.text }}</text>
 		</scroller>
-		<slider class="slider" @change="slideChange">
+		<slider class="slider" @change="slideChange" :index="tabCurrentIndex">
 			<scroller class="listScroll" v-for="(item, index) in navList">
 				<div v-for="(list, index) in item.orderList" class="listItem" @click="goDetail">
 					<div class="titList">
@@ -26,11 +26,11 @@
 						<text class="money">{{list.pay_price}}</text>
 					</div>
 					<div class="actionBox">
-						<text class="actionItem"  @click="goDelivery">Delivery tracking</text>
-						<text  class="actionItem">Item received</text>
-						<text  class="actionItem" @click="refund">refund</text>
-						
-						
+						<text class="actionItem" @click="goDelivery">Delivery tracking</text>
+						<text class="actionItem">Item received</text>
+						<text class="actionItem" @click="refund">refund</text>
+
+
 					</div>
 
 				</div>
@@ -41,6 +41,10 @@
 
 <script>
 	const dom = weex.requireModule('dom')
+	import {
+		get_order_co_list
+	} from "../../../mixin/ajax.js"
+
 	export default {
 		data() {
 			return {
@@ -74,7 +78,7 @@
 								"price": "13.00",
 								"total_price": "13.00",
 							}]
-						},{
+						}, {
 							"id": 161,
 							"co_id": "2",
 							"number": 5,
@@ -95,7 +99,7 @@
 								"price": "13.00",
 								"total_price": "13.00",
 							}]
-						},{
+						}, {
 							"id": 161,
 							"co_id": "2",
 							"number": 5,
@@ -206,7 +210,7 @@
 								"price": "13.00",
 								"total_price": "13.00",
 							}]
-						},{
+						}, {
 							"id": 161,
 							"co_id": "2",
 							"number": 5,
@@ -227,7 +231,7 @@
 								"price": "13.00",
 								"total_price": "13.00",
 							}]
-						},{
+						}, {
 							"id": 161,
 							"co_id": "2",
 							"number": 5,
@@ -255,28 +259,80 @@
 		},
 
 		methods: {
-			goDelivery(){
-				this.push('root:app/user/order_list/delivery.js',{name:"ssss"})
-				
+			onLoad(param) {
+				let type = 0;
+				if (param && param.type) {
+					this.tabCurrentIndex = param.type;
+				}
+				this.getOrderList()
+
+			},
+			getOrderList(source) {
+				let index = this.tabCurrentIndex;
+				let navItem = this.navList[index];
+				if (source === 'tabChange' && navItem.loaded === true) {
+					//tab切换只有第一次需要加载数据
+					return;
+				}
+				if (navItem.loadingType === 'loading' || !navItem.hasMore) {
+					//防止重复加载
+					return;
+				}
+				navItem.loadingType = 'loading';
+				let type = this.tabCurrentIndex == 1 ? 2 : this.tabCurrentIndex == 0 ? "" : "3";
+				let type_2 = this.tabCurrentIndex == 2 ? 1 : this.tabCurrentIndex == 3 ? "2" : this.tabCurrentIndex == 4 ?
+					"3" : "";
+				get_order_co_list({
+					users_id: "",
+					type: type,
+					type_2: type_2,
+					page: navItem.page
+				}, res => {
+					this.log(res)
+					if (navItem.page == 1) {
+						navItem.orderList = res.data.list;
+					}else{
+						navItem.orderList = navItem.orderList.concat(res.data.list);
+					}
+					navItem.page++;
+					this.$set(navItem, 'total', res.data.total);
+					this.$set(navItem, 'loaded', true);
+					if (navItem.orderList.length == res.data.total) {
+						this.$set(navItem, 'hasMore', false);
+					}
+					navItem.loadingType = 'more';
+				})
+			},
+			goDelivery() {
+				this.push('root:app/user/order_list/delivery.js', {
+					name: "ssss"
+				})
+
 			},
 			goDetail() {
-				 this.push('root:app/user/order_list/order_details.js',{name:"ssss"})  
+				this.push('root:app/user/order_list/order_details.js', {
+					name: "ssss"
+				})
 			},
 			refund() {
-				 this.push('root:app/user/order_list/refund.js',{name:"ssss"})  
+				this.push('root:app/user/order_list/refund.js', {
+					name: "ssss"
+				})
 			},
-			
+
 			tabClick(index) {
 				if (this.tabCurrentIndex == index) {
 					return false;
 				}
 				this.tabCurrentIndex = index;
+				this.getOrderList('tabChange');
 			},
 			slideChange(index) {
 				if (this.tabCurrentIndex == index.index) {
 					return false;
 				}
 				this.tabCurrentIndex = index.index;
+				this.getOrderList('tabChange');
 				const ref = this.$refs["item" + index.index]
 				const el = ref ? ref[0] : null;
 				dom.scrollToElement(el, {
@@ -331,7 +387,8 @@
 		background-color: #FFFFFF;
 		padding: 32px;
 	}
-	.listItem:active{
+
+	.listItem:active {
 		background-color: #F2F2F2;
 	}
 
@@ -408,22 +465,25 @@
 		font-size: 22px;
 		color: #EC414D;
 	}
-	.actionBox{
+
+	.actionBox {
 		flex-direction: row;
 		justify-content: flex-end;
 		padding-top: 20px;
 	}
-	.actionItem{
+
+	.actionItem {
 		font-size: 28px;
 		color: #333333;
 		padding: 5px 10px;
 		line-height: 40px;
-		border-width: 1px ;
+		border-width: 1px;
 		border-style: solid;
 		border-color: #333333;
 		margin-left: 10px;
 	}
-	.actionItem:active{
+
+	.actionItem:active {
 		border-color: #CCCCCC;
 		background-color: #CCCCCC;
 	}

@@ -15,23 +15,23 @@
 				</div>
 			</div>
 
-			<x-cell title="My order" :hasArrow="true" class="list-margin" @cellClick="gonext('root:app/user/order_list/order_list.js')">
+			<x-cell title="My order" :hasArrow="true" class="list-margin" @cellClick="gonext('root:app/user/order_list/order_list.js',{type:0})">
 				<text slot="value" style="color:#999;font-size:30px;">View my orders</text>
 			</x-cell>
 			<div class="orderBox">
-				<div class="sectionItem" @click="gonext('root:app/user/order_list/order_list.js')">
+				<div class="sectionItem" @click="gonext('root:app/user/order_list/order_list.js',{type:1})">
 					<text class="iconfont itemIcon">&#xe626;</text>
 					<text class="itemTitle">Unpaid</text>
 				</div>
-				<div class="sectionItem " @click="gonext('root:app/user/order_list/order_list.js')">
+				<div class="sectionItem " @click="gonext('root:app/user/order_list/order_list.js',{type:2})">
 					<text class="iconfont itemIcon">&#xe652;</text>
 					<text class="itemTitle">Waiting shipping</text>
 				</div>
-				<div class="sectionItem " @click="gonext('root:app/user/order_list/order_list.js')">
+				<div class="sectionItem " @click="gonext('root:app/user/order_list/order_list.js',{type:3})">
 					<text class="iconfont itemIcon">&#xe668;</text>
 					<text class="itemTitle">Shipped</text>
 				</div>
-				<div class="sectionItem " @click="gonext('root:app/user/order_list/order_list.js')">
+				<div class="sectionItem " @click="gonext('root:app/user/order_list/order_list.js',{type:4})">
 					<text class="iconfont itemIcon">&#xe616;</text>
 					<text class="itemTitle">After sale</text>
 				</div>
@@ -153,9 +153,8 @@
 					s.refreshing = false;
 				}, 1000);
 			},
-			gonext(url) {
-
-				navigator.push(url);
+			gonext(url,parmar) {
+				this.push(url,parmar);
 			}
 		},
 		created() {}

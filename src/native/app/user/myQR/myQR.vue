@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
 		<head title="Edit data"> </head>
-		<div class="userImg">
+		<div class="userImg" @click="changePhoto">
 			<image class="avator" :src="user.face" />
 			<text class="changeHead">Change heads</text>
 		</div>
@@ -43,6 +43,10 @@
 <script>
 	const navigator = weex.requireModule("navigator");
 	const animation = weex.requireModule("animation");
+	const photo = weex.requireModule("photo");
+	import { upload } from "../../../mixin/ajax.js"
+
+
 	export default {
 		components: {
 
@@ -50,7 +54,7 @@
 		data() {
 			return {
 				refreshing: false,
-				showMask:false,
+				showMask: false,
 				user: {
 					sex: "0",
 					name: "JAck",
@@ -80,9 +84,27 @@
 					},
 					function() {}
 				);
-			}, 
+			},
 			confirm() {
 				this.changeAlert('hide')
+			},
+			changePhoto() {
+				var self = this;
+				photo.open(800, 800, "#000000", "#ffffff", "#ffffff", function(e) {
+					self.src = e.path;
+
+					upload({
+						type: 0,
+						file: e.path
+					}, res => {
+						if(res.code=="200"){
+							self.toast("上传成功")
+							self.user.face= e.path
+						}
+					})
+				});
+
+
 			}
 		},
 	}

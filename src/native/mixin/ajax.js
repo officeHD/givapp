@@ -1,6 +1,27 @@
 import asCore from './core'
 import data from './data'
+const net = weex.requireModule("net");
 var debug = true;
+// 查询物流上传文件
+export const upload = (state, cb) => {
+	if (debug) {
+		cb(data.returnSucces);
+	} else {
+		net.postFile("http://gj.i2f2f.com/index.php/web/upload/upload", {
+				type: state.type
+			}, {},
+		{
+				file: state.file
+			}, sta => {},
+			res => {
+				cb(res)
+			}, ove => {}, err => {}
+			);
+	}
+
+}
+
+
 // 查询物流
 export const get_order_express = (data, cb) => {
 	if (debug) {
@@ -441,11 +462,11 @@ export const pay_alipay_h5 = (data, cb) => {
 	}
 }
 // 订单列表接口
-export const get_order_co_list = (data, cb) => {
+export const get_order_co_list = (state, cb) => {
 	if (debug) {
 		cb(data.orderList);
 	} else {
-		asCore.post(`web/order/get_order_co_list`, data, cb)
+		asCore.post(`web/order/get_order_co_list`, state, cb)
 	}
 }
 
@@ -816,7 +837,7 @@ export const get_users_raffle_list = (data, cb) => {
 export const get_raffle_list = (data, cb) => {
 	if (debug) {
 		cb(data.raffle_list);
-	} else { 
+	} else {
 		asCore.post(`web/raffle/get_raffle_list`, data, cb)
 	}
 }
