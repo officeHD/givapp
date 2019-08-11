@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<div class="locationBox bb " @click="changeAlert('show')">
-					<text class="meth_title">Price</text>
+					<text class="meth_title">Categories</text>
 					<div class="meth_right ">
 						<text class="cityName">Categories </text>
 						<text class="rightIcon">&#xe6a1;</text>
@@ -64,12 +64,12 @@
 						<div class="radioL">
 							<text class="liIcon" :class="[user.sex=='0'?'selected':'']">{{user.sex=="0"?"&#xe602;":"&#xe67f;"}}</text>
 							<text class="liTxt" :class="[user.sex=='0'?'selected':'']">Free shipping</text>
-					
+
 						</div>
 						<div class="radioL">
 							<text class="liIcon" :class="[user.sex=='1'?'selected':'']">{{user.sex=="1"?"&#xe602;":"&#xe67f;"}}</text>
 							<text class="liTxt" :class="[user.sex=='1'?'selected':'']">distance</text>
-					
+
 						</div>
 					</div>
 				</div>
@@ -341,10 +341,11 @@
 		font-size: 28px;
 		color: #333333;
 	}
-	.liInput{
+
+	.liInput {
 		flex: 1;
 		text-align: right;
-		background-color: #0088FB;
+		/* background-color: #0088FB; */
 		height: 80px;
 	}
 

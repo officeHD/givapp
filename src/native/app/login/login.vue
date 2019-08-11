@@ -14,11 +14,11 @@
 			</div>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe635;</text>
-				<input v-if="loginType=='account'" type="text"  :value="password"  class="input" placeholder="Enter password" @input="changep"
+				<input v-if="loginType=='account'" type="text" :value="password" class="input" placeholder="Enter password" @input="changep"
 				 placeholder-color="#c3c3c3" />
 				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter verify" @input="changeV"
 				 placeholder-color="#c3c3c3" />
-				<text class="codeBtn" v-if="loginType=='phone'" @click="send_verify">Receive Sms code</text>
+				<text class="codeBtn" v-if="loginType=='phone'" @click="send_verify_code">Receive Sms code</text>
 			</div>
 			<text class="loginType" v-if="loginType=='account'" @click="loginType='phone'">Verification code login</text>
 			<text class="loginType" v-if="loginType=='phone'" @click="loginType='account'">Account login</text>
@@ -38,7 +38,14 @@
 <script>
 	const navigator = weex.requireModule("navigator");
 	var pref = weex.requireModule("storage")
+
+
 	import asCore from "../../mixin/core";
+	import {
+		send_verify,
+		loginWithPw,
+		verify_login
+	} from "../../mixin/ajax.js";
 
 	export default {
 		data() {
@@ -58,16 +65,16 @@
 				}
 			};
 		},
-		created(){
-			let that=this;
+		created() {
+			let that = this;
 			pref.getItem("as_username", event => {
-				if(event.result=="success"){
-					that.account=event.data;
+				if (event.result == "success") {
+					that.account = event.data;
 				}
 			})
 			pref.getItem("as_password", event => {
-				if(event.result=="success"){
-					that.password=event.data;
+				if (event.result == "success") {
+					that.password = event.data;
 				}
 			})
 		},
@@ -87,82 +94,94 @@
 				this.phone_number = e.value
 
 			},
-			send_verify() {
+			send_verify_code() {
 				let that = this;
 				if (!that.phone_number) {
 					that.toast("Enter your phoneNumber");
 					return false
 				}
 				this.loading = true;
-				asCore.post("web/login/send_verify", {
+				send_verify({
 					mobile: that.phone_number,
 					type: "2"
-				}, res => {
+				}, (res, flag) => {
 					this.loading = false;
-					if (res.code == "200") {
-						that.toast(res.message)
-					} else {
-						that.toast(res.message)
+					if (flag) {
+						if (res.code == "200") {
+							that.toast(res.message)
+						} else {
+							that.toast(res.message)
+						}
 					}
 
 				})
 
 			},
-			login() {
-				let that = this;
-				let url = "web/login/index";
-				let data = {
+			login_pw() {
+				if (!that.account) {
+					that.toast("Enter your account");
+					return false
+				}
+				if (!that.password) {
+					that.toast("Enter your password");
+					return false
+				}
+				this.loading = true;
+				loginWithPw({
 					account: that.account,
 					password: that.password
-				};
-				if (this.loginType !== 'account') {
-					if (!that.phone_number) {
-						that.toast("Enter your phoneNumber");
-						return false
-					}
-					if (!that.verify) {
-						that.toast("Enter your verify");
-						return false
-					}
-					// 836669
-					data = {
-						phone_number: that.phone_number,
-						verify: that.verify
-					}
-					url = "/web/login/verify_login"
-
-
-				} else {
-					if (!that.account) {
-						that.toast("Enter your account");
-						return false
-					}
-					if (!that.password) {
-						that.toast("Enter your password");
-						return false
-					}
-				}
-
-				this.loading = true;
-				asCore.post(url, data, res => {
+				}, res => {
 					this.loading = false;
 					if (res.code == "200") {
-						that.log(res)
-						 
-						asCore.setBsessionid(res.data.users_uuid);
-						if (that.loginType == 'account'){
-							pref.setItem('as_username', that.account);
-							pref.setItem('as_password', that.password);
-						}
-						
-						
-						navigator.back();
-						
+
+						this.loginSus(res)
+
 					} else {
 						that.toast(res.message)
 					}
-
 				})
+			},
+			login_ver() {
+				if (!that.phone_number) {
+					that.toast("Enter your phoneNumber");
+					return false
+				}
+				if (!that.verify) {
+					that.toast("Enter your verify");
+					return false
+				}
+				this.loading = true;
+				verify_login({
+					phone_number: that.phone_number,
+					verify: that.verify
+				}, res => {
+					this.loading = false;
+					if (res.code == "200") {
+
+						this.loginSus(res)
+
+					} else {
+						that.toast(res.message)
+					}
+				})
+			},
+			//登录
+			login() {
+				// 判断登录方式
+				if (this.loginType !== 'account') {
+					this.login_ver();
+				} else {
+					this.login_pw();
+				}
+			},
+			loginSus(res) {
+				let that = this;
+				asCore.setBsessionid(res.data.users_uuid);
+				if (that.loginType == 'account') {
+					pref.setItem('as_username', that.account);
+					pref.setItem('as_password', that.password);
+				}
+				navigator.back();
 			},
 			register() {
 				navigator.push("root:app/login/register.js");

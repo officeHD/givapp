@@ -1,6 +1,6 @@
 <template>
 	<div class="layout">
-		<head  :hasleft="false" @rightClick="rightClick">
+		<head :hasleft="false" @rightClick="rightClick">
 			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
 			<div slot="center" class="inputbox" @click="searchClick">
 				<text class="searchIcon iconfont">&#xe62a;</text>
@@ -14,11 +14,11 @@
 					<loading-indicator class="indicator"></loading-indicator>
 				</refresh>
 				<div class="cicle"></div>
-				<div class="cicleContent">
+				<div class="cicleContent"> 
 					<div class="silderBox">
 						<slider class="slider" interval="3000" auto-play="false">
-							<div class="frame" v-for="(img,index) in bannerList" :key="index">
-								<image class="image" resize="cover" src="root:img/banner.jpg" />
+							<div class="frame" v-for="(img,index) in bannerList" :key="index"  @click="toBanner(img)">
+								<image class="image" resize="cover" :src="img.image_url" />
 							</div>
 						</slider>
 					</div>
@@ -57,14 +57,14 @@
 							</div>
 							<scroller scroll-direction="horizontal" class="secondContent">
 
-								<div class="listItem" v-for="item in secondList" :key="item" @click="gonext('root:app/goods/goods.js')">
-									<image class="SecondImg" src="root:img/goods.png" />
+								<div class="listItem" v-for="item in secondList" :key="item" @click="gonext('root:app/goods/goods.js',{id:item.id})">
+									<image class="SecondImg" :src="item.thumb" />
 									<view class="secondItem">
-										<text class="goodsTitle">Baobao Women's New Style Of Small</text>
+										<text class="goodsTitle">{{item.title}}</text>
 										<view class="secondPrice">
 											<text class="symbol mr5">$</text>
-											<text class="money">52.3</text> 
-										</view> 
+											<text class="money">{{item.price}}</text>
+										</view>
 									</view>
 								</div>
 							</scroller>
@@ -75,14 +75,14 @@
 								<text class="iconfont reIcon">view more &#xe6a1;</text>
 							</div>
 							<div class="recontent">
-								<div class="reitem" v-for="item in 10" :key="item">
-									<image class="goodsImg" src="root:img/goods.png" @click="gonext('root:app/goods/goods.js')" />
+								<div class="reitem" v-for="item in shopList" :key="item">
+									<image class="goodsImg" :src="item.thumb" @click="gonext('root:app/goods/goods.js',{id:item.id})" />
 									<view class="contentBox">
-										<text class="goodsTitle">Bao Bao Women's New Style Of Small</text>
+										<text class="goodsTitle">{{item.title}}</text>
 										<view class="priceInfo">
 											<view class="leftInfo">
 												<text class="symbol">$</text>
-												<text class="money">52.3</text>
+												<text class="money">{{item.price}}</text>
 												<!-- <text class="reduce">80%</text> -->
 												<!-- <text class="shopType">NEW</text> -->
 											</view>
@@ -114,11 +114,15 @@
 <script>
 	const navigator = weex.requireModule("navigator");
 	import asCore from "../../mixin/core";
+	import {
+		get_goods_list,
+		get_banner_list 
+	} from "../../mixin/ajax.js";
 	export default {
 		data() {
 			return {
 				refreshing: false,
-				bannerList: [1,2], //banner图
+				bannerList: [1, 2], //banner图
 				tabSection: [{
 						img: "root:img/nav1.png",
 						title: "phone"
@@ -153,24 +157,15 @@
 					}
 				],
 				countdown: {}, //倒计时
-				secondList: [{
-					"id": 25,
-					"users_id": "2cf751e717424373b99dc74c68927ee2",
-					"title": "用户二手商品1",
-					"price": "10.50",
-					"old_price": "0.00",
-					"thumb": "",
-					"type": 2,
-					"status": 0,
-					"create_time": "2019-07-05 15:32:44",
-					"nickname": null,
-					"headimgurl": null
-				}],
-				shopList:[]
+				secondList: [],
+				shopList: []
 			};
 		},
 		props: {},
 		methods: {
+			toBanner(item){
+				this.log(item)
+			},
 			onrefresh(event) {
 				var s = this;
 				s.refreshing = true;
@@ -180,55 +175,62 @@
 			},
 			loadData(users_id) {
 				let that = this;
-				this.log("jiazai")
-				asCore.post("web/banner/get_banner_list", {
+				get_banner_list({
 					type: 1
-				}, res => {
-					if (res.code == "200") {
-						that.bannerList = res.data;
-						this.log(res.data)
-					} else {
-						that.toast(res.message)
+				}, (res, flag) => {
+					
+					if (flag) {
+						if (res.code == "200") {
+							that.bannerList = res.data;
+							
+						} else {
+							that.toast(res.message)
+						}
+
 					}
 				})
-				// 二手商品
-				asCore.post("web/goods/get_goods_list", {
+				// 二手商品 
+				get_goods_list({
 					users_id: users_id,
 					keywords: "",
 					categoryid: "",
 					type: "1,2",
 					status: "",
 					page: 1,
-				}, res => {
-					if (res.code == "200") {
+				}, (res, flag) => {
+					if (flag) {
+						if (res.code == "200") {
 							this.log(res.data)
-						that.secondList = res.data.list;
-					} else {
-						that.toast(res.message)
+							that.secondList = res.data.list;
+						} else {
+							that.toast(res.message)
+						}
 					}
 				})
 				// 推荐商品
-				asCore.post("web/goods/get_goods_list", {
+				get_goods_list({
 					users_id: users_id,
 					keywords: "",
 					categoryid: "",
 					type: "0",
 					status: "2",
 					page: 1,
-				}, res => {
-					if (res.code == "200") {
-					
-						that.shopList = res.data.list;
-					} else {
-						that.toast(res.message)
+				}, (res, flag) => {
+
+					if (flag) {
+						if (res.code == "200") {
+
+							that.shopList = res.data.list;
+						} else {
+							that.toast(res.message)
+						}
 					}
 				})
-
 			},
-			gonext(url) {
-				//this.push('test.js',{name:"ssss"})
-				this.log("jdksdjsk", "error");
-				navigator.push(url);
+			gonext(url, parmar) {
+				this.push(url, parmar)
+				// this.log("jdksdjsk", "error");
+				// navigator.push(url);
 			},
 
 			searchClick() {
@@ -315,11 +317,11 @@
 
 
 			//开启定时器
-			// asCore.getBsessionid(sessionid => {
-			// 	if (!sessionid) {
-			// 		that.loadData(sessionid) 
-			// 	} else {}
-			// });
+			asCore.getBsessionid(sessionid => {
+				if (!sessionid) {
+					that.loadData(sessionid)
+				} else {}
+			});
 		}
 	};
 </script>
@@ -453,8 +455,7 @@
 
 	.frame {
 		width: 690px;
-		height: 290px;
-
+		height: 290px; 
 		position: relative;
 		border-top-left-radius: 20px;
 		border-top-right-radius: 20px;

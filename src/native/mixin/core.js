@@ -41,11 +41,11 @@ var asCore = {
 				var ps = res.data;
 				//progress.showFull("自动登录中...");
 				/* 自动登录 */
-				
-				
+
+
 				stream.fetch({
 						method: "POST",
-						url: basePath + "web/login/index", 
+						url: basePath + "web/login/index",
 						type: "json",
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -135,15 +135,20 @@ var asCore = {
 				body: that.toParams(param)
 			},
 			function(ret) {
+				that.toast(ret);
 				if (!ret.ok) {
-					if (ret.status == 550) {
-						if (callBack) callBack("timeout", false);
+					if (ret.status == 500) {
+						that.toast(ret.statusText);
+						// if (callBack) callBack(ret.statusText, false);
+					} else if (ret.status == 550) {
+						// if (callBack) callBack("timeout", false);
+						that.toast("request timeout");
 					} else {
-						if (ret.status == -1) {
-							that.toast('网络连接失败,请检查网络设置');
-						}
-						if (callBack) callBack(ret.statusText, ret.ok);
+						// if (ret.status == -1) {
+						// 	that.toast('网络连接失败,请检查网络设置');
+						// } 
 					}
+					if (callBack) callBack(ret.statusText, ret.ok);
 				} else {
 					var data = ret.data;
 					try {
