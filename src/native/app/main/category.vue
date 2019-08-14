@@ -1,14 +1,21 @@
 <template>
 	<div class="layout">
 		<head :hasleft="false" title="Categories"></head>
+		<div class="tabr">
+			<div class="tabItem" @click="switchType('used')">
+				<text :class="[typeClass=='used'?'on':'off']">second-hand</text>
+			</div>
+			<div class="tabItem" @click="switchType('new')">
+				<text :class="[typeClass=='new'?'on':'off']">self-support</text>
+			</div> 
+		</div>
 		<view class="header">
 			<view class="input-box">
 				<input class="input" placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()" />
 				<text class="iconfont iconSearch">&#xe62a;</text>
 			</view>
 		</view>
-		<!-- 占位 -->
-		<view class="category-list">
+		<view class="category-list" v-if="typeClass=='new'">
 			<!-- 左侧分类导航 -->
 			<scroller class="scrollerleft">
 				<view class="leftrow" v-for="(category,index) in categoryList" :key="category.id" :class="[index==showCategoryIndex?'leftrowon':'']"
@@ -46,6 +53,7 @@
 				showCategoryIndex: 0,
 				headerPosition: "fixed",
 				city: "北京",
+				typeClass: "used",
 				//分类列表
 				categoryList: [{
 						id: 1,
@@ -674,14 +682,7 @@
 				]
 			};
 		},
-		onPageScroll(e) {
-			//兼容iOS端下拉时顶部漂移
-			if (e.scrollTop >= 0) {
-				this.headerPosition = "fixed";
-			} else {
-				this.headerPosition = "absolute";
-			}
-		},
+		 
 		onLoad() {},
 		methods: {
 			//消息列表
@@ -689,6 +690,12 @@
 				uni.navigateTo({
 					url: "../msg/msg"
 				});
+			},
+			switchType(type) {
+				if (this.typeClass == type) {
+					return
+				}
+				this.typeClass = type
 			},
 			//分类切换显示
 			showCategory(index) {
@@ -710,6 +717,45 @@
 	};
 </script>
 <style scoped>
+	.tabr {
+		height: 100px;
+		width: 700px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	.tabItem {
+		height: 60px;
+		width: 280px;
+		
+		padding: 0 2px;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.off {
+		line-height: 60px;
+		height: 60px;
+		border-bottom-width: 8px;
+		border-bottom-color: #FFF;
+		border-bottom-style: solid;
+		
+		font-size: 30px;
+	}
+	
+ 
+	
+	
+	.on {
+		border-bottom-width: 4px;
+		border-bottom-color: #BA8833;
+		border-bottom-style: solid;
+		color: #BA8833;
+		line-height: 60px;
+		font-size: 30px;
+		height: 60px;
+	}
 	.iconfont {
 		font-family: iconfont;
 	}

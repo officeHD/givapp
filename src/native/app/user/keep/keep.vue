@@ -73,6 +73,7 @@
 </template>
 
 <script>
+	import {get_goods_collection_List} from "../../../mixin/ajax"
 	export default {
 		data() {
 			return {
@@ -111,7 +112,7 @@
 			};
 		},
 		created() {
-
+			this.getList();
 		},
 
 		methods: {
@@ -120,6 +121,18 @@
 					return
 				}
 				this.typeClass = type
+			},
+			getList(){
+				get_goods_collection_List({users_id:"",group_id:""},(res,flag)=>{
+					if(flag){
+						if(res.code==200){
+							this.goodsList=res.data.list;
+							this.goodsList.forEach(item=>{
+								this.$set(item,'selected', false)
+							})
+						}
+					}
+				})
 			},
 			//控制左滑删除效果-begin
 			touchStart(index, event) {},
