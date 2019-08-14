@@ -22,42 +22,34 @@
 					</div>
 				</div>
 			</div>
-		</div> 
+		</div>
 	</div>
 </template>
 <script>
 	const navigator = weex.requireModule("navigator");
+	import {
+		get_address_list
+	} from "../../../mixin/ajax"
 	export default {
 		data() {
 			return {
 				isSelect: false,
-				addressList: [{
-						"id": 10,
-						"name": "LiLi", 
-						"phone": "15145112434",
-						"province": "Anhui Province ",
-						"city": "Hefei City",
-						"area": "Shushan District",
-						"address": " Huangshan Road, Science Avenue",
-						"is_default": 2,
-						"create_time": "2019-04-18 15:09:22"
-					},
-					{
-						"id": 11,
-						"name": "LiLi",
-						"phone": "15145112434",
-						"province": "Anhui Province ",
-						"city": "Hefei City",
-						"area": "Shushan District",
-						"address": " Huangshan Road, Science Avenue",
-						"is_default": 1,
-						"create_time": "2019-04-18 15:09:22"
-					}
-				]
+				addressList: []
 			};
 		},
-
+		created() {
+			this.getList();
+		},
 		methods: {
+			getList() {
+				get_address_list({}, (res, flag) => {
+					if (flag) {
+						if (res.code == 200) {
+							this.addressList = res.data.list;
+						}
+					}
+				})
+			},
 			edit(row) {
 				navigator.push("root:app/user/address/edit.js");
 			},

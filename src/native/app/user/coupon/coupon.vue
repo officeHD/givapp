@@ -6,9 +6,9 @@
 			<cell class="rowcell" v-for="(row,index) in couponValidList" :key="index">
 				<div class="cellBox">
 					<div class="boxleft">
-						<text class="money">$ 50</text>
-						<text class="title">{{row.title}} </text>
-						<text class="term">{{row.termStart}} ~ {{row.termEnd}} </text>
+						<text class="money">$ {{row.reduce}}</text>
+						<text class="title">{{row.name}} </text>
+						<text class="term">{{row.start_time}} ~ {{row.end_time}} </text>
 					</div>
 					<text class="line"></text> 
 					<div class="right">
@@ -22,49 +22,32 @@
 </template>
 
 <script>
+	import {get_users_coupon_list} from "../../../mixin/ajax"
 	export default {
 		data() {
 			return {
-				couponValidList: [{
-						id: 1,
-						title: "Full 300 use ",
-						termStart: "2019-04-01",
-						termEnd: "2019-05-30",
-						ticket: "10",
-						criteria: "满50使用"
-					},
-					{
-						id: 2,
-						title: "Full 300 use",
-						termStart: "2019-04-01",
-						termEnd: "2019-05-30",
-						ticket: "100",
-						criteria: "Full 300 use"
-					},
-					{
-						id: 3,
-						title: "Full 300 use",
-						termStart: "2019-04-01",
-						termEnd: "2019-05-30",
-						ticket: "10",
-						criteria: "无门槛"
-					},
-					{
-						id: 4,
-						title: "Full 300 use",
-						termStart: "2019-04-01",
-						termEnd: "2019-05-30",
-						ticket: "50",
-						criteria: "满1000使用"
-					}
-				],
+				couponValidList: [],
 				headerTop: 0,
 
 			};
 		},
-
+		created() {
+			this.getList();
+		},
 		methods: {
-
+			getList(){
+				get_users_coupon_list({
+					users_id:"",
+					status:"1" //状态 1 未使用 2 已使用
+				},(res,flag)=>{
+					this.log(res)
+					if(flag){
+						if(res.code==200){
+							this.couponValidList=res.data;
+						}
+					} 
+				})
+			}
 		}
 	};
 </script>

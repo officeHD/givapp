@@ -4,46 +4,30 @@
 		<div class="detailItem">
 			<div class="itemLeft">
 				<text class="detaTit">Delivery company</text>
-				<text class="detaInf">SF Express</text>
+				<text class="detaInf">{{ShipperCode}}</text>
 			</div>
 			<div class="itemLeft mt20">
-				<text class="detaTit">Telephone</text>
-				<text class="detaInf active">95338</text>
+				<text class="detaTit">OrderCode</text>
+				<text class="detaInf active">{{OrderCode}}</text>
 			</div>
 		</div>
 		<!-- 物流信息 -->
 		<div class="wuliuMes">
 			<div class="secTop">
 				<text class="paidtip">Tracking number</text>
-				<text class="paidnum">75298783027290729679</text>
+				<text class="paidnum">{{LogisticCode}}</text>
 
 			</div>
 			<div class="devList">
-				<div class="itemList">
+				<div class="itemList" v-for="(item,index) in Traces" :key="index">
 					<div class="lineBox">
-						<text class="itemTit">The express has been loaded. The next station is [91hefei distribution center, anhui
-							province]. Operator: [91LILI]</text>
-						<text class="itemDec">The parcel is waiting for the rush</text>
+						<text class="itemTit">{{item.AcceptStation}}</text>
+						<text class="itemDec">{{item.AcceptTime}}</text>
 
 					</div>
-					<text class="radio activeR"></text>
+					<text class="radio " :class="[index==0?'activeR':'']"></text>
 				</div>
-				<div class="itemList">
-					<div class="lineBox">
-						<text class="itemTit">The package has been accepted</text>
-						<text class="itemDec">2019-03-15 05:25</text>
-
-					</div>
-					<text class="radio"></text>
-				</div>
-				<div class="itemList">
-					<div class="lineBox">
-						<text class="itemTit">The parcel is waiting for the rush</text>
-						<text class="itemDec">2019-03-15 05:25</text>
-				
-					</div>
-					<text class="radio"></text>
-				</div>
+				 
 				<!-- <div class="Expand">
 					<text class="ExpandTxt">Expand</text>
 					<text class="ExpandIcon">&#xe60a;</text>
@@ -54,6 +38,34 @@
 </template>
 
 <script>
+	import {
+		get_order_express
+	} from "../../../mixin/ajax.js"
+	export default {
+		data() {
+			return{
+				ShipperCode: "",
+				LogisticCode: "",
+				OrderCode:""
+			}
+		},
+		created() {
+			get_order_express({
+				shipper_code: "", //物流公司简称 例：YTO
+				logistic_code: "" //快递号 例：12345678
+			}, (res, flag) => {
+				this.log(res)
+				if (flag) {
+					this.ShipperCode = res.ShipperCode; //	快递公司编码
+					this.LogisticCode = res.LogisticCode; //物流运单号
+					this.OrderCode = res.OrderCode; //物流运单号
+					
+					
+					this.Traces = res.Traces
+				}
+			})
+		}
+	}
 </script>
 
 <style>

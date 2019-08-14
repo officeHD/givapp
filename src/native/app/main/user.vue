@@ -5,11 +5,11 @@
 			<div class="userhead" @click="gonext('root:app/user/myQR/myQR.js')">
 				<div class="userTop">
 					<div class="userImg">
-						<image class="avator" :src="user.face" />
+						<image class="avator" :src="userData.headimgurl" />
 					</div>
 					<div class="userInfo">
-						<text class="username">{{user.name}}</text>
-						<text class="userPhone">{{user.phone}}</text>
+						<text class="username">{{userData.user_name}}</text>
+						<text class="userPhone">{{userData.phone_number}}</text>
 					</div>
 					<text class="iconfont righticon">&#xe6a1;</text>
 				</div>
@@ -58,26 +58,7 @@
 				</div>
 			</x-cell>
 
-			<!-- <x-cell title="Unpaid" :hasArrow="true" @cellClick="gonext('helpCenter')">
-				<div slot="label" class="list-icon">
-					<text class="iconfont" :style="{fontSize:40}">&#xe626;</text>
-				</div>
-			</x-cell> -->
-			<!-- <x-cell title="Waiting for shipping" :hasArrow="true" @cellClick="gonext('share')">
-				<div slot="label" class="list-icon">
-					<text class="iconfont" :style="{fontSize:40}">&#xe652;</text>
-				</div>
-			</x-cell> -->
-			<!-- <x-cell title="shipped" :hasArrow="true" @cellClick="gonext('share')">
-				<div slot="label" class="list-icon">
-					<text class="iconfont" :style="{fontSize:40}">&#xe668;</text>
-				</div>
-			</x-cell>
-			<x-cell title="After sale" :hasArrow="true" @cellClick="gonext('share')">
-				<div slot="label" class="list-icon">
-					<text class="iconfont" :style="{fontSize:40}">&#xe616;</text>
-				</div>
-			</x-cell> -->
+
 			<x-cell title="Help" :hasArrow="true" @cellClick="gonext('share')">
 				<div slot="label" class="list-icon">
 					<text class="iconfont" :style="{fontSize:40}">&#xe6cf;</text>
@@ -107,6 +88,9 @@
 <script>
 	const navigator = weex.requireModule("navigator");
 	import asCore from "../../mixin/core";
+	import {
+		get_users_info
+	} from "../../mixin/ajax";
 	const updateImg = new BroadcastChannel("updateImg");
 
 	export default {
@@ -116,18 +100,30 @@
 		data() {
 			return {
 				refreshing: false,
-				user: {
-					name: "JAck",
-					phone: "1321526262",
-					face: "root:img/user.jpg"
+				userData: {
+					headimgurl: "",
+					user_name: "",
+					phone_number: ""
 				}
 			};
 		},
 		props: {},
 		created() {
 			updateImg.onmessage = this.updateImg;
+			this.getUserData();
 		},
 		methods: {
+			getUserData() {
+				get_users_info({
+					users_id: ""
+				}, (res, flag) => {
+					if (flag) {
+						if (res.code == 200) {
+							this.userData = res.data;
+						}
+					}
+				})
+			},
 			/* 判断是否登录 */
 			isLogin: function() {
 				var s = this;
@@ -153,11 +149,10 @@
 					s.refreshing = false;
 				}, 1000);
 			},
-			gonext(url,parmar) {
-				this.push(url,parmar);
+			gonext(url, parmar) {
+				this.push(url, parmar);
 			}
-		},
-		created() {}
+		}
 	};
 </script>
 <style scoped>
@@ -207,6 +202,7 @@
 		width: 100px;
 		height: 100px;
 		border-radius: 50px;
+		background-color: #F2F2F2;
 	}
 
 	.userInfo {
