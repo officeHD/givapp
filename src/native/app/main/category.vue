@@ -686,10 +686,8 @@
 		onLoad() {},
 		methods: {
 			//消息列表
-			toMsg() {
-				uni.navigateTo({
-					url: "../msg/msg"
-				});
+			loadData(user_id) {
+				this.log(user_id);
 			},
 			switchType(type) {
 				if (this.typeClass == type) {
@@ -726,7 +724,7 @@
 	}
 	
 	.tabItem {
-		height: 60px;
+		height: 70px;
 		width: 280px;
 		
 		padding: 0 2px;
@@ -735,11 +733,11 @@
 	}
 	
 	.off {
-		line-height: 60px;
-		height: 60px;
-		border-bottom-width: 8px;
-		border-bottom-color: #FFF;
-		border-bottom-style: solid;
+		line-height: 70px;
+		height: 70px;
+		/* border-bottom-width: 8px; */
+		/* border-bottom-color: #FFF; */
+		/* border-bottom-style: solid; */
 		
 		font-size: 30px;
 	}
@@ -748,13 +746,13 @@
 	
 	
 	.on {
-		border-bottom-width: 4px;
+		border-bottom-width: 8px;
 		border-bottom-color: #BA8833;
 		border-bottom-style: solid;
 		color: #BA8833;
-		line-height: 60px;
+		line-height: 70px;
 		font-size: 30px;
-		height: 60px;
+		height: 70px;
 	}
 	.iconfont {
 		font-family: iconfont;

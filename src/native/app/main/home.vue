@@ -14,10 +14,10 @@
 					<loading-indicator class="indicator"></loading-indicator>
 				</refresh>
 				<div class="cicle"></div>
-				<div class="cicleContent"> 
+				<div class="cicleContent">
 					<div class="silderBox">
 						<slider class="slider" interval="3000" auto-play="false">
-							<div class="frame" v-for="(img,index) in bannerList" :key="index"  @click="toBanner(img)">
+							<div class="frame" v-for="(img,index) in bannerList" :key="index" @click="toBanner(img)">
 								<image class="image" resize="cover" :src="img.image_url" />
 							</div>
 						</slider>
@@ -72,7 +72,7 @@
 						<div class="recommend">
 							<div class="retitle">
 								<text class="fz30">recommend</text>
-								<text class="iconfont reIcon">view more &#xe6a1;</text>
+								<!-- <text class="iconfont reIcon">view more &#xe6a1;</text> -->
 							</div>
 							<div class="recontent">
 								<div class="reitem" v-for="item in shopList" :key="item">
@@ -116,11 +116,12 @@
 	import asCore from "../../mixin/core";
 	import {
 		get_goods_list,
-		get_banner_list 
+		get_banner_list
 	} from "../../mixin/ajax.js";
 	export default {
 		data() {
 			return {
+				users_id:"",
 				refreshing: false,
 				bannerList: [1, 2], //banner图
 				tabSection: [{
@@ -163,7 +164,7 @@
 		},
 		props: {},
 		methods: {
-			toBanner(item){
+			toBanner(item) {
 				this.log(item)
 			},
 			onrefresh(event) {
@@ -175,14 +176,14 @@
 			},
 			loadData(users_id) {
 				let that = this;
+				that.users_id=users_id;
 				get_banner_list({
 					type: 1
 				}, (res, flag) => {
-					
 					if (flag) {
 						if (res.code == "200") {
 							that.bannerList = res.data;
-							
+
 						} else {
 							that.toast(res.message)
 						}
@@ -198,9 +199,9 @@
 					status: "",
 					page: 1,
 				}, (res, flag) => {
+					
 					if (flag) {
 						if (res.code == "200") {
-							this.log(res.data)
 							that.secondList = res.data.list;
 						} else {
 							that.toast(res.message)
@@ -212,12 +213,12 @@
 					users_id: users_id,
 					keywords: "",
 					categoryid: "",
-					type: "0",
-					status: "2",
+					type: "2",
+					status: "",
 					page: 1,
 				}, (res, flag) => {
-
 					if (flag) {
+						
 						if (res.code == "200") {
 
 							that.shopList = res.data.list;
@@ -382,7 +383,7 @@
 		border-radius: 40px;
 		height: 80px;
 		padding: 0 40px;
-		margin-left: 32px;
+		/* margin-left: 32px; */
 	}
 
 	.searchIcon {
@@ -455,7 +456,7 @@
 
 	.frame {
 		width: 690px;
-		height: 290px; 
+		height: 290px;
 		position: relative;
 		border-top-left-radius: 20px;
 		border-top-right-radius: 20px;

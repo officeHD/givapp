@@ -134,6 +134,9 @@
 		},
 		onLoad() {},
 		methods: {
+			loadData(id){
+				this.log(id)
+			},
 			//加入商品 参数 goods:商品数据
 			joinGoods(goods) {
 				/*

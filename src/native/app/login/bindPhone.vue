@@ -6,26 +6,59 @@
 
 			<div class="inputBox bb">
 				<text class="phoneType">+86</text>
-				<input type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
+				<input type="text" v-model="phone" class="input" placeholder="Please enter phone" placeholder-color="#F2f2f2" />
 			</div>
-			<text class="singnIn" @click="next">Next step</text> 
+			<text class="singnIn" @click="send_verify_code">Next step</text> 
 		</scroller> 
+		<div v-if="loading" class="mask" @click="event=> event.stopPropagation()">
+				<floading class="indicator" color="#303030"> </floading>
+		</div>
 	</div>
 </template>
 
 <script>
 	const navigator = weex.requireModule("navigator");
+	const pref = weex.requireModule("storage")
+	import {
+		send_verify,
+		register,
+		verify_login
+	} from "../../mixin/ajax.js";
 	export default {
 		data() {
 			return {
-				passwd: "",
+				loading:false,
+				phone: "",
 				loginType: "email"
 			};
 		},
 
 		methods: {
+			send_verify_code() {
+				let that = this;
+				if (!that.phone) {
+					that.toast("Enter your phoneNumber");
+					return false
+				}
+				this.loading = true;
+				send_verify({
+					mobile: that.phone,
+					type: "5" // 绑定手机号
+				}, (res, flag) => {
+					this.loading = false;
+					if (flag) {
+						if (res.code == "200") {
+							that.push("root:app/login/vertifyCode.js",{phone:that.phone});
+						} else {
+							that.toast(res.message)
+						}
+					}
+			
+				})
+			
+			},
 			next() {
-				navigator.push("root:app/login/vertifyCode.js");
+				
 			}
 		}
 	};
@@ -190,5 +223,20 @@
 
 	.ccc {
 		color: #CCCCCC;
+	}
+	.mask {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		top: 0;
+		right: 0;
+		justify-content: center;
+		align-items: center;
+		background-color: rgba(255, 255, 255, .2);
+	}
+	
+	.indicator {
+		width: 100px;
+		height: 100px;
 	}
 </style>

@@ -3,7 +3,7 @@
 		<head title="My receipt address" @rightClick="add">
 			<text class=" addIcon" slot="right">&#xe601;</text>
 		</head>
-		<div class="contentList">
+		<scroller class="contentList">
 			<div class="listrow" v-for="(row,index) in addressList" :key="index" @click="select(row)" bubble="true">
 				<div class="left">
 					<text class="head"> {{row.name[0]}} </text>
@@ -22,7 +22,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</scroller>
 	</div>
 </template>
 <script>
@@ -41,6 +41,12 @@
 			this.getList();
 		},
 		methods: {
+			onLoad(parmars) {
+				this.log(parmars)
+				if (parmars && parmars.type) {
+					this.type = parmars.type;
+				}
+			},
 			getList() {
 				get_address_list({}, (res, flag) => {
 					if (flag) {
@@ -57,9 +63,15 @@
 				navigator.push("root:app/user/address/edit.js");
 			},
 			select(row) {
-				const selectAddress = new BroadcastChannel("selectAddress");
-				selectAddress.postMessage(row);
-				navigator.back();
+				if (this.type == "shop") {
+					const selectAddress = new BroadcastChannel("selectAddress");
+					selectAddress.postMessage(row);
+					navigator.back();
+				} else {
+					this.edit(row);
+				}
+
+
 			}
 		}
 	};

@@ -81,7 +81,7 @@ var asCore = {
 			});
 		});
 	},
-	/* 获取上下文 */
+	/* 获取用户信息 */
 	getContext: function(callback) {
 		pref.getItem('context', event => {
 			var value = event.data;
@@ -93,6 +93,7 @@ var asCore = {
 			if (callback) callback(value);
 		});
 	},
+	/* 设置用户信息 */
 	setContext: function(value) {
 		value = value ? JSON.stringify(value) : '';
 		pref.setItem('context', value);
@@ -135,7 +136,7 @@ var asCore = {
 				body: that.toParams(param)
 			},
 			function(ret) {
-				that.toast(ret);
+				// that.toast(ret);
 				if (!ret.ok) {
 					if (ret.status == 500) {
 						that.toast(ret.statusText);

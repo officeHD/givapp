@@ -16,9 +16,12 @@
 				<text class="iconfont inputIcon br">&#xe635;</text>
 				<input v-if="loginType=='account'" type="text" :value="password" class="input" placeholder="Enter password" @input="changep"
 				 placeholder-color="#c3c3c3" />
-				<input v-if="loginType=='phone'" type="text" class="input" placeholder="Enter verify" @input="changeV"
+				<input v-if="loginType=='phone'" type="text" :value="verify" class="input" placeholder="Enter verify" @input="changeV"
 				 placeholder-color="#c3c3c3" />
-				<text class="codeBtn" v-if="loginType=='phone'" @click="send_verify_code">Receive Sms code</text>
+				<text class="codeBtn" v-if="loginType=='phone'&&state">{{ currentTime }} s</text>
+				<text class="codeBtn" v-if="loginType=='phone'&&!state" @click="send_verify_code">Receive Sms code</text>
+
+
 			</div>
 			<text class="loginType" v-if="loginType=='account'" @click="loginType='phone'">Verification code login</text>
 			<text class="loginType" v-if="loginType=='phone'" @click="loginType='account'">Account login</text>
@@ -53,6 +56,10 @@
 				loading: false,
 				loginType: "account",
 				phone_number: "",
+				state: false, //是否开启倒计时
+				totalTime: 60, //总时间，单位秒
+				recordingTime: 0, //记录时间变量
+				currentTime: 0, //显示时间变量
 				verify: "",
 				account: "",
 				password: "",
@@ -90,9 +97,35 @@
 				this.verify = e.value
 			},
 			changePhone(e) {
-				console.log(e)
 				this.phone_number = e.value
-
+			},
+			checkingTime() {
+				let that = this;
+				//判断是否开启
+				if (this.state) {
+					//判断显示时间是否已到0，判断记录时间是否已到总时间
+					if (this.currentTime > 0 && this.recordingTime <= this.totalTime) {
+						//记录时间增加 1
+						this.recordingTime = this.recordingTime + 1;
+						//显示时间，用总时间 - 记录时间
+						this.currentTime = this.totalTime - this.recordingTime;
+						//1秒钟后，再次执行本方法
+						setTimeout(() => {
+							//定时器内，this指向外部，找不到vue的方法，所以，需要用that变量。
+							that.checkingTime();
+						}, 1000)
+					} else {
+						//时间已完成，还原相关变量
+						this.state = false; //关闭倒计时
+						this.recordingTime = 0; //记录时间为0
+						this.currentTime = this.totalTime; //显示时间为总时间
+					}
+				} else {
+					//倒计时未开启，初始化默认变量
+					this.state = false;
+					this.recordingTime = 0;
+					this.currentTime = this.totalTime;
+				}
 			},
 			send_verify_code() {
 				let that = this;
@@ -109,6 +142,12 @@
 					if (flag) {
 						if (res.code == "200") {
 							that.toast(res.message)
+							//把显示时间设为总时间
+							that.currentTime = this.totalTime;
+							//开始倒计时
+							that.state = true;
+							//执行倒计时
+							that.checkingTime();
 						} else {
 							that.toast(res.message)
 						}
@@ -118,6 +157,7 @@
 
 			},
 			login_pw() {
+				let that = this;
 				if (!that.account) {
 					that.toast("Enter your account");
 					return false
@@ -130,18 +170,22 @@
 				loginWithPw({
 					account: that.account,
 					password: that.password
-				}, res => {
+				}, (res, flag) => {
 					this.loading = false;
-					if (res.code == "200") {
+					if (flag) {
+						if (res.code == "200") {
 
-						this.loginSus(res)
+							this.loginSus(res)
 
-					} else {
-						that.toast(res.message)
+						} else {
+							that.toast(res.message)
+						}
 					}
+
 				})
 			},
 			login_ver() {
+				let that = this;
 				if (!that.phone_number) {
 					that.toast("Enter your phoneNumber");
 					return false
@@ -154,19 +198,20 @@
 				verify_login({
 					phone_number: that.phone_number,
 					verify: that.verify
-				}, res => {
+				}, (res, flag) => {
 					this.loading = false;
-					if (res.code == "200") {
-
-						this.loginSus(res)
-
-					} else {
-						that.toast(res.message)
+					if (flag) {
+						if (res.code == "200") {
+							this.loginSus(res)
+						} else {
+							that.toast(res.message)
+						}
 					}
+
 				})
 			},
 			//登录
-			login() {
+			login() { 
 				// 判断登录方式
 				if (this.loginType !== 'account') {
 					this.login_ver();

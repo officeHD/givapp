@@ -99,6 +99,7 @@
 		},
 		data() {
 			return {
+				users_id:"",
 				refreshing: false,
 				userData: {
 					headimgurl: "",
@@ -110,16 +111,18 @@
 		props: {},
 		created() {
 			updateImg.onmessage = this.updateImg;
-			this.getUserData();
+			// this.loadData();
 		},
 		methods: {
-			getUserData() {
+			loadData(users_id) {
+				this.users_id=users_id;
 				get_users_info({
-					users_id: ""
+					users_id: users_id
 				}, (res, flag) => {
 					if (flag) {
 						if (res.code == 200) {
 							this.userData = res.data;
+							asCore.setContext(res.data)
 						}
 					}
 				})
@@ -130,9 +133,7 @@
 				asCore.getBsessionid(bid => {
 					if (bid) {
 						asCore.getContext(context => {
-							s.user.name = context.name;
-							s.user.phone = context.phone;
-							s.user.face = context.face;
+							this.userData = context; 
 						});
 					}
 				});
@@ -140,7 +141,7 @@
 			},
 			/* 更新头像 */
 			updateImg(event) {
-				this.isLogin();
+				this.loadData(this.users_id);
 			},
 			onrefresh(event) {
 				var s = this;

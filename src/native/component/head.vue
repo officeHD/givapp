@@ -1,17 +1,17 @@
 <template>
 	<div class="layout" :style="{'background-color':bgcolor,'height':height+'px','padding-top':top}">
 		<div style="flex-direction: row;align-items: center;flex: 1; justify-content:space-between ">
-			<div class="backbg" v-if="!back&&hasleft" @click="letfClick" style="">
+			<div class="backbg" v-if="!back&&hasleft" @click="letfClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
 				<slot name="left"></slot>
 			</div>
-			<div class="leftIcon" v-if="back" @click="backTo">
+			<div class="leftIcon" v-if="back" @click="backTo" :style="{'height':height-top+'px','width':bgwidth+'px'}">
 				<!-- <image src="root:img/back.png" style="width: 70px;height: 70px;  "></image> -->
 				<text class="arricon" :style="{'color':titleColor}">&#xe603;</text>
 			</div>
 			<slot name="center"></slot>
 			<text v-if="title" style="text-align: center;font-size: 36;" :style="{'color':titleColor}" @click="titleClick">{{title}}</text>
 
-			<div class="backbg" @click="rightClick">
+			<div class="rightBg" @click="rightClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
 				<slot name="right"></slot>
 			</div>
 		</div>
@@ -20,6 +20,9 @@
 <script>
 	export default {
 		props: {
+			bgwidth:{
+				default:100
+			},
 			hasleft: {
 				default: true
 			},
@@ -115,15 +118,23 @@
 </script>
 <style scoped>
 	.backbg {
-		width: 120;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
+		flex-direction: row;
+	}
+	.rightBg{
+		flex-direction: row;
+		justify-content: flex-end;;
+		align-items: center;
+		padding-right: 20px;
+		/* background-color: #FFFFFF; */
 	}
 
 	.leftIcon {
-		width: 80px;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
+		flex-direction: row;
+		padding-left: 20px;
 	}
 
 	.arricon {

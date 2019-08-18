@@ -4,14 +4,14 @@
 		<div class="locationBox  bb   ">
 			<text class="meth_title">username</text>
 			<div class="meth_right ">
-				<text class="cityName">LILI</text>
-				 
+				<text class="cityName">{{user.user_name}}</text>
+
 			</div>
 		</div>
-		<div class="locationBox bb " @click="gonext('root:app/user/setting/changePh.js')">
+		<div class="locationBox bb " @click="gonext('root:app/user/setting/changePh.js',{phone:user.phone_number})">
 			<text class="meth_title">Modify mobile phone number</text>
 			<div class="meth_right ">
-				<text class="cityName">18156636363</text>
+				<text class="cityName">{{user.phone_number}}</text>
 				<text class="rightIcon">&#xe6a1;</text>
 			</div>
 		</div>
@@ -22,7 +22,7 @@
 				<text class="rightIcon">&#xe6a1;</text>
 			</div>
 		</div>
-		<div class="locationBox  ">
+		<div class="locationBox  " @click="unsubscribe()">
 			<text class="meth_title">unsubscribe</text>
 			<div class="meth_right ">
 				<text class="cityName"></text>
@@ -34,11 +34,27 @@
 
 <script>
 	const navigator = weex.requireModule("navigator");
+	import asCore from "../../../mixin/core";
 	export default {
+		data() {
+			return {
+				user:{
+					user_name:""
+				}
+			}
+		},
+		created() {
+			asCore.getContext(context => {
+				this.log(context)
+				this.user = context;
+			});
+		},
 		methods: {
-			gonext(url) {
-				 
-				navigator.push(url);
+			gonext(url,parmas) {
+				this.push(url,parmas);
+			},
+			unsubscribe() { 
+				this.toast("确定注销？")
 			}
 		}
 	}
@@ -48,14 +64,16 @@
 	.wrapper {
 		background-color: #F5F5F5;
 	}
-	.bb{
+
+	.bb {
 		border-bottom-style: solid;
 		border-bottom-color: #EDEDED;
 		border-bottom-width: 1px;
 	}
+
 	.locationBox {
 		width: 750px;
-		
+
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
@@ -80,8 +98,8 @@
 	}
 
 	.cityName {
-		 
-		
+
+
 		font-size: 28px;
 		color: #999999;
 		flex: 1;

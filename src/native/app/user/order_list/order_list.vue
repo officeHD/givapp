@@ -44,12 +44,13 @@
 	import {
 		get_order_co_list
 	} from "../../../mixin/ajax.js"
-
+	import asCore from "../../../mixin/core";
 	export default {
 		data() {
 			return {
 				tabCurrentIndex: 0,
 				page: 1,
+				userId: "",
 				navList: [{
 						hasMore: true,
 						state: 0,
@@ -57,70 +58,7 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					},
 					{
 						hasMore: true,
@@ -129,28 +67,7 @@
 						text: 'Unpaid',
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					},
 					{
 						hasMore: true,
@@ -159,28 +76,7 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					},
 					{
 						hasMore: true,
@@ -189,82 +85,26 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					}
 				]
 			};
 		},
-
+		created() {
+			
+		},
 		methods: {
 			onLoad(param) {
 				let type = 0;
 				if (param && param.type) {
 					this.tabCurrentIndex = param.type;
 				}
-				this.getOrderList()
+				asCore.getBsessionid(userId => {
+					this.log(userId)
+					this.userId = userId;
+					this.getOrderList()
+				});
+				
 
 			},
 			getOrderList(source) {
@@ -283,24 +123,27 @@
 				let type_2 = this.tabCurrentIndex == 2 ? 1 : this.tabCurrentIndex == 3 ? "2" : this.tabCurrentIndex == 4 ?
 					"3" : "";
 				get_order_co_list({
-					users_id: "",
+					users_id: this.userId,
 					type: type,
 					type_2: type_2,
 					page: navItem.page
-				}, res => {
+				}, (res, flag) => {
 					this.log(res)
-					if (navItem.page == 1) {
-						navItem.orderList = res.data.list;
-					}else{
-						navItem.orderList = navItem.orderList.concat(res.data.list);
+					if (flag) {
+						if (navItem.page == 1) {
+							navItem.orderList = res.data.list;
+						} else {
+							navItem.orderList = navItem.orderList.concat(res.data.list);
+						}
+						navItem.page++;
+						this.$set(navItem, 'total', res.data.total);
+						this.$set(navItem, 'loaded', true);
+						if (navItem.orderList.length == res.data.total) {
+							this.$set(navItem, 'hasMore', false);
+						}
+						navItem.loadingType = 'more';
 					}
-					navItem.page++;
-					this.$set(navItem, 'total', res.data.total);
-					this.$set(navItem, 'loaded', true);
-					if (navItem.orderList.length == res.data.total) {
-						this.$set(navItem, 'hasMore', false);
-					}
-					navItem.loadingType = 'more';
+
 				})
 			},
 			goDelivery() {

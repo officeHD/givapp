@@ -20,12 +20,15 @@
 				amount: 0
 			};
 		},
-		onLoad(e) {
-			this.amount = parseFloat(e.amount).toFixed(2);
+		created() {
+			let that=this;
+			setTimeout(()=>{
+				this.returnpage()
+			},4000)
 		},
 		methods: {
 			returnpage() {
-				navigator.backTo('A')
+				this.push("root:app/login/login.js")
 			}
 		}
 	};

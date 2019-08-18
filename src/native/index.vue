@@ -65,8 +65,11 @@
 					this.log("判断是否登录了");
 					navigator.push("root:app/login/login.js");
 				} else {
-
+					this.log("已登录获取数据");
 					that.$refs.messageCom.loadData(sessionid);
+					that.$refs.appcenterCom.loadData(sessionid);
+					that.$refs.maillistCom.loadData(sessionid);
+					that.$refs.myinfo.loadData(sessionid);
 					// 目前不需要自动登录
 					// asCore.autoLogin(() => {
 					// 	/* 加载context */

@@ -3,8 +3,8 @@
 		<head title="complete"></head>
 		<div class="icon">
 			<text class="iconfont">&#xe60d;</text>
-			<text class="status">You have changed your mobile phone number to 173****2735</text>
-			<text class="tips" >3s will automatically jump to the personal center page</text>
+			<text class="status">You have changed your mobile phone number to {{phone}}</text>
+			<text class="tips">3s will automatically jump to the personal center page</text>
 			<text class="btn">Back to home</text>
 
 		</div>
@@ -17,13 +17,19 @@
 	export default {
 		data() {
 			return {
+				phone:"",
 				amount: 0
 			};
 		},
-		onLoad(e) {
-			this.amount = parseFloat(e.amount).toFixed(2);
-		},
+		
 		methods: {
+			onLoad(parmar) {
+				this.phone = parmar.phone;
+				let that=this;
+				setTimeout(()=>{
+					that.returnpage();
+				},4000)
+			},
 			returnpage() {
 				navigator.backTo('A')
 			}
@@ -38,7 +44,7 @@
 		justify-content: flex-start;
 		padding-top: 120px;
 		align-items: center;
-		 
+
 	}
 
 	.iconfont {
@@ -52,7 +58,8 @@
 		font-size: 34px;
 		margin-top: 50px;
 	}
-	.tips{
+
+	.tips {
 		color: #666666;
 		width: 600px;
 		text-align: center;

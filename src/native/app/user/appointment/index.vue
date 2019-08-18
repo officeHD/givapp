@@ -1,28 +1,28 @@
 <template>
 	<div class="wrapper">
 		<head title="appointment time"> </head>
-		<div class="locationBox     " @click="changeAlert('show')">
+		<div class="locationBox" @click="changeAlert('show','take_time')">
 			<text class="meth_title">Visit time</text>
 			<div class="meth_right ">
-				<text class="cityName">9 a.m-11 a.m. on September 1</text>
+				<text class="cityName">{{user.take_time}}</text>
 				<text class="rightIcon">&#xe6a1;</text>
 			</div>
 		</div>
-		<div class="locationBox" @click="changeAlert('show')">
+		<div class="locationBox" @click="changeAlert('show','receive_time')">
 			<text class="meth_title">delivery time</text>
 			<div class="meth_right ">
-				<text class="cityName">{{selected.label}}</text>
+				<text class="cityName">{{user.receive_time}}</text>
 				<text class="rightIcon">&#xe6a1;</text>
 			</div>
 		</div>
 		<div :class="[showMask?'maskAlert':'hidemask']" @click="changeAlert('hide')"></div>
 		<!-- 邮费弹出框 -->
 		<div class="shopAlert" ref="shopAlert" @click="e=>e.stopPropagation()">
-			<text class="alertTop">Booking time</text>
+			<text class="alertTop">Visit time</text>
 			<scroller class="alertScroll">
-				<div class="selectLi" v-for="item in shippWay" :key="item.value" @click="selected=item">
-					<text class="liIcon" :class="[selected.value==item.value?'selected':'']">{{selected.value==item.value?"&#xe602;":"&#xe67f;"}}</text>
-					<text class="liTxt" :class="[selected.value==item.value?'selected':'']">{{item.label}}</text>
+				<div class="selectLi" v-for="item in shippWay" :key="item" @click="selectTime=item">
+					<text class="liIcon" :class="[selectTime==item?'selected':'']">{{selectTime==item?"&#xe602;":"&#xe67f;"}}</text>
+					<text class="liTxt" :class="[selectTime==item?'selected':'']">{{item}}</text>
 				</div>
 
 			</scroller>
@@ -34,50 +34,40 @@
 <script>
 	const navigator = weex.requireModule("navigator");
 	const animation = weex.requireModule("animation");
-	const selectAddress = new BroadcastChannel("selectAddress");
+	import asCore from "../../../mixin/core";
+	import { edit_users_info } from "../../../mixin/ajax.js";
 	export default {
 		data() {
 			return {
 				//是否显示遮罩层
 				showMask: false,
-				selected: {
-					value: "1",
-					label: "unlimited"
+				selectTime: "",
+				selectTYpe: "",
+				user: {
+					take_time: "",
+					receive_time: "",
 				},
-				shippWay: [{
-						value: "1",
-						label: "unlimited"
-					},
-					{
-						value: "2",
-						label: "Monday - Friday"
-					},
-					{
-						value: "3",
-						label: "Saturday and Sunday"
-					}
-				],
-				addressData: {
-					"id": 11,
-					"name": "LiLi",
-					"phone": "15145112434",
-					"province": "HuNan Province ",
-					"city": "ChangSha City",
-					"area": "Shushan District",
-					"address": " Huangshan Road, Science Avenue",
-					"is_default": 1,
-					"create_time": "2019-04-18 15:09:22"
-				},
-				sumPrice: "52.30",
-				goods_title: "AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed Skin and Single Shoulder Baggage Girls"
+				shippWay: ["13:00 - 14:00", "15:00 - 16:00", "After 20:00"]
+
 			};
 		},
 		created() {
-			selectAddress.onmessage = this.changeAddress;
+			asCore.getContext(userData => {
+				this.user = userData
+			})
 		},
 		methods: {
 
-			changeAlert(type) {
+			changeAlert(type, items) {
+				if (items) {
+					this.selectTYpe = items;
+					if (items === "take_time") {
+						this.selectTime = this.user.take_time
+					} else {
+						this.selectTime = this.user.receive_time
+					}
+				}
+
 				var testEl = this.$refs.shopAlert;
 				let transform = "100%";
 				this.showMask = false;
@@ -99,10 +89,28 @@
 				);
 			},
 			changeAddress(msg) {
-				// this.log(msg.data)
 				this.addressData = msg.data
 			},
 			confirm() {
+				if (this.selectTYpe == "take_time") {
+					this.user.take_time = this.selectTime;
+				} else {
+					this.user.receive_time = this.selectTime;
+				}
+				edit_users_info({
+					users_id: this.user.users_uuid,
+					take_time: this.user.take_time,
+					receive_time: this.user.receive_time,
+				}, (res, flag) => {
+					if (flag) {
+						// this.log(res)
+						this.toast(res.message)
+						if (res.code == 200) {
+							const updateImg = new BroadcastChannel("updateImg");
+							updateImg.postMessage("update");
+						}
+					}
+				})
 				this.changeAlert("hide")
 			},
 			setAddress() {
@@ -170,7 +178,7 @@
 		position: fixed;
 		left: 0;
 		right: 0;
-		bottom: 456px;
+		bottom: 500px;
 		top: 0;
 		/* background-color: rgba(0, 0, 0, 0); */
 	}
@@ -178,25 +186,28 @@
 	.shopAlert {
 		position: fixed;
 		left: 0;
-		bottom: -456px;
+		bottom: -500px;
 		width: 750px;
-		height: 456px;
+		height: 500px;
 		background-color: #ffffff;
 		border-top-left-radius: 20px;
 		border-top-right-radius: 20px;
 		align-items: center;
 		padding: 32px;
+		flex-direction: column;
 	}
 
 	.alertTop {
 		width: 686px;
-		text-align: left;
+		text-align: center;
 		padding-bottom: 32px;
 		font-size: 28px;
 		color: #333333;
+		height: 70px;
 	}
 
 	.alertScroll {
+		width: 686px;
 		flex: 1;
 	}
 
@@ -207,7 +218,6 @@
 		align-items: center;
 		justify-content: flex-start;
 		width: 750px;
-		;
 		padding-left: 32px;
 	}
 
@@ -229,10 +239,10 @@
 
 	.sureBtn {
 		width: 686px;
-		height: 80px;
-		line-height: 80px;
+		height: 74px;
+		line-height: 74px;
 		border-radius: 10px;
-		margin-bottom: 14px;
+		/* margin-bottom: 15px; */
 		background-color: #303030;
 		color: #fff;
 		text-align: center;

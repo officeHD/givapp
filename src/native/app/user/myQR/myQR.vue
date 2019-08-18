@@ -1,21 +1,22 @@
 <template>
 	<div class="wrapper">
-		<head title="Edit data"> </head>
+		<head title="Edit data" @rightClick="rightClick">
+			<text slot="right" class="complete">complete</text>
+		</head>
 		<div class="userImg" @click="changePhoto">
-			<image class="avator" :src="user.face" />
+			<image class="avator" :src="user.headimgurl" />
 			<text class="changeHead">Change heads</text>
 		</div>
 		<div class="locationBox  bb   ">
 			<text class="meth_title">Name</text>
 			<div class="meth_right ">
-				<text class="cityName">LILI</text>
-
+				<input class="inputName" type="text" :value="user.nickname" @input="onChange" />
 			</div>
 		</div>
 		<div class="locationBox bb " @click="changeAlert('show')">
 			<text class="meth_title">Gender</text>
 			<div class="meth_right ">
-				<text class="cityName">Woman</text>
+				<text class="cityName">{{user.sex=='1'?'Man':'Woman'}}</text>
 				<text class="rightIcon">&#xe6a1;</text>
 			</div>
 		</div>
@@ -25,17 +26,20 @@
 		<div class="shopAlert" ref="shopAlert" @click="e=>e.stopPropagation()">
 			<!-- <text class="alertTop">Shipping method</text> -->
 			<div class="alertScroll">
-				<div class="selectLi" @click="user.sex=0">
-					<text class="liIcon" :class="[user.sex=='0'?'selected':'']">{{user.sex=="0"?"&#xe602;":"&#xe67f;"}}</text>
-					<text class="liTxt" :class="[user.sex=='0'?'selected':'']">Man</text>
-				</div>
 				<div class="selectLi" @click="user.sex=1">
 					<text class="liIcon" :class="[user.sex=='1'?'selected':'']">{{user.sex=="1"?"&#xe602;":"&#xe67f;"}}</text>
-					<text class="liTxt" :class="[user.sex=='1'?'selected':'']">Woman</text>
+					<text class="liTxt" :class="[user.sex=='1'?'selected':'']">Man</text>
+				</div>
+				<div class="selectLi" @click="user.sex=2">
+					<text class="liIcon" :class="[user.sex=='2'?'selected':'']">{{user.sex=="2"?"&#xe602;":"&#xe67f;"}}</text>
+					<text class="liTxt" :class="[user.sex=='2'?'selected':'']">Woman</text>
 				</div>
 
 			</div>
 			<text class="sureBtn" @click="confirm">confirm</text>
+		</div>
+		<div v-if="loading" class="mask" @click="event=> event.stopPropagation()">
+			<floading class="indicator" color="#303030"> </floading>
 		</div>
 	</div>
 </template>
@@ -44,26 +48,39 @@
 	const navigator = weex.requireModule("navigator");
 	const animation = weex.requireModule("animation");
 	const photo = weex.requireModule("photo");
-	import { upload } from "../../../mixin/ajax.js"
+	import asCore from "../../../mixin/core";
+	import {
+		upload,
+		edit_users_info
+	} from "../../../mixin/ajax.js"
 
 
 	export default {
-		components: {
-
-		},
+		components: {},
 		data() {
 			return {
+				loading: false,
 				refreshing: false,
 				showMask: false,
 				user: {
 					sex: "0",
-					name: "JAck",
-					phone: "1321526262",
-					face: "root:img/user.jpg"
+					nickname: "",
+					phone: "",
+					headimgurl: "root:img/user.jpg",
+					users_uuid: ""
 				}
 			};
 		},
+		created() {
+			asCore.getContext(context => {
+			 
+				this.user = context;
+			});
+		},
 		methods: {
+			onChange(e) {
+				this.user.nickname = e.value
+			},
 			changeAlert(type) {
 				var testEl = this.$refs.shopAlert;
 				let transform = "100%";
@@ -92,30 +109,65 @@
 				var self = this;
 				photo.open(800, 800, "#000000", "#ffffff", "#ffffff", function(e) {
 					self.src = e.path;
-
 					upload({
 						type: 0,
 						file: e.path
-					}, res => {
-						if(res.code=="200"){
-							self.toast("上传成功")
-							self.user.face= e.path
+					}, (res) => {
+						self.log(res.res.data.file_url)
+						if (res.res.message) {
+							self.toast(res.res.message)
+						}
+						if (res.res.code == 200) {
+							self.user.headimgurl = res.res.data.file_url;
+
 						}
 					})
 				});
 
 
+			},
+			rightClick() {
+				this.log(this.user.nickname)
+				this.loading = true;
+				edit_users_info({
+					users_id: this.user.users_uuid,
+					headimgurl: this.user.headimgurl,
+					nickname: this.user.nickname,
+					sex: this.user.sex,
+				}, (res, flag) => {
+					this.loading = false;
+					if (flag) {
+						this.toast(res.message)
+						const updateImg = new BroadcastChannel("updateImg");
+						updateImg.postMessage("update");
+						this.log(res)
+					}
+
+				})
 			}
+
 		},
 	}
 </script>
 
 <style>
 	.userImg {
-		width: 750px;
+		width: 350px;
 		height: 300px;
+		margin-left: 200px;
 		justify-content: center;
 		align-items: center;
+	}
+
+	.complete {
+		color: #FFFFFF;
+		margin-right: 10px;
+		font-size: 24px;
+
+	}
+
+	.complete:active {
+		color: #EEEEEE;
 	}
 
 	.avator {
@@ -123,6 +175,23 @@
 		height: 159px;
 		border-radius: 80px;
 		margin-bottom: 30px;
+		background-color: #FFFFFF;
+	}
+
+	.mask {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		top: 0;
+		right: 0;
+		justify-content: center;
+		align-items: center;
+		background-color: rgba(255, 255, 255, .2);
+	}
+
+	.indicator {
+		width: 100px;
+		height: 100px;
 	}
 
 	.changeHead {
@@ -172,6 +241,15 @@
 		font-size: 28px;
 		color: #999999;
 		flex: 1;
+	}
+
+	.inputName {
+		margin-right: 30px;
+		font-size: 28px;
+		color: #999999;
+		flex: 1;
+		/* background-color: #02993C; */
+		height: 60px;
 	}
 
 	.rightIcon {

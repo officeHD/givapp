@@ -2,33 +2,71 @@
 	<div>
 		<image class="bgimg" src="root:img/bg.png"> </image>
 		<scroller class="wrapper">
-			<text class="emailtitle">Bind phone number</text>
-
-			<div class="inputBox bb" v-if="loginType=='email'">
-
-				<input type="text" class="input" placeholder="Please enter email" placeholder-color="#F2f2f2" />
+			<text class="emailtitle">Verification code</text>
+			<div class="inputBox bb">
+				<input type="text" v-model="vertify" class="input" maxlength="6" placeholder="Please enter vertify"
+				 placeholder-color="#F2f2f2" />
 			</div>
-
-
 			<text class="singnIn" @click="next">Next step</text>
-
 		</scroller>
-
+		<div v-if="loading" class="mask" @click="event=> event.stopPropagation()">
+			<floading class="indicator" color="#303030"> </floading>
+		</div>
 	</div>
 </template>
 
 <script>
+	const pref = weex.requireModule("storage")
 	const navigator = weex.requireModule("navigator");
+	import {
+		bind_mobile
+	} from "../../mixin/ajax.js";
 	export default {
 		data() {
 			return {
-				passwd: "",
+				loading: false,
+				vertify: "",
 				loginType: "email"
 			};
-		}, 
+		},
+		created() {
+			let that = this;
+			pref.getItem("users_id", res => {
+				if (res.result == "success") {
+					that.users_id = res.data;
+				}
+			})
+		},
 		methods: {
+			onLoad(parmars) {
+				this.log(parmars)
+				if (parmars && parmars.phone) {
+					this.phone = parmars.phone;
+				}
+			},
 			next() {
-				navigator.backTo("A");
+				if (!this.vertify) {
+					this.toast("Enter vertify");
+					return false;
+				}
+				this.loading = true;
+				bind_mobile({
+					users_id: this.users_id,
+					phone_number: this.phone,
+					verify: this.vertify
+				}, (res, flag) => {
+					this.loading = false;
+					this.log(res)
+					if (flag) {
+						this.toast(res.message);
+						if (res.code == 200) {
+							setTimeout(() => {
+								navigator.backTo("A");
+							}, 1000)
+						}
+					}
+				})
+
 			}
 		}
 	};
@@ -157,6 +195,10 @@
 		margin-top: 102px;
 	}
 
+	.singnIn:active {
+		background-color: #f3f3f3;
+	}
+
 	.rowBox {
 		flex-direction: row;
 		align-items: center;
@@ -185,5 +227,21 @@
 
 	.ccc {
 		color: #CCCCCC;
+	}
+
+	.mask {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		top: 0;
+		right: 0;
+		justify-content: center;
+		align-items: center;
+		background-color: rgba(255, 255, 255, .2);
+	}
+
+	.indicator {
+		width: 100px;
+		height: 100px;
 	}
 </style>

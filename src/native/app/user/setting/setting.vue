@@ -1,19 +1,20 @@
 <template>
 	<div class="wrapper">
 		<head title="Setting"> </head>
-		<div class="locationBox "  @click="gonext('root:app/user/address/address.js')">
+		<div class="locationBox " @click="gonext('root:app/user/address/address.js')">
 			<text class="meth_title">My receipt address</text>
 			<text class="rightIcon">&#xe6a1;</text>
 		</div>
-		<div class="locationBox row jbew atop ">
+		<div class="locationBox row jbew atop " @click="gonext('root:app/user/address/return.js')">
 			<text class="meth_title">return address</text>
 			<text class="rightIcon">&#xe6a1;</text>
 		</div>
-		<div class="locationBox row jbew atop "   @click="gonext('root:app/user/setting/account.js')">
+		<div class="locationBox row jbew atop " @click="gonext('root:app/user/setting/account.js')">
 			<text class="meth_title">Accounts and Security</text>
 			<text class="rightIcon">&#xe6a1;</text>
 		</div>
-		
+		<text class="btn" @click="logout">Sign out</text>
+
 	</div>
 </template>
 
@@ -21,13 +22,14 @@
 	const navigator = weex.requireModule("navigator");
 	export default {
 		methods: {
-			gonext(url) {
-				 
-				navigator.push(url);
+			logout() {
+				this.log("logout")
+			},
+			gonext(url, parmar) { 
+				this.push(url, parmar);
 			}
 		}
 	}
-	
 </script>
 
 <style>
@@ -64,7 +66,7 @@
 	}
 
 	.cityName {
-		 
+
 		margin-right: 30px;
 		font-size: 28px;
 		color: #999999;
@@ -75,5 +77,19 @@
 		font-family: iconfont;
 		font-size: 26px;
 		color: #999;
+	}
+
+	.btn {
+		width: 686px;
+		left: 32px;
+		position: fixed;
+		bottom: 30px;
+		height: 80px;
+		line-height: 80px;
+		border-radius: 8px;
+		background-color: #303030;
+		color: #fff;
+		text-align: center;
+		font-size: 30px;
 	}
 </style>
