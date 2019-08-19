@@ -78,7 +78,7 @@
 								<div class="reitem" v-for="item in shopList" :key="item">
 									<image class="goodsImg" :src="item.thumb" @click="gonext('root:app/goods/goods.js',{id:item.id})" />
 									<view class="contentBox">
-										<text class="goodsTitle">{{item.title}}</text>
+										<text class="goodsTitle2">{{item.title}}</text>
 										<view class="priceInfo">
 											<view class="leftInfo">
 												<text class="symbol">$</text>
@@ -121,7 +121,7 @@
 	export default {
 		data() {
 			return {
-				users_id:"",
+				users_id: "",
 				refreshing: false,
 				bannerList: [1, 2], //banner图
 				tabSection: [{
@@ -176,7 +176,7 @@
 			},
 			loadData(users_id) {
 				let that = this;
-				that.users_id=users_id;
+				that.users_id = users_id;
 				get_banner_list({
 					type: 1
 				}, (res, flag) => {
@@ -199,7 +199,7 @@
 					status: "",
 					page: 1,
 				}, (res, flag) => {
-					
+
 					if (flag) {
 						if (res.code == "200") {
 							that.secondList = res.data.list;
@@ -218,7 +218,7 @@
 					page: 1,
 				}, (res, flag) => {
 					if (flag) {
-						
+
 						if (res.code == "200") {
 
 							that.shopList = res.data.list;
@@ -407,6 +407,7 @@
 	}
 
 	.tips {
+
 		color: #666;
 	}
 
@@ -680,12 +681,12 @@
 	}
 
 	.reitem {
-		height: 500px;
+		height: 516px;
 		margin-top: 10px;
 		margin-bottom: 10px;
 		background-color: #fff;
 		border-radius: 10px;
-		justify-content: space-between;
+		/* justify-content: space-between; */
 	}
 
 	.goodsImg {
@@ -695,12 +696,26 @@
 
 	.contentBox {
 		width: 336px;
-		padding: 10px 20px;
+		padding: 0 20px;
 	}
 
 	.goodsTitle {
-		font-size: 28px;
-		color: #000;
+		font-size: 20px;
+		height: 56px;
+		line-height: 28px;
+		margin-top: 12px;
+		color: #1E1E1E;
+		text-overflow: ellipsis;
+		lines: 2;
+		word-wrap: break-word;
+	}
+
+	.goodsTitle2 {
+		font-size: 26px;
+		height: 74px;
+		line-height: 37px;
+		margin-top: 16px;
+		color: #1E1E1E;
 		text-overflow: ellipsis;
 		lines: 2;
 		word-wrap: break-word;

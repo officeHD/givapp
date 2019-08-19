@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-		<head  :title="title"></head>
+		<head :title="title"></head>
 		<div class="content">
 			<div class="row">
 				<text class="nominal">Name</text>
@@ -45,7 +45,7 @@
 		</div>
 		<!-- <mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValue" @onCancel="onCancel" @onConfirm="onConfirm"></mpvue-city-picker> -->
 	</div>
-</template> 
+</template>
 
 <script>
 	// import mpvueCityPicker from "root:component/mpvue-citypicker/mpvueCityPicker.vue";

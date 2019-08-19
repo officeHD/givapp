@@ -7,7 +7,7 @@
 		</scroller>
 		<slider class="slider" @change="slideChange" :index="tabCurrentIndex">
 			<scroller class="listScroll" v-for="(item, index) in navList">
-				<div v-for="(list, index) in item.orderList" class="listItem" @click="goDetail">
+				<div v-if="item.orderList.length>0" v-for="(list, index) in item.orderList" class="listItem" @click="goDetail">
 					<div class="titList">
 						<div class="titLeft">
 							<text class="titname">{{list.nickname}}</text>
@@ -25,16 +25,29 @@
 						<text class="symbol">$</text>
 						<text class="money">{{list.pay_price}}</text>
 					</div>
-					<div class="actionBox">
+					<!-- type=1 2 	未支付 -->
+					<div class="actionBox" v-if="list.type==1||list.type==2">
+						<text class="actionItem">Cancel order</text>
+					</div>
+					<!-- type=3  	已支付 -->
+					<!-- type_2=1  	已支付 未发货-->
+					<div class="actionBox" v-if="list.type_2==2">
 						<text class="actionItem" @click="goDelivery">Delivery tracking</text>
 						<text class="actionItem">Item received</text>
 						<text class="actionItem" @click="refund">refund</text>
-
-
+						<!-- type_2=3   已收货 -->
 					</div>
-
+					<!-- type_2=2  	已发货 -->
+					<!-- type_2=3   已收货 -->
+					<div class="actionBox" v-if="list.type_2==3">
+						<text class="actionItem">Check logistics</text>
+						<text class="actionItem">valuation</text>
+					</div>
 				</div>
+				 
+				<empty v-if="item.orderList.length==0" tips="Your order is empty"></empty>
 			</scroller>
+			
 		</slider>
 	</div>
 </template>
@@ -54,7 +67,7 @@
 				navList: [{
 						hasMore: true,
 						state: 0,
-						text: 'orders',
+						text: 'All',
 						page: 1,
 						loadingType: 'more',
 						total: 0,
@@ -91,7 +104,7 @@
 			};
 		},
 		created() {
-			
+
 		},
 		methods: {
 			onLoad(param) {
@@ -104,7 +117,7 @@
 					this.userId = userId;
 					this.getOrderList()
 				});
-				
+
 
 			},
 			getOrderList(source) {
@@ -218,6 +231,7 @@
 
 	.slider {
 		flex: 1;
+		position: relative;
 	}
 
 	.listScroll {

@@ -136,9 +136,12 @@
 		get_goods_spec,
 		get_goods_option
 	} from "../../mixin/ajax.js";
+	import asCore from "../../mixin/core";
 	export default {
 		data() {
 			return {
+				goodId: "",
+				userId: "",
 				//是否显示遮罩层
 				showMask: false,
 				number: 1,
@@ -152,40 +155,15 @@
 				shareClass: "", //分享弹窗css类，控制开关动画
 				// 商品信息
 				goodInfo: {
-					thumb_url: "",
-					subtitle:"",
-				},
-				goodsData: {
-					id: 1,
-					name: "",
-					price: "52.3",
-					discount: "80%",
-					number: 1,
-					service: [{
-							name: "正品保证",
-							description: "此商品官方保证为正品"
-						},
-						{
-							name: "极速退款",
-							description: "此商品享受退货极速退款服务"
-						},
-						{
-							name: "7天退换",
-							description: "此商品享受7天无理由退换服务"
-						}
-					],
-					spec: ["XS", "S", "M", "L", "XL", "XXL"],
-					comment: {
-						number: 102,
-						userface: "../../static/img/face.jpg",
-						username: "大黑哥",
-						content: "很不错，之前买了很多次了，很好看，能放很久，和图片色差不大，值得购买！"
-					}
+					thumb_url: "root:img/user.jpg",
+					subtitle: "",
+					price: "1",
+					old_price: "1"
 				},
 				selectSpec: null, //选中规格
 				isKeep: false, //收藏
 				//商品描述html
-				descriptionStr: '<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>'
+				descriptionStr: ''
 			};
 		},
 		beforeCreate() {
@@ -194,11 +172,22 @@
 		},
 		mounted() {},
 		methods: {
-			onLoad(parmar) {
-				this.log(parmar.id)
+			onLoad(param) {
+
+				if (param && param.id) {
+					this.goodId = param.id;
+				}
+				asCore.getBsessionid(userId => {
+					this.log(userId)
+					this.userId = userId;
+					this.getGoodInfo()
+				});
+
+			},
+			getGoodInfo() {
 				get_goods_info({
-					users_id: "",
-					id: parmar.id
+					users_id: this.userId,
+					id: this.goodId
 				}, (res, flag) => {
 					if (flag) {
 						this.log(res)

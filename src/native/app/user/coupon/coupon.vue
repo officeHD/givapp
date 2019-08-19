@@ -1,8 +1,8 @@
 <template>
 	<div class="wrapper">
 		<head title="Coupon"> </head>
-		<text class="tis" v-if="couponValidList.length==0"> 没有数据~ </text>
-		<list class="sub-list">
+		<empty v-if="couponValidList.length==0" tips="Your vouchers is empty"></empty>
+		<list class="sub-list" v-if="couponValidList.length>0">
 			<cell class="rowcell" v-for="(row,index) in couponValidList" :key="index">
 				<div class="cellBox">
 					<div class="boxleft">
@@ -17,27 +17,34 @@
 				</div>
 			</cell>
 		</list>
-
+		
 	</div>
 </template>
 
 <script>
 	import {get_users_coupon_list} from "../../../mixin/ajax"
+	import asCore from "../../../mixin/core";
 	export default {
 		data() {
 			return {
 				couponValidList: [],
 				headerTop: 0,
+				userId:""
 
 			};
 		},
 		created() {
-			this.getList();
+			
+			asCore.getBsessionid(userId => {
+				this.log(userId)
+				this.userId = userId;
+				this.getList();
+			});
 		},
 		methods: {
 			getList(){
 				get_users_coupon_list({
-					users_id:"",
+					users_id:this.userId,
 					status:"1" //状态 1 未使用 2 已使用
 				},(res,flag)=>{
 					this.log(res)

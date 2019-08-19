@@ -4,6 +4,7 @@ let head = require('../component/head.vue')
 let button = require('../component/button.vue')
 let page = require('../component/page.vue')
 let tabnav = require('../component/tabnav.vue')
+let empty = require('../component/empty.vue')
 
 
 Mixins.install = (Vue, options) => {
@@ -13,7 +14,8 @@ Mixins.install = (Vue, options) => {
 			head,
 			button,
 			page,
-			tabnav 
+			tabnav,
+			empty
 		},
 		data() {
 			return {
