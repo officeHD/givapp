@@ -6,10 +6,10 @@
 				<text class="detaTit">Delivery company</text>
 				<text class="detaInf">{{ShipperCode}}</text>
 			</div>
-			<div class="itemLeft mt20">
+			<!-- <div class="itemLeft mt20">
 				<text class="detaTit">OrderCode</text>
 				<text class="detaInf active">{{OrderCode}}</text>
-			</div>
+			</div> -->
 		</div>
 		<!-- 物流信息 -->
 		<div class="wuliuMes">
@@ -50,17 +50,26 @@
 			}
 		},
 		created() {
+			onLoad(param) {
+				let type = 0;
+				if (param && param.shipper_code) {
+					this.ShipperCode = param.shipper_code;
+					this.LogisticCode = param.logistic_code;
+				}
+				asCore.getBsessionid(userId => {
+					this.userId = userId;
+					this.get_order_express()
+				});
+			},
 			get_order_express({
-				shipper_code: "", //物流公司简称 例：YTO
-				logistic_code: "" //快递号 例：12345678
+				shipper_code: this.ShipperCode, //物流公司简称 例：YTO
+				logistic_code: this.LogisticCode //快递号 例：12345678
 			}, (res, flag) => {
 				this.log(res)
 				if (flag) {
-					this.ShipperCode = res.ShipperCode; //	快递公司编码
-					this.LogisticCode = res.LogisticCode; //物流运单号
-					this.OrderCode = res.OrderCode; //物流运单号
-					
-					
+					// this.ShipperCode = res.ShipperCode; //	快递公司编码
+					// this.LogisticCode = res.LogisticCode; //物流运单号
+					this.OrderCode = res.OrderCode; //物流运单号 
 					this.Traces = res.Traces
 				}
 			})

@@ -23,14 +23,12 @@
 			<text class="headdes"> </text>
 		</div>
 		<div class="section1">
-			<div class="shipNow">
+			<div class="shipNow" v-if="Traces.length>0" @click="gonext('root:app/user/order_list/delivery',{shipper_code:goods_info.shipper_code,logistic_code:goods_info.logistic_code})">
 				<div class="wuliu">
-					<text class="location">[Shanghai] Express has been sent from Shanghai center, ready to send to Hefei Transit
-						Department.</text>
-					<text class="time">2018-03-15 06:32</text>
+					<text class="location">{{Traces[0].AcceptStation}}</text>
+					<text class="time">{{Traces[0].AcceptTime}}</text>
 				</div>
 				<text class="iconfont">&#xe6a1;</text>
-
 			</div>
 			<div class="user">
 				<text class="userName">{{goods_info.name}}</text>
@@ -38,7 +36,7 @@
 			</div>
 			<text class="address">{{goods_info.address}}</text>
 		</div>
-		<div class="section2" v-for="item in goods_info.list"> 
+		<div class="section2" v-for="item in goods_info.list">
 			<div class="order_top">
 				<image class="googPic" :src="item.thumb"></image>
 				<div class="goods_info">
@@ -50,19 +48,19 @@
 				</div>
 			</div>
 			<div class="priceBox">
-				
-				
-				
+
+
+
 			</div>
 
 		</div>
 		<div class="priceBox">
-			
+
 			<div class="orderPrice">
 				<text class="titPrice">Total price</text>
 				<text class="price">{{goods_info.total_price}}</text>
 			</div>
-			
+
 			<div class="orderPrice">
 				<text class="titPrice">Coupon price</text>
 				<text class="price">-{{goods_info.coupon_price}}</text>
@@ -119,11 +117,13 @@
 	import asCore from "../../../mixin/core";
 	import {
 		upload,
-		get_order_co_info
+		get_order_co_info,
+		get_order_express
 	} from "../../../mixin/ajax.js"
 	export default {
 		data() {
 			return {
+				Traces: [],
 				goods_info: {
 					"id": 300,
 					"take_address": "",
@@ -177,13 +177,26 @@
 					users_id: this.userId,
 					co_order_id: this.orderId,
 				}, (res, flag) => {
-					this.log(res)
+					// this.log(res)
 					if (flag) {
 						if (res.code == 200) {
 							this.goods_info = res.data;
+							this.getExpress(res.data.shipper_code, res.data.logistic_code)
+						}
+					}
+				})
+			},
+			getExpress(shipper_code, logistic_code) {
 
-
-
+				get_order_express({
+					shipper_code: shipper_code,
+					logistic_code: logistic_code,
+				}, (res, flag) => {
+					if (flag) {
+						if (res.code == 200) {
+							this.Traces = res.Traces
+						} else {
+							this.Traces = []
 						}
 					}
 				})
