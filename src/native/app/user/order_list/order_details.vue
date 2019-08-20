@@ -1,9 +1,26 @@
 <template>
 	<div class="wrapper">
 		<head title="Order details"></head>
-		<div class="tophead">
+		<div class="tophead" v-if="goods_info.type==1||goods_info.type==2">
+			<!-- type=1 2 	未支付 -->
+			<!-- type=3  	已支付 -->
+			<!-- type_2=1  	已支付 未发货-->
+			<!-- type_2=2  	已发货 -->
+			<!-- type_2=3   已收货 -->
 			<text class="headTit">Payment pending</text>
 			<text class="headdes">payment will be cancelled in 2 hours and 19 minutes</text>
+		</div>
+		<div class="tophead" v-if=" goods_info.type_2==1">
+			<text class="headTit">Waiting for shipping</text>
+			<text class="headdes"> </text>
+		</div>
+		<div class="tophead" v-if=" goods_info.type_2==2">
+			<text class="headTit">Waiting for delivery</text>
+			<text class="headdes">Seller has shipped</text>
+		</div>
+		<div class="tophead" v-if=" goods_info.type_2==3">
+			<text class="headTit">Waiting for shipping</text>
+			<text class="headdes"> </text>
 		</div>
 		<div class="section1">
 			<div class="shipNow">
@@ -16,60 +33,69 @@
 
 			</div>
 			<div class="user">
-				<text class="userName">LILI</text>
-				<text class="userPhone">86-18355091556</text>
+				<text class="userName">{{goods_info.name}}</text>
+				<text class="userPhone">{{goods_info.phone }}</text>
 			</div>
-			<text class="address">Huangshan Road, Hefei High-tech Zone, Anhui Province</text>
+			<text class="address">{{goods_info.address}}</text>
 		</div>
-		<div class="section2">
-
+		<div class="section2" v-for="item in goods_info.list"> 
 			<div class="order_top">
-				<image class="googPic" src="root:img/goods.png"></image>
+				<image class="googPic" :src="item.thumb"></image>
 				<div class="goods_info">
-					<text class="goods_title"> AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed
-						Skin and Single Shoulder Baggage Girls</text>
+					<text class="goods_title"> {{item.title}}</text>
 					<div class="goods_spec">
-						<text class="priceInfo"> red </text>
-						<text class="specInfo"> X 1 </text>
+						<text class="priceInfo"> {{item.goods_option}} </text>
+						<text class="specInfo"> X {{item.number}} </text>
 					</div>
 				</div>
 			</div>
 			<div class="priceBox">
-				<div class="orderPrice">
-					<text class="titPrice">Item Price</text>
-					<text class="price">$52.3</text>
-				</div>
-				<div class="orderPrice">
-					<text class="titPrice">GIV delivery</text>
-					<text class="price">$0.00</text>
-				</div>
-				<div class="orderPrice">
-					<text class="titPrice">Total price</text>
-					<text class="realprice">$ 52.3</text>
-				</div>
+				
+				
+				
 			</div>
 
+		</div>
+		<div class="priceBox">
+			
+			<div class="orderPrice">
+				<text class="titPrice">Total price</text>
+				<text class="price">{{goods_info.total_price}}</text>
+			</div>
+			
+			<div class="orderPrice">
+				<text class="titPrice">Coupon price</text>
+				<text class="price">-{{goods_info.coupon_price}}</text>
+			</div>
+			<div class="orderPrice">
+				<text class="titPrice">GIV delivery</text>
+				<text class="price">{{goods_info.total_postage}}</text>
+			</div>
+			<div class="orderPrice">
+				<text class="titPrice">Pay Price</text>
+				<text class=" realprice">{{goods_info.pay_price}}</text>
+			</div>
 		</div>
 		<div class="section1">
 			<text class="deTit">Order details</text>
 			<div class="detailItem">
 				<div class="itemLeft">
 					<text class="detaTit">Order Number</text>
-					<text class="detaInf">75298783027290729679</text>
+					<text class="detaInf">{{goods_info.id}}</text>
 				</div>
 				<text class="copy">copy</text>
 			</div>
 			<div class="detailItem">
 				<div class="itemLeft">
 					<text class="detaTit">Creation time</text>
-					<text class="detaInf">June 18, 2019</text>
+					<text class="detaInf">{{goods_info.create_time }}</text>
 				</div>
 				<text class=""></text>
 			</div>
 			<div class="detailItem">
 				<div class="itemLeft">
 					<text class="detaTit">Payment time</text>
-					<text class="detaInf">09:45 on April 15, 2019</text>
+					<text class="detaInf">{{ goods_info.pay_time}}</text>
 				</div>
 				<text class=""></text>
 			</div>
@@ -90,8 +116,78 @@
 </template>
 
 <script>
+	import asCore from "../../../mixin/core";
+	import {
+		upload,
+		get_order_co_info
+	} from "../../../mixin/ajax.js"
 	export default {
+		data() {
+			return {
+				goods_info: {
+					"id": 300,
+					"take_address": "",
+					"logistic": "2",
+					"send_time": "2019-07-30 18:04:04",
+					"pay_price": "15.50",
+					"type": 3,
+					"address_id": 3,
+					"total_price": "10.50",
+					"number": 1,
+					"address": "安徽 黄山路",
+					"logistic_code": "2",
+					"pay_time": "2019-07-16 14:09:50",
+					"name": "tll-2",
+					"total_postage": "6.00",
+					"co_id": "8a572af162f643d0900391dc4a11599d",
+					"create_time": "2019-07-12 17:06:23",
+					"end_time": "1563243937",
+					"coupon_price": "1.00",
+					"phone": "13635697675",
+					"take_type": 2,
+					"shipper_code": "2",
+					"type_2": 2,
+					"list": [{
+						"number": 1,
+						"option_id": 0,
+						"thumb": "",
+						"price": "10.50",
+						"title": "用户二手商品",
+						"goods_option": "",
+						"id": 133,
+						"total_price": "10.50"
+					}]
+				}
+			}
+		},
 		methods: {
+			onLoad(param) {
+				let type = 0;
+				if (param && param.id) {
+					this.orderId = param.id;
+				}
+				asCore.getBsessionid(userId => {
+					this.userId = userId;
+					this.getOrderDetail()
+				});
+			},
+			getOrderDetail() {
+
+				get_order_co_info({
+					users_id: this.userId,
+					co_order_id: this.orderId,
+				}, (res, flag) => {
+					this.log(res)
+					if (flag) {
+						if (res.code == 200) {
+							this.goods_info = res.data;
+
+
+
+						}
+					}
+				})
+			},
 			gonext(url, parma) {
 				this.push(url, parma)
 
@@ -198,6 +294,7 @@
 	.googPic {
 		width: 116px;
 		height: 116px;
+		background-color: #F5F5F5;
 	}
 
 	.goods_info {

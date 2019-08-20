@@ -7,10 +7,10 @@
 		</scroller>
 		<slider class="slider" @change="slideChange" :index="tabCurrentIndex">
 			<scroller class="listScroll" v-for="(item, index) in navList">
-				<div v-if="item.orderList.length>0" v-for="(list, index) in item.orderList" class="listItem" @click="goDetail">
+				<div v-if="item.orderList.length>0" v-for="(list, index) in item.orderList" class="listItem" @click="goUrl('root:app/user/order_list/order_details.js',{id:list.id})">
 					<div class="titList">
 						<div class="titLeft">
-							<text class="titname">{{list.nickname}}</text>
+							<text class="titname">{{list.nickname}}</text> 
 							<text class="iconfont titIcon">&#xe6a1;</text>
 						</div>
 						<text class="status">{{ list.type==2?"Unpaid":list.type_2==1?"Waiting for shipping":list.type_2==2?"Waiting for Shipped":"Shipped" }}</text>
@@ -32,22 +32,24 @@
 					<!-- type=3  	已支付 -->
 					<!-- type_2=1  	已支付 未发货-->
 					<div class="actionBox" v-if="list.type_2==2">
-						<text class="actionItem" @click="goDelivery">Delivery tracking</text>
-						<text class="actionItem">Item received</text>
-						<text class="actionItem" @click="refund">refund</text>
+						<text class="actionItem" @click="goUrl('root:app/user/order_list/order_details.js',{id:list.id})">Delivery tracking</text>
+						<text class="actionItem" @click="received(list.id)">Item received</text>
+						<text class="actionItem" @click="refund(list.id)">refund</text>
 						<!-- type_2=3   已收货 -->
 					</div>
 					<!-- type_2=2  	已发货 -->
 					<!-- type_2=3   已收货 -->
 					<div class="actionBox" v-if="list.type_2==3">
 						<text class="actionItem">Check logistics</text>
-						<text class="actionItem">valuation</text>
+						<!-- 评价 -->
+						<text class="actionItem" @click="goUrl('root:app/user/order_list/evaluation.js',{id:list.id})">valuation</text>
+
 					</div>
 				</div>
-				 
+
 				<empty v-if="item.orderList.length==0" tips="Your order is empty"></empty>
 			</scroller>
-			
+
 		</slider>
 	</div>
 </template>
@@ -174,6 +176,9 @@
 				this.push('root:app/user/order_list/refund.js', {
 					name: "ssss"
 				})
+			},
+			goUrl(url, parmar) {
+				this.push(url, parmar)
 			},
 
 			tabClick(index) {

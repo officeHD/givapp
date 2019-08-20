@@ -41,6 +41,13 @@ Mixins.install = (Vue, options) => {
 				else
 					this.navigator.pushParam(url, param)
 			},
+			back(param) {
+				if (!param)
+					this.navigator.back()
+				else
+					this.navigator.backFull(param)
+			},
+
 			getScreenHeight() {
 				return 750 / weex.config.env.deviceWidth * weex.config.env.deviceHeight
 			},
