@@ -1,125 +1,88 @@
 <template>
 	<div>
+		<head title=""></head>
 		<scroller class="scroller">
 			<div class="imgDemo">
-				<!-- 商品主图轮播 -->
-				<div class="swiper-box">
-					<slider class="slider" interval="3000" auto-play="true">
-						<div class="frame" v-for="(item,index) in goodInfo.thumb_url.split(',')" :key="index">
-							<image class="itemImg" :src="item"></image>
+				<!-- 用户信息 -->
+				<div class="userInfo">
+					<image class="userAvator" :src="goodInfo.headimgurl"></image>
+					<div class="userCenter">
+						<div class="row acenter">
+							<text class="userName">{{goodInfo.nickname}}</text>
+							<text class="credit">Excellent credit</text>
 						</div>
-						<indicator></indicator>
-					</slider>
+						<div class="row">
+							<text class="row_title">ust released in Hefei</text>
+							<!-- <text class="row_num">50</text> -->
+						</div>
+					</div>
+					<!-- <div class="userRight">
+						<text class="stroll">stroll</text>
+						<text class="iconfont strollIcon">&#xe6a1;</text>
+					</div> -->
 				</div>
 				<!-- 标题 价格 -->
 				<div class="info-box goods_top">
 					<div class="top_left">
-						<text class="priceSymbol">￥</text>
+						<text class="priceSymbol">$</text>
 						<text class="goods-info-price">{{goodInfo.price}}</text>
-						<text class="goods-old_price">{{goodInfo.old_price}} <!-- NEW --></text>
-						<text class="goods_cul">Pinkage</text>
+
 					</div>
-					<div class="collections" @click="keep">
+					<!-- <div class="collections" @click="keep">
 						<text class="iconfont isKeep" v-if="isKeep">&#xe653;</text>
 						<text class="iconfont collecIcon" v-else>&#xe7b9;</text>
-
+				
+					</div> -->
+				</div>
+				<text class="goods-info-title"> {{goodInfo.title}} </text>
+				<!-- 商品主图轮播 -->
+				<div class="goods-detail">
+					<image v-for="(item,index) in goodInfo.thumb_url.split(',')" :key="index" class="itemImg" :src="item"></image>
+				</div> 
+			</div> 
+			<div class="moreRelate">
+				<text class="RelatedT">Related</text>
+				<div class="recontent">
+					<div class="reitem" v-for="item in shopList" :key="item">
+						<image class="goodsImga" :src="item.thumb" @click="gonext('root:app/goods/goods.js',{id:item.id})" />
+						<view class="contentBox">
+							<text class="goodsTitle2">{{item.title}}</text>
+							<view class="priceInfo">
+								<view class="leftInfo">
+									<text class="symbol">$</text>
+									<text class="money">{{item.price}}</text>
+									<!-- <text class="reduce">80%</text> -->
+									<!-- <text class="shopType">NEW</text> -->
+								</view>
+								<view class="leftInfo">
+									<text class="iconfont shopIcon">&#xe64c;</text>
+									<text class="iconfont shopIcon">&#xe634;</text>
+									<text class="iconfont shopIcon">&#xe607;</text>
+								</view>
+							</view> 
+						</view>
 					</div>
-				</div>
-				<text class="goods-info-title"> {{goodInfo.subtitle}} </text>
-				<div class="delivery">
-					<text class="de_title">GIV delivery</text>
-					<text class="de_cont">Pinkage</text>
-				</div>
-				<div class="delivery mt20 h100">
-					<text class="de_title">color</text>
-					<text class="de_cont">red</text>
-				</div>
-				<!-- 用户信息 -->
-				<div class="userInfo">
-					<image class="userAvator" src="root:img/user.jpg"></image>
-					<div class="userCenter">
-						<text class="userName">LI LI</text>
-						<div class="userAccount">
-							<div class="row">
-								<text class="row_title">recommend:</text>
-								<text class="row_num">50</text>
-							</div>
-							<div class="row">
-								<text class="row_title">commodity:</text>
-								<text class="row_num">50</text>
-							</div>
-						</div>
-					</div>
-					<div class="userRight">
-						<text class="stroll">stroll</text>
-						<text class="iconfont strollIcon">&#xe6a1;</text>
-					</div>
-				</div>
-				<div class="goods_info">
-					<text class="info_title"> Details of illustrations and texts</text>
-					<image class="good_detail" src="root:img/good_detail.png"></image>
+					<div class="reitemS"></div>
 				</div>
 			</div>
-
-		</scroller>
-		<div :class="[showMask?'maskAlert':'hidemask']" @click="changeAlert('hide')"></div>
-		<!-- 购买弹出框 -->
-		<div class="shopAlert" ref="shopAlert" @click="e=>e.stopPropagation()">
-			<div class="alertTop">
-				<image class="goodsImg" src="root:img/goods.png"></image>
-				<div class="goodsTit">
-					<text class="iconfont alertClose" @click="changeAlert('hide')">&#xe608;</text>
-					<div class="rowPrice">
-						<text class="symbol">$</text>
-						<text class="price">52.30</text>
-					</div>
-					<text class="intro">AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed Skin and
-						Single Shoulder Baggage Girls</text>
-				</div>
-			</div>
-			<scroller class="alertScroll">
-				<div class="styleBox">
-					<text class="styleTitle">style</text>
-					<div class="itemBox">
-						<text class="styleItem styleActive">Red</text>
-					</div>
-				</div>
-
-				<div class="price-number">
-					<text class="num-title">purchase quantity</text>
-					<div class="gnumber">
-						<div class="numaction" @click="sub()">
-							<text class="iconfont numIcon">&#xe630;</text>
-						</div>
-						<div class="numinputbox" @click="discard">
-							<input class="numinput" type="number" v-model="number" @input="sum" />
-						</div>
-						<div class="numaction" @click="add()">
-							<text class="iconfont numIcon">&#xe601;</text>
-						</div>
-					</div>
-				</div>
-
-			</scroller>
-			<text class="sureBtn" @click="confirm">confirm</text>
-		</div>
-
+		</scroller> 
 		<!-- 底部菜单 -->
 		<div class="footer">
 			<div class="foot_icons">
-				<div class="iconsbox bright" @click="toChat">
-					<text class="iconfont textIcon">&#xe605;</text>
-					<text class="boxtext">service</text>
+				<div class="iconsbox boxright" @click="toCollection">
+					<text class="iconfont textIcon" v-if="">{{goodInfo.is_collection==0?"&#xe634;":"&#xe60f;"}}</text>
+					<text class="boxtext">Collection</text>
 				</div>
-				<div class="iconsbox boxright" @click="toCart">
-					<text class="iconfont textIcon">&#xe64c;</text>
-					<text class="boxtext">Cart</text>
+				<div class="iconsbox boxright" @click="toChat">
+					<text class="iconfont textIcon">&#xe600;</text>
+					<text class="boxtext">Message</text>
 				</div>
 			</div>
 
 			<div class="btnBox">
-				<text class="joinCart" @click="addToCart">Add to cart</text>
-				<text class="buy" @click="changeAlert('show')">payment</text>
+				<!-- <text class="joinCart" @click="addToCart">Add to cart</text> -->
+				<text class="buy" @click="changeAlert('show')">Buy It Now</text>
+				
 			</div>
 		</div>
 
@@ -134,6 +97,7 @@
 		get_goods_info,
 		get_goods_param,
 		get_goods_spec,
+		get_goods_list,
 		get_goods_option
 	} from "../../mixin/ajax.js";
 	import asCore from "../../mixin/core";
@@ -148,7 +112,7 @@
 
 				//轮播图下标
 				currentSwiper: 0,
-				anchorlist: [], //导航条锚点
+				shopList: [], //导航条锚点
 				selectAnchor: 0, //选中锚点
 				serviceClass: "", //服务弹窗css类，控制开关动画
 				specClass: "", //规格弹窗css类，控制开关动画
@@ -159,7 +123,8 @@
 					subtitle: "",
 					price: "1",
 					old_price: "1",
-					type:"", // 0 自营商品 1 平台二手商品 2 用户发布商品
+					type: "", // 0 自营商品 1 平台二手商品 2 用户发布商品
+					is_collection: ""
 				},
 				selectSpec: null, //选中规格
 				isKeep: false, //收藏
@@ -169,7 +134,7 @@
 		},
 		beforeCreate() {
 			let navbar = weex.requireModule("navbar");
-			navbar.setStatusBarStyle("black");
+			navbar.setStatusBarStyle("white");
 		},
 		mounted() {},
 		methods: {
@@ -182,9 +147,34 @@
 					this.log(userId)
 					this.userId = userId;
 					this.getGoodInfo()
+					
+					get_goods_list({
+						users_id:this.userId,
+						keywords: "",
+						categoryid: "",
+						type: "2",
+						status: "",
+						page: 1,
+					}, (res, flag) => {
+						if (flag) {
+					
+							if (res.code == "200") {
+								this.shopList = res.data.list;
+							} else {
+								this.toast(res.message)
+							}
+						}
+					})
+					
 				});
 
 			},
+			gonext(url, parmar) {
+				this.push(url, parmar)
+				 
+			},
+			// 推荐商品
+			
 			getGoodInfo() {
 				get_goods_info({
 					users_id: this.userId,
@@ -252,8 +242,10 @@
 				}, 150);
 			},
 			//收藏
-			keep() {
-				this.isKeep = this.isKeep ? false : true;
+			toCollection() {
+				// this.isKeep = this.isKeep ? false : true;
+
+				this.goodInfo.is_collection = this.goodInfo.is_collection == 0 ? 1 : 0
 			},
 			// 加入购物车
 			addToCart() {
@@ -276,8 +268,117 @@
 		flex-direction: row;
 	}
 
+	.recontent {
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		padding-bottom: 30px;
+		width: 686px;
+		margin-left: 32px;
+	}
+
+	.reitem {
+		height: 516px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		background-color: #fff;
+		border-radius: 10px;
+		/* justify-content: space-between; */
+	}
+	.reitemS{
+		width: 336px;
+	}
+
+	.goodsImga {
+		width: 336px;
+		height: 336px;
+	}
+
+	.contentBox {
+		width: 336px;
+		padding: 0 20px;
+	}
+
+	.goodsTitle {
+		font-size: 20px;
+		height: 56px;
+		line-height: 28px;
+		margin-top: 12px;
+		color: #1E1E1E;
+		text-overflow: ellipsis;
+		lines: 2;
+		word-wrap: break-word;
+	}
+
+	.goodsTitle2 {
+		font-size: 26px;
+		height: 74px;
+		line-height: 37px;
+		margin-top: 16px;
+		color: #1E1E1E;
+		text-overflow: ellipsis;
+		lines: 2;
+		word-wrap: break-word;
+	}
+
+	.priceInfo {
+		margin-top: 20px;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.leftInfo {
+		flex-direction: row;
+		align-items: flex-end;
+	}
+
+	.symbol {
+		color: red;
+		margin-bottom: 5px;
+		margin-right: 5px;
+	}
+
+	.money {
+		color: red;
+		font-size: 32px;
+		font-weight: bold;
+		margin-right: 5px;
+	}
+	.reduce {
+		color: red;
+		margin-right: 5px;
+	}
+	
+	.shopType {
+		color: red;
+	}
+	
+	.shopIcon {
+		font-size: 32px;
+		margin-left: 10px;
+	}
+	
+	.acenter {
+		align-items: center;
+	}
+
 	.imgDemo {
-		background-color: #f2f2f2;
+		background-color: #FFF;
+	}
+	
+	.moreRelate{
+		background-color: #F2F2F2;
+	}
+	.RelatedT{
+		color: #BA8833;
+		font-size: 32px;
+		font-weight:600;
+		text-align: center;
+		margin: 32px 0;
+	}
+	.goods-detail {
+		/* background-color: #f5f5f5; */
+		padding: 20px 0;
 	}
 
 	.swiper-box {
@@ -298,8 +399,9 @@
 	}
 
 	.itemImg {
-		width: 750px;
+		width: 686px;
 		height: 800px;
+		margin-left: 32px;
 	}
 
 	.goods_info {
@@ -321,7 +423,7 @@
 
 	.info-box {
 		width: 750px;
-		padding: 20px;
+		/* padding: 20px; */
 		background-color: #fff;
 		/* margin-bottom: 20px; */
 	}
@@ -430,24 +532,32 @@
 	}
 
 	.userInfo {
-		width: 750px;
+		width: 686px;
 		flex-direction: row;
-		padding: 20px 10px 20px 30px;
+		padding: 20px 0;
 		background-color: #fff;
-		margin-top: 20px;
+		margin: 30px 32px;
 		align-items: center;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #E8E8E8;
+		border-left-width: 0;
+		border-right-width: 0;
 	}
 
 	.userAvator {
 		width: 94px;
 		height: 94px;
 		border-radius: 47px;
+		background-color: #F2F2F2;
 	}
 
 	.userCenter {
 		flex: 1;
 		padding-right: 30px;
 		padding-left: 20px;
+		height: 80px;
+		justify-content: space-between;
 	}
 
 	.userRight {
@@ -473,7 +583,11 @@
 
 	.userName {
 		font-size: 34px;
-		margin-bottom: 15px;
+	}
+
+	.credit {
+		color: #41EFF2;
+		margin-left: 20px;
 	}
 
 	.row_title {
@@ -510,6 +624,7 @@
 		justify-content: center;
 		align-items: center;
 		text-align: center;
+		flex-direction: row;
 	}
 
 	.bright {
@@ -522,15 +637,10 @@
 		flex: 1;
 	}
 
-	.boxtext,
-	.textIcon {
-		width: 110px;
-		text-align: center;
-	}
 
 	.textIcon {
-		margin-bottom: 5px;
 		font-size: 32px;
+		margin-right: 10px;
 	}
 
 	.text {

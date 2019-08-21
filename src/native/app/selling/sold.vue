@@ -31,6 +31,7 @@
 					</div>
 
 				</div>
+				<empty v-if="item.orderList.length==0" tips="Your order is empty"></empty>
 			</scroller>
 		</slider>
 	</div>
@@ -50,273 +51,42 @@
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					},
 					{
 						hasMore: true,
 						state: 1,
 						page: 1,
-						text: 'The deal',
+						text: 'Unpaid',
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					},
 					{
 						hasMore: true,
 						state: 2,
-						text: 'Trading closed',
+						text: 'Waiting for shipping',
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					},
 					{
 						hasMore: true,
 						state: 3,
-						text: 'refunded',
+						text: 'Shipped',
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 					}, {
 						hasMore: true,
 						state: 3,
-						text: 'Successful transaction',
+						text: 'Refunded',
 						page: 1,
 						loadingType: 'more',
 						total: 0,
-						orderList: [{
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}, {
-							"id": 161,
-							"co_id": "2",
-							"number": 5,
-							"total_price": "13.00",
-							"pay_price": "27.00",
-							"type": 3,
-							"type_2": 1,
-							"nickname": "指点村1",
-							"headimgurl": "http://xxyweeds.top:8181/iff/img/img/sythetic/20190423/71982ebeb97244a794629f021ffee34d.png",
-							"list": [{
-								"id": 51,
-								"goods_id": 24,
-								"option_id": 0,
-								"goods_option": "",
-								"thumb": "123.jpg",
-								"title": "模板标题1",
-								"number": 5,
-								"price": "13.00",
-								"total_price": "13.00",
-							}]
-						}]
+						orderList: []
 
 					}
 				]

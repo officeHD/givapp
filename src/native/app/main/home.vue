@@ -57,7 +57,7 @@
 							</div>
 							<scroller scroll-direction="horizontal" class="secondContent">
 
-								<div class="listItem" v-for="item in secondList" :key="item" @click="gonext('root:app/goods/goods.js',{id:item.id})">
+								<div class="listItem" v-for="item in secondList" :key="item" @click="gonext('root:app/goods/goods2.js',{id:item.id})">
 									<image class="SecondImg" :src="item.thumb" />
 									<view class="secondItem">
 										<text class="goodsTitle">{{item.title}}</text>

@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
-		<head title="Edit data" @rightClick="rightClick">
-			<text slot="right" class="complete">complete</text>
+		<head title="Edit data" @rightClick="rightClick" bgwidth=140 >
+			<text slot="right" class="complete">Confirm</text>
 		</head>
 		<div class="userImg" @click="changePhoto">
 			<image class="avator" :src="user.headimgurl" />
@@ -162,7 +162,7 @@
 	.complete {
 		color: #FFFFFF;
 		margin-right: 10px;
-		font-size: 24px;
+		font-size: 28px;
 
 	}
 
