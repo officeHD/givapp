@@ -153,7 +153,8 @@
 		get_evaluation_list,
 		add_goods_collection,
 		del_goods_collection,
-		add_order_info
+		add_order_info,
+		get_orderConfirm
 	} from "../../mixin/ajax.js";
 	import asCore from "../../mixin/core";
 	export default {
@@ -165,6 +166,7 @@
 				showWay: "",
 				goodParmar: [],
 				selectSpec: [],
+				option_id:"",//规格属性ID
 				shopSpec: [],
 				reviewList: {
 					headimgurl: "",
@@ -186,6 +188,7 @@
 				goodInfo: {
 					thumb_url: "root:img/user.jpg",
 					subtitle: "",
+					postage:"",
 					price: "1",
 					old_price: "1",
 					type: "", // 0 自营商品 1 平台二手商品 2 用户发布商品
@@ -229,9 +232,31 @@
 				if (this.showWay == "cart") {
 					this.addToCart()
 				} else {
-					this.push("root:app/order/confirmation.js");
+					this.toPay()
 				}
 
+			},
+			toPay(){
+				get_orderConfirm({
+					users_id: this.userId,
+					order_id: "",
+					option_id:this.option_id,
+					goods_id: this.goodId,
+					number: this.number,
+					take_type: "",
+					address_id: "",
+					is_coupon: 1
+					
+				},(res,flag)=>{ 
+					if(flag){ 
+						if(res.code==200){
+							this.push("root:app/order/confirm.js",{id:res.data.co_order_id});
+						}else{
+							this.toast(res.message)
+						}
+					}
+					
+				})
 			},
 			// 加入购物车
 			addToCart() {
