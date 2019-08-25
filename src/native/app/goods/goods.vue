@@ -17,74 +17,77 @@
 						<text class="priceSymbol">￥</text>
 						<text class="goods-info-price">{{goodInfo.price}}</text>
 						<text class="goods-old_price">{{goodInfo.old_price}} <!-- NEW --></text>
-						<text class="goods_cul">Pinkage</text>
+						<!-- <text class="goods_cul">Pinkage</text> -->
 					</div>
 					<div class="collections" @click="keep">
-						<text class="iconfont isKeep" v-if="isKeep">&#xe653;</text>
+						<text class="iconfont isKeep" v-if="goodInfo.is_collection==1">&#xe653;</text>
 						<text class="iconfont collecIcon" v-else>&#xe7b9;</text>
-
+						<!-- <text>Adding Collections</text> -->
 					</div>
 				</div>
-				<text class="goods-info-title"> {{goodInfo.subtitle}} </text>
+				<text class="goods-info-title">{{goodInfo.title}} </text>
 				<div class="delivery">
-					<text class="de_title">GIV delivery</text>
-					<text class="de_cont">Pinkage</text>
+					<text class="de_title">Delivery Fee</text>
+					<text class="de_cont">${{goodInfo.postage}}</text>
 				</div>
-				<div class="delivery mt20 h100">
-					<text class="de_title">color</text>
-					<text class="de_cont">red</text>
+				<div class="delivery mt20 h100" @click="changeAlert('parmarAlert','show')">
+					<text class="de_title">About this item</text>
+					<text class="de_cont">Texture Style</text>
 				</div>
-				<!-- 用户信息 -->
+				<!-- 评价-->
 				<div class="userInfo">
-					<image class="userAvator" src="root:img/user.jpg"></image>
-					<div class="userCenter">
-						<text class="userName">LI LI</text>
-						<div class="userAccount">
-							<div class="row">
-								<text class="row_title">recommend:</text>
-								<text class="row_num">50</text>
-							</div>
-							<div class="row">
-								<text class="row_title">commodity:</text>
-								<text class="row_num">50</text>
-							</div>
+					<div class="usertTop">
+						<text class="Reviews">Reviews</text>
+						<div class="userRight">
+							<text class="stroll" v-if="reviewList.nickname">All</text>
+							<text class="stroll" v-if="!reviewList.nickname">NO Reviews</text>
+							<text class="iconfont strollIcon">&#xe6a1;</text>
 						</div>
 					</div>
-					<div class="userRight">
-						<text class="stroll">stroll</text>
-						<text class="iconfont strollIcon">&#xe6a1;</text>
+
+					<div class="userCenter" v-if="reviewList.nickname">
+
+						<div class="row userMsg">
+							<image class="userAvator" :src="reviewList.headimgurl"></image>
+							<text class="userName">{{reviewList.nickname}}</text>
+						</div>
+						<div class="row">
+							<text class="row_title">{{reviewList.message}} </text>
+						</div>
 					</div>
+
 				</div>
 				<div class="goods_info">
 					<text class="info_title"> Details of illustrations and texts</text>
-					<image class="good_detail" src="root:img/good_detail.png"></image>
+					<!-- <image class="good_detail" src="root:img/good_detail.png"></image> -->
+					<!-- <div>{{goodInfo.content}}</div> -->
+					<text class="shopDeail">{{goodInfo.content}} </text>
 				</div>
 			</div>
 
 		</scroller>
-		<div :class="[showMask?'maskAlert':'hidemask']" @click="changeAlert('hide')"></div>
+		<div :class="[showMask?'maskAlert':'hidemask']" @click="changeAlert(alertType,'hide')"></div>
 		<!-- 购买弹出框 -->
 		<div class="shopAlert" ref="shopAlert" @click="e=>e.stopPropagation()">
 			<div class="alertTop">
-				<image class="goodsImg" src="root:img/goods.png"></image>
+				<image class="goodsImg" :src="goodInfo.thumb"></image>
 				<div class="goodsTit">
-					<text class="iconfont alertClose" @click="changeAlert('hide')">&#xe608;</text>
+					<text class="iconfont alertClose" @click="changeAlert(alertType,'hide')">&#xe608;</text>
 					<div class="rowPrice">
 						<text class="symbol">$</text>
-						<text class="price">52.30</text>
+						<text class="price">{{goodInfo.price}}</text>
 					</div>
-					<text class="intro">AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed Skin and
-						Single Shoulder Baggage Girls</text>
+					<text class="intro">{{goodInfo.title}} </text>
 				</div>
 			</div>
 			<scroller class="alertScroll">
-				<div class="styleBox">
-					<text class="styleTitle">style</text>
+				<div class="styleBox" v-for="(item,index) in shopSpec">
+					<text class="styleTitle">{{item.title}}</text>
 					<div class="itemBox">
-						<text class="styleItem styleActive">Red</text>
+						<text class="styleItem" v-for="itemSpe in item.content" :class="[itemSpe.id==selectSpec[index]?'styleActive':'']"
+						 @click="selectSp(index,itemSpe.id)">{{itemSpe.name}}</text>
 					</div>
 				</div>
-
 				<div class="price-number">
 					<text class="num-title">purchase quantity</text>
 					<div class="gnumber">
@@ -99,11 +102,23 @@
 						</div>
 					</div>
 				</div>
-
 			</scroller>
 			<text class="sureBtn" @click="confirm">confirm</text>
 		</div>
-
+		<!--  规格弹窗 -->
+		<div class="parmarAlert" ref="parmarAlert" @click="e=>e.stopPropagation()">
+			<div class="alertTops">
+				<text class="iconfont alertCloses" @click="changeAlert(alertType,'hide')">&#xe608;</text>
+				<text class="titleC">About this item</text>
+			</div>
+			<scroller class="alertScroll">
+				<div class="parmarList" v-for="item in  goodParmar">
+					<text class="parmarTit"> {{item.title}}</text>
+					<text class="parmarCon">{{item.description}}</text>
+				</div>
+			</scroller>
+			<text class="sureBtn" @click="changeAlert(alertType,'hide')">close</text>
+		</div>
 		<!-- 底部菜单 -->
 		<div class="footer">
 			<div class="foot_icons">
@@ -118,8 +133,8 @@
 			</div>
 
 			<div class="btnBox">
-				<text class="joinCart" @click="addToCart">Add to cart</text>
-				<text class="buy" @click="changeAlert('show')">payment</text>
+				<text class="joinCart" @click="changeAlert('shopAlert','show','cart')">Add to cart</text>
+				<text class="buy" @click="changeAlert('shopAlert','show','pay')">payment</text>
 			</div>
 		</div>
 
@@ -134,18 +149,32 @@
 		get_goods_info,
 		get_goods_param,
 		get_goods_spec,
-		get_goods_option
+		get_goods_option,
+		get_evaluation_list,
+		add_goods_collection,
+		del_goods_collection,
+		add_order_info
 	} from "../../mixin/ajax.js";
 	import asCore from "../../mixin/core";
 	export default {
 		data() {
 			return {
+				alertType: "",
 				goodId: "",
 				userId: "",
+				showWay: "",
+				goodParmar: [],
+				selectSpec: [],
+				shopSpec: [],
+				reviewList: {
+					headimgurl: "",
+					"nickname": "",
+					"message": "阿萨德2",
+				}, //评价
+
 				//是否显示遮罩层
 				showMask: false,
 				number: 1,
-
 				//轮播图下标
 				currentSwiper: 0,
 				anchorlist: [], //导航条锚点
@@ -159,10 +188,9 @@
 					subtitle: "",
 					price: "1",
 					old_price: "1",
-					type:"", // 0 自营商品 1 平台二手商品 2 用户发布商品
+					type: "", // 0 自营商品 1 平台二手商品 2 用户发布商品
 				},
-				selectSpec: null, //选中规格
-				isKeep: false, //收藏
+
 				//商品描述html
 				descriptionStr: ''
 			};
@@ -181,9 +209,49 @@
 				asCore.getBsessionid(userId => {
 					this.log(userId)
 					this.userId = userId;
-					this.getGoodInfo()
+					this.getGoodInfo();
+					get_evaluation_list({
+						users_id: this.userId,
+						goods_id: this.goodId,
+						page: "1",
+						page_num: "10",
+					}, (res, flag) => {
+						if (flag) {
+							this.log(res)
+							if (res.code == 200 && res.data.list.length > 0) {
+								this.reviewList = res.data.list[0];
+							}
+						}
+					})
 				});
+			},
+			confirm() {
+				if (this.showWay == "cart") {
+					this.addToCart()
+				} else {
+					this.push("root:app/order/confirmation.js");
+				}
 
+			},
+			// 加入购物车
+			addToCart() {
+				add_order_info({
+					users_id: this.userId,
+					goods_id: this.goodId,
+					option_id: "",
+					address_id: "",
+					number: 1,
+				}, (res, flag) => {
+					if (flag) {
+						this.toast(res.message);
+					}
+				})
+
+				// this.toast("加入购物车");
+			},
+			selectSp(index, value) {
+				this.selectSpec.splice(index, 1, value);
+				this.log(this.selectSpec)
 			},
 			getGoodInfo() {
 				get_goods_info({
@@ -191,15 +259,36 @@
 					id: this.goodId
 				}, (res, flag) => {
 					if (flag) {
-						this.log(res)
+						this.log("商品信息：" + JSON.stringify(res))
 						if (res.code == "200") {
 							this.goodInfo = res.data;
 						}
 					}
 				})
-			},
-			confirm() {
-				navigator.push("root:app/order/confirmation.js");
+				get_goods_param({
+					goods_id: this.goodId
+				}, (res, flag) => {
+					if (flag) {
+						this.log("商品参数：" + JSON.stringify(res))
+						if (res.code == "200") {
+							if (res.data.length > 0) {
+								this.goodParmar = res.data;
+							}
+						}
+					}
+				})
+
+				get_goods_spec({
+					goods_id: this.goodId
+				}, (res, flag) => {
+					if (flag) {
+						this.log("商品规格：" + JSON.stringify(res))
+						if (res.code == "200") {
+
+							this.shopSpec = res.data;
+						}
+					}
+				})
 			},
 			// 客服
 			toChat() {
@@ -221,11 +310,16 @@
 				}
 			},
 			toCart() {
-				navigator.push("root:app/main/cart.js");
+				this.push("root:app/main/cart.js");
 			},
 
-			changeAlert(type) {
-				var testEl = this.$refs.shopAlert;
+			changeAlert(alertType, type, way) {
+				this.alertType = alertType;
+				var testEl = this.$refs[alertType];
+
+				if (way) {
+					this.showWay = way;
+				}
 				let transform = "100%";
 				this.showMask = false;
 
@@ -253,11 +347,34 @@
 			},
 			//收藏
 			keep() {
-				this.isKeep = this.isKeep ? false : true;
-			},
-			// 加入购物车
-			addToCart() {
-				this.toast("加入购物车");
+
+
+				if (this.goodInfo.is_collection == 0) {
+					add_goods_collection({
+						users_id: this.userId,
+						goods_id: this.goodId,
+					}, (res, flag) => {
+
+						if (flag) {
+							this.toast(res.message);
+							if (res.code == 200) {
+								this.goodInfo.is_collection == 1;
+							}
+						}
+					})
+				} else {
+					del_goods_collection({
+						users_id: this.userId,
+						goods_id: this.goodId,
+					}, (res, flag) => {
+						if (flag) {
+							this.toast(res.message);
+							if (res.code == 200) {
+								this.goodInfo.is_collection == 0;
+							}
+						}
+					})
+				}
 			}
 		}
 	};
@@ -285,6 +402,10 @@
 		width: 750px;
 		height: 800px;
 		background-color: #f5f5f5;
+	}
+
+	.shopDeail {
+		padding: 32px;
 	}
 
 	.slider {
@@ -321,7 +442,7 @@
 
 	.info-box {
 		width: 750px;
-		padding: 20px;
+		padding: 10px 20px;
 		background-color: #fff;
 		/* margin-bottom: 20px; */
 	}
@@ -329,8 +450,9 @@
 	.goods_top {
 		flex-direction: row;
 		justify-content: space-between;
-		padding: 22px 32px;
+		/* padding: 22px 32px; */
 		/* margin-top: 20px; */
+		padding-left: 32px;
 	}
 
 	.top_left {
@@ -392,7 +514,7 @@
 
 	.goods-info-title {
 		font-size: 32px;
-		padding: 10px 32px 20px;
+		padding: 0px 32px 20px;
 		color: #000;
 		background-color: #fff;
 	}
@@ -402,8 +524,10 @@
 		border-top-style: solid;
 		border-top-color: #ede8e6;
 		flex-direction: row;
-		padding: 20px 0;
+		/* padding: 20px 0; */
+		height: 80px;
 		background-color: #fff;
+		align-items: center;
 	}
 
 	.h100 {
@@ -417,9 +541,11 @@
 
 	.de_title {
 		color: #9a9999;
-		width: 200px;
+		/* width: 200px; */
+
 		padding-left: 32px;
 		font-size: 28px;
+		padding-right: 32px;
 	}
 
 	.de_cont {
@@ -431,23 +557,45 @@
 
 	.userInfo {
 		width: 750px;
-		flex-direction: row;
-		padding: 20px 10px 20px 30px;
+		/* flex-direction: row; */
+		/* padding: 20px 10px 20px 30px; */
 		background-color: #fff;
 		margin-top: 20px;
 		align-items: center;
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+
+	.usertTop {
+		width: 750px;
+		padding: 10px 32px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.Reviews {
+		font-size: 30px;
+		color: #333333;
 	}
 
 	.userAvator {
-		width: 94px;
-		height: 94px;
-		border-radius: 47px;
+		width: 48px;
+		height: 48px;
+		border-radius: 24px;
+		margin-right: 20px;
+		background-color: #F2F2F2;
 	}
 
 	.userCenter {
-		flex: 1;
-		padding-right: 30px;
-		padding-left: 20px;
+		width: 750px;
+		padding: 0 32px;
+	}
+
+	.userMsg {
+		align-items: center;
+		margin-bottom: 20px;
+		;
 	}
 
 	.userRight {
@@ -457,7 +605,7 @@
 
 	.stroll {
 		font-size: 24px;
-		color: #676665;
+		color: #BA8833;
 		margin-right: 15px;
 	}
 
@@ -466,20 +614,22 @@
 		color: #676665;
 	}
 
-	.userAccount {
-		flex-direction: row;
-		justify-content: space-between;
-	}
+
 
 	.userName {
-		font-size: 34px;
-		margin-bottom: 15px;
+		font-size: 22px;
+		color: #666666;
+		/* margin-bottom: 15px; */
 	}
 
 	.row_title {
-		color: #9a9999;
+		color: #1E1E1E;
 		font-size: 26px;
-		margin-right: 15px;
+		lines: 1;
+		text-overflow: ellipsis;
+		width: 686px;
+		;
+		/* margin-right: 15px; */
 	}
 
 	.row_num {
@@ -598,6 +748,19 @@
 		padding: 32px;
 	}
 
+	.parmarAlert {
+		position: fixed;
+		left: 0;
+		bottom: -780px;
+		width: 750px;
+		height: 780px;
+		background-color: #ffffff;
+		border-top-left-radius: 20px;
+		border-top-right-radius: 20px;
+		align-items: center;
+		padding: 0;
+	}
+
 	.alertTop {
 		width: 750px;
 		padding: 0 32px;
@@ -605,9 +768,32 @@
 		flex-wrap: nowrap;
 	}
 
+	.alertTops {
+		width: 750px;
+		position: relative;
+		height: 100px;
+		padding: 0 32px;
+		align-items: center;
+		justify-content: center;
+		border-bottom-width: 1px;
+		border-bottom-color: #E6E6E6;
+		border-bottom-style: solid;
+	}
+
+	.alertCloses {
+		position: absolute;
+		right: 32px;
+		text-align: center;
+
+
+		font-size: 30px;
+		color: #666666;
+	}
+
 	.goodsImg {
 		width: 228px;
 		height: 228px;
+		background-color: #F2F2F2;
 	}
 
 	.goodsTit {
@@ -615,6 +801,13 @@
 		height: 228px;
 		position: relative;
 		padding-left: 20px;
+	}
+
+	.titleC {
+		text-align: center;
+		color: #1E1E1E;
+		font-size: 30px;
+
 	}
 
 	.alertClose {
@@ -627,6 +820,8 @@
 		font-size: 30px;
 		color: #666666;
 	}
+
+
 
 	.rowPrice {
 		flex-direction: row;
@@ -657,6 +852,7 @@
 
 	.alertScroll {
 		flex: 1;
+
 	}
 
 	.styleBox {
@@ -682,17 +878,42 @@
 	.styleItem {
 		border-width: 2px;
 		border-style: solid;
-		border-color: #1e1e1e;
-		color: #1e1e1e;
+		border-color: #E6EAED;
+		background-color: #E6EAED;
+		color: #333333;
 		border-radius: 5px;
-		height: 56px;
-		line-height: 56px;
+		height: 60px;
+		line-height: 60px;
 		padding: 0 30px;
+		margin-right: 10px;
+		font-size: 28px;
 	}
 
 	.styleActive {
 		color: #ba8833;
 		border-color: #ba8833;
+		background-color: #FFFFFF;
+	}
+
+	.parmarList {
+		flex-direction: row;
+		width: 686px;
+		height: 100px;
+		align-items: center;
+		border-bottom-width: 1px;
+		border-bottom-style: solid;
+		border-bottom-color: #e8e8e8;
+	}
+
+	.parmarTit {
+		width: 140px;
+		font-size: 28px;
+		color: #333333;
+	}
+
+	.parmarCon {
+		font-size: 28px;
+		color: #666666;
 	}
 
 	.price-number {

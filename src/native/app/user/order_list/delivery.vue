@@ -5,21 +5,16 @@
 			<div class="itemLeft">
 				<text class="detaTit">Delivery company</text>
 				<text class="detaInf">{{ShipperCode}}</text>
-			</div>
-			<!-- <div class="itemLeft mt20">
-				<text class="detaTit">OrderCode</text>
-				<text class="detaInf active">{{OrderCode}}</text>
-			</div> -->
+			</div>  
 		</div>
 		<!-- 物流信息 -->
 		<div class="wuliuMes">
 			<div class="secTop">
 				<text class="paidtip">Tracking number</text>
-				<text class="paidnum">{{LogisticCode}}</text>
-
+				<text class="paidnum">{{LogisticCode}}</text> 
 			</div>
-			<div class="devList">
-				<div class="itemList" v-for="(item,index) in Traces" :key="index">
+			<div class="devList" v-if="traces.length>0">
+				<div class="itemList" v-for="(item,index) in traces" :key="index">
 					<div class="lineBox">
 						<text class="itemTit">{{item.AcceptStation}}</text>
 						<text class="itemDec">{{item.AcceptTime}}</text>
@@ -38,18 +33,19 @@
 </template>
 
 <script>
-	import {
-		get_order_express
-	} from "../../../mixin/ajax.js"
+	import { get_order_express } from "../../../mixin/ajax.js";
+	import asCore from "../../../mixin/core";
+	 
 	export default {
 		data() {
 			return{
 				ShipperCode: "",
 				LogisticCode: "",
-				OrderCode:""
+				OrderCode:"",
+				traces:[]
 			}
 		},
-		created() {
+		methods: {
 			onLoad(param) {
 				let type = 0;
 				if (param && param.shipper_code) {
@@ -58,26 +54,27 @@
 				}
 				asCore.getBsessionid(userId => {
 					this.userId = userId;
-					this.get_order_express()
-				});
+					this.getExpress()
+				})
 			},
-			get_order_express({
-				shipper_code: this.ShipperCode, //物流公司简称 例：YTO
-				logistic_code: this.LogisticCode //快递号 例：12345678
-			}, (res, flag) => {
-				this.log(res)
-				if (flag) {
-					// this.ShipperCode = res.ShipperCode; //	快递公司编码
-					// this.LogisticCode = res.LogisticCode; //物流运单号
-					this.OrderCode = res.OrderCode; //物流运单号 
-					this.Traces = res.Traces
-				}
-			})
+			getExpress(){
+				get_order_express({
+					shipper_code: this.ShipperCode,  
+					logistic_code: this.LogisticCode  
+				}, (res, flag) => {
+					this.log(res)
+					if (flag) { 
+						this.OrderCode = res.OrderCode; //物流运单号 
+						this.traces = res.Traces
+					}
+				})
+			},
+			
 		}
 	}
 </script>
 
-<style>
+<style scoped>
 	.wrapper {
 		background-color: #F5F5F5;
 	}
@@ -193,8 +190,7 @@
 		position: absolute;
 		left: 0px;
 		top: 0;
-		background-color: #D8D8D8;
-
+		background-color: #D8D8D8; 
 		width: 24px;
 		height: 24px;
 		border-radius: 12px;

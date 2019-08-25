@@ -1,18 +1,18 @@
 <template>
 	<div>
 		<!-- <image class="pageImg" src="root:img/page/13.png"></image> -->
-		<head  title="Order details"></head>
+		<head title="Order details"></head>
 		<div class="pageContent">
 			<div class="orderDetail">
 				<div class="order_top">
-					<image class="googPic" src="root:img/goods.png"></image>
+					<image class="googPic" :src="goodInfo.thumb"></image>
 					<div class="goods_info">
-						<text class="goods_title">{{goods_title}}</text>
+						<text class="goods_title">{{goodInfo.title}}</text>
 						<div class="goods_spec">
 							<div class="priceInfo">
-								<text class="symbol">￥</text> <text class="money">{{sumPrice}}</text>
+								<text class="symbol">￥</text> <text class="money">{{goodInfo.price}}</text>
 							</div>
-							<div class="specInfo">
+							<div class="specInfo" v-if="goodInfo.sss">
 								<text class="specText">red</text>
 								<text class="iconDown">&#xe613;</text>
 							</div>
@@ -20,27 +20,30 @@
 					</div>
 				</div>
 			</div>
-			<div class="methodBox row jbew acen ">
-				<text class="meth_title">Shipping method</text>
-				<div class="meth_right row jend acen" @click="changeAlert('show')">
-					<text class="shipping">{{selected.label}}</text>
-					<text class="shippingMoney">￥0.00</text>
-				</div>
-			</div>
-			<div class="messagebox" @click="setAddress">
+
+			<div class="messagebox mt20" @click="setAddress">
 				<div class="locationBox row jbew atop ">
-					<text class="meth_title locaTit">Location</text>
-					<div class="meth_right   row jend atop">
-						<text class="cityName">{{addressData.province}} {{addressData.city}} {{addressData.area}}</text>
+					<text class="meth_title locaTit">Address</text>
+					<div class="meth_right   row jend acen">
+						<text class="cityName " v-if="addressData.id">{{addressData.province}} {{addressData.city}} {{addressData.area}} {{addressData.address}}</text>
+						<text class="cityName " v-if="!addressData.id"> Set place</text>
+						
 						<text class="rightIcon">&#xe6a1;</text>
 					</div>
 				</div>
-				<div class="locationBox row jbew atop ">
+				<!-- <div class="locationBox row jbew atop ">
 					<text class="meth_title locaTit">Address</text>
 					<div class="meth_right   row jend atop">
 						<text class="cityName">{{addressData.address}}</text>
 						<text class="rightIcon">&#xe6a1;</text>
 					</div>
+				</div> -->
+			</div>
+			<div class="methodBox row jbew acen ">
+				<text class="meth_title">Shipping method</text>
+				<div class="meth_right row jend acen" @click="changeAlert('show')">
+					<text class="shipping">{{selected.label}}</text>
+					<text class="shippingMoney">￥0.00</text>
 				</div>
 			</div>
 			<div class="footer">
@@ -55,11 +58,11 @@
 		<div class="shopAlert" ref="shopAlert" @click="e=>e.stopPropagation()">
 			<text class="alertTop">Shipping method</text>
 			<scroller class="alertScroll">
-				<div class="selectLi" v-for="item in shippWay"  :key="item.value" @click="selected=item">
+				<div class="selectLi" v-for="item in shippWay" :key="item.value" @click="selected=item">
 					<text class="liIcon" :class="[selected.value==item.value?'selected':'']">{{selected.value==item.value?"&#xe602;":"&#xe67f;"}}</text>
 					<text class="liTxt" :class="[selected.value==item.value?'selected':'']">{{item.label}}</text>
 				</div>
-				 
+
 			</scroller>
 			<text class="sureBtn" @click="confirm">confirm</text>
 		</div>
@@ -71,37 +74,127 @@
 	const navigator = weex.requireModule("navigator");
 	const animation = weex.requireModule("animation");
 	const selectAddress = new BroadcastChannel("selectAddress");
+	import {
+		get_goods_info,
+		get_orderConfirm,
+		get_address_list
+	} from "../../mixin/ajax.js";
+
+	import asCore from "../../mixin/core";
 	export default {
 		data() {
 			return {
 				//是否显示遮罩层
 				showMask: false,
-				selected:{ value:"1", label:"Australia post" },
-				shippWay:[
-					{ value:"1", label:"Australia post" },
-					{ value:"2", label:"Giv delivery" },
-					{ value:"3", label:"Local pick up" }
+				selected: {
+					value: "1",
+					label: "Australia post"
+				},
+				shippWay: [{
+						value: "1",
+						label: "Australia post"
+					},
+					{
+						value: "2",
+						label: "Giv delivery"
+					},
+					{
+						value: "3",
+						label: "Local pick up"
+					}
 				],
+				goodInfo: {
+					thumb_url: "root:img/user.jpg",
+					subtitle: "",
+					price: "1",
+					old_price: "1",
+					type: "", // 0 自营商品 1 平台二手商品 2 用户发布商品
+					is_collection: ""
+				},
 				addressData: {
-					"id": 11,
-					"name": "LiLi",
-					"phone": "15145112434",
-					"province": "HuNan Province ",
-					"city": "ChangSha City",
-					"area": "Shushan District",
-					"address": " Huangshan Road, Science Avenue",
-					"is_default": 1,
-					"create_time": "2019-04-18 15:09:22"
+					 
 				},
 				sumPrice: "52.30",
-				goods_title: "AJOY SAHU Baggage Girls 2019 New Style Small Popular Design Baggage Girls with Skewed Skin and Single Shoulder Baggage Girls"
+				goods_title: " "
 			};
 		},
 		created() {
 			selectAddress.onmessage = this.changeAddress;
 		},
 		methods: {
+			onLoad(param) {
 
+				if (param && param.id) {
+					this.goodId = param.id;
+				}
+				asCore.getBsessionid(userId => {
+					this.log(userId)
+					this.userId = userId;
+					this.getGoodInfo()
+					this.getList()
+
+
+				});
+
+			},
+
+			toPay() {
+				get_orderConfirm({
+					users_id: this.userId,
+					order_id: "",
+					goods_id: this.goodId,
+					number: 1,
+					take_type: 1,
+					address_id: this.addressData.id,
+					is_coupon: 1
+				}, (res, flag) => {
+					this.log(res)
+					if (flag) {
+						if (res.code == 200) {
+							this.push("root:app/pay/payment.js", {
+								id: res.data.total.co_order_id
+							});
+						} else {
+							this.toast(res.message)
+						}
+					}
+
+				})
+			},
+			getList() {
+				get_address_list({
+					users_id: this.userId,
+					page: 1,
+					page_num: 10
+				}, (res, flag) => {
+					if (flag) {
+						this.log(res.data.list)
+						if (res.code == 200) {
+							if (res.data.list.length > 0) {
+								this.addressData = res.data.list[0];
+							} 
+						}
+					}
+				})
+			},
+			confirm() {
+				this.changeAlert("hide")
+				// get_orderConfirm
+
+			},
+			getGoodInfo() {
+				get_goods_info({
+					users_id: this.userId,
+					id: this.goodId
+				}, (res, flag) => {
+					if (flag) {
+						this.log(res)
+						if (res.code == "200") {
+							this.goodInfo = res.data;
+						}
+					}
+				})
+			},
 			changeAlert(type) {
 				var testEl = this.$refs.shopAlert;
 				let transform = "100%";
@@ -127,14 +220,11 @@
 				// this.log(msg.data)
 				this.addressData = msg.data
 			},
-			confirm() {
-				this.changeAlert("hide")
-			},
+
 			setAddress() {
-				navigator.push("root:app/user/address/address.js");
-			},
-			toPay() {
-				navigator.push("root:app/pay/payment.js");
+				this.push("root:app/user/address/address.js", {
+					type: "shop"
+				});
 			}
 		}
 	};
@@ -151,6 +241,10 @@
 		background-color: #f2f2f2;
 		flex: 1;
 		width: 750px;
+	}
+
+	.mt20 {
+		margin-top: 20px;
 	}
 
 	.orderDetail {
@@ -173,8 +267,10 @@
 	}
 
 	.goods_info {
+		height: 220px;
 		padding-left: 30px;
 		flex: 1;
+		justify-content: space-between;
 	}
 
 	.goods_title {
@@ -187,7 +283,8 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		padding-bottom: 30px;
+		padding-bottom: 0;
+
 	}
 
 	.priceInfo {
@@ -234,16 +331,16 @@
 
 	.messagebox {
 		width: 750px;
-		padding: 0 30px 30px;
+		padding: 0 30px;
 		background-color: #fff;
 	}
 
 	.locationBox {
 		width: 690px;
 
-		border-bottom-style: solid;
+		/* 	border-bottom-style: solid;
 		border-bottom-color: #e6e6e6;
-		border-bottom-width: 2px;
+		border-bottom-width: 2px; */
 		padding: 30px 0;
 	}
 
@@ -390,29 +487,35 @@
 		font-size: 28px;
 		color: #333333;
 	}
-	.alertScroll{
+
+	.alertScroll {
 		flex: 1;
 	}
-	.selectLi{
+
+	.selectLi {
 		/* margin-bottom: 30px; */
 		height: 70px;
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;
-		width: 750px;;
+		width: 750px;
+		;
 		padding-left: 32px;
 	}
-	.liIcon{
+
+	.liIcon {
 		font-size: 40px;
 		font-family: iconfont;
 		color: #999999;
 		margin-right: 10px;
 	}
-	.liTxt{
+
+	.liTxt {
 		color: #999999;
 		font-size: 28px;
 	}
-	.selected{
+
+	.selected {
 		color: #BA8833;
 	}
 

@@ -54,11 +54,15 @@
 				this.toast("右边边按钮跳转");
 			}
 		},
+		created() {
+			
+		},
 
 		beforeCreate() {
 			let navbar = weex.requireModule("navbar");
-			let that = this;
 			navbar.setStatusBarStyle("white");
+			let that = this;
+			
 			/* 判断是否登录过和是否超时(超时将自动从登) */
 			asCore.getBsessionid(sessionid => {
 				if (!sessionid) {
@@ -78,8 +82,7 @@
 				}
 			});
 			/* 双击退出程序 */
-
-
+ 
 			loginBroad.onmessage = function(event) {
 				var data = event.data;
 				if (data.success == 1) {

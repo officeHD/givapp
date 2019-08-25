@@ -59,7 +59,7 @@
 			</x-cell>
 
 
-			<x-cell title="Help" :hasArrow="true" @cellClick="gonext('share')">
+			<x-cell title="Help" :hasArrow="true"  >
 				<div slot="label" class="list-icon">
 					<text class="iconfont" :style="{fontSize:40}">&#xe6cf;</text>
 				</div>

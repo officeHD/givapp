@@ -208,7 +208,7 @@ export const add_goods_collection = (state, cb) => {
 	if (debug) {
 		cb(data.returnSucces, true);
 	} else {
-		asCore.post(`zdapp/goods_collection/add_goods_collection`, state, cb)
+		asCore.post(`web/goods_collection/add_goods_collection`, state, cb)
 	}
 }
 // 积分记录列表接口 - 根据村排列 前4个商品
@@ -233,7 +233,7 @@ export const del_goods_collection = (state, cb) => {
 	if (debug) {
 		cb(data.returnSucces, true);
 	} else {
-		asCore.post(`zdapp/goods_collection/del_goods_collection`, state, cb)
+		asCore.post(`web/goods_collection/del_goods_collection`, state, cb)
 	}
 }
 // 用户发布二手商品 - 

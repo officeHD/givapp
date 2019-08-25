@@ -27,6 +27,7 @@
 </template>
 <script>
 	const navigator = weex.requireModule("navigator");
+	import asCore from "../../../mixin/core";
 	import {
 		get_address_list
 	} from "../../../mixin/ajax"
@@ -34,11 +35,13 @@
 		data() {
 			return {
 				isSelect: false,
+				userId:"",
+				page:1,
 				addressList: []
 			};
 		},
 		created() {
-			this.getList();
+
 		},
 		methods: {
 			onLoad(parmars) {
@@ -46,10 +49,19 @@
 				if (parmars && parmars.type) {
 					this.type = parmars.type;
 				}
+				asCore.getBsessionid(userId => {
+					this.userId = userId;
+					this.getList();
+				});
 			},
 			getList() {
-				get_address_list({}, (res, flag) => {
+				get_address_list({
+					users_id: this.userId,
+					page: this.page,
+					page_num: 10
+				}, (res, flag) => {
 					if (flag) {
+						this.log(res.data.list)
 						if (res.code == 200) {
 							this.addressList = res.data.list;
 						}

@@ -15,11 +15,7 @@
 							<text class="row_title">ust released in Hefei</text>
 							<!-- <text class="row_num">50</text> -->
 						</div>
-					</div>
-					<!-- <div class="userRight">
-						<text class="stroll">stroll</text>
-						<text class="iconfont strollIcon">&#xe6a1;</text>
-					</div> -->
+					</div> 
 				</div>
 				<!-- 标题 价格 -->
 				<div class="info-box goods_top">
@@ -38,8 +34,8 @@
 				<!-- 商品主图轮播 -->
 				<div class="goods-detail">
 					<image v-for="(item,index) in goodInfo.thumb_url.split(',')" :key="index" class="itemImg" :src="item"></image>
-				</div> 
-			</div> 
+				</div>
+			</div>
 			<div class="moreRelate">
 				<text class="RelatedT">Related</text>
 				<div class="recontent">
@@ -59,13 +55,13 @@
 									<text class="iconfont shopIcon">&#xe634;</text>
 									<text class="iconfont shopIcon">&#xe607;</text>
 								</view>
-							</view> 
+							</view>
 						</view>
 					</div>
 					<div class="reitemS"></div>
 				</div>
 			</div>
-		</scroller> 
+		</scroller>
 		<!-- 底部菜单 -->
 		<div class="footer">
 			<div class="foot_icons">
@@ -81,8 +77,8 @@
 
 			<div class="btnBox">
 				<!-- <text class="joinCart" @click="addToCart">Add to cart</text> -->
-				<text class="buy" @click="changeAlert('show')">Buy It Now</text>
-				
+				<text class="buy" @click="gonext('root:app/order/confirmation.js',{id:goodId})">Buy It Now</text>
+
 			</div>
 		</div>
 
@@ -95,8 +91,8 @@
 	const animation = weex.requireModule("animation");
 	import {
 		get_goods_info,
-		get_goods_param,
-		get_goods_spec,
+		add_goods_collection,
+		del_goods_collection,
 		get_goods_list,
 		get_goods_option
 	} from "../../mixin/ajax.js";
@@ -147,9 +143,9 @@
 					this.log(userId)
 					this.userId = userId;
 					this.getGoodInfo()
-					
+
 					get_goods_list({
-						users_id:this.userId,
+						users_id: this.userId,
 						keywords: "",
 						categoryid: "",
 						type: "2",
@@ -157,7 +153,7 @@
 						page: 1,
 					}, (res, flag) => {
 						if (flag) {
-					
+
 							if (res.code == "200") {
 								this.shopList = res.data.list;
 							} else {
@@ -165,16 +161,16 @@
 							}
 						}
 					})
-					
+
 				});
 
 			},
 			gonext(url, parmar) {
 				this.push(url, parmar)
-				 
+
 			},
 			// 推荐商品
-			
+
 			getGoodInfo() {
 				get_goods_info({
 					users_id: this.userId,
@@ -211,30 +207,10 @@
 				}
 			},
 			toCart() {
-				navigator.push("root:app/main/cart.js");
+				// navigator.push("root:app/main/cart.js");
 			},
 
-			changeAlert(type) {
-				var testEl = this.$refs.shopAlert;
-				let transform = "100%";
-				this.showMask = false;
-
-				if (type == "show") {
-					transform = "-100%";
-					this.showMask = true;
-				}
-				animation.transition(
-					testEl, {
-						styles: {
-							transform: `translateY(${transform})`
-						},
-						duration: 400, //ms
-						timingFunction: "ease",
-						delay: 0 //ms
-					},
-					function() {}
-				);
-			},
+			 
 			hideShare() {
 				this.shareClass = "hide";
 				setTimeout(() => {
@@ -244,9 +220,38 @@
 			//收藏
 			toCollection() {
 				// this.isKeep = this.isKeep ? false : true;
+ 
+				if (this.goodInfo.is_collection == 0) {
+					add_goods_collection({
+						users_id: this.userId,
+						goods_id: this.goodId,
+					}, (res, flag) => {
+						 
+						if (flag) {
+							this.toast(res.message);
+							if (res.code == 200) {
+								this.goodInfo.is_collection == 1;
+							}
+						}
+					})
+				} else {
+					del_goods_collection({
+						users_id: this.userId,
+						goods_id: this.goodId,
+					}, (res, flag) => {
+						if (flag) {
+							this.toast(res.message);
+							if (res.code == 200) {
+								this.goodInfo.is_collection == 0;
+							}
+						}
+					})
+				}
 
-				this.goodInfo.is_collection = this.goodInfo.is_collection == 0 ? 1 : 0
+
+
 			},
+
 			// 加入购物车
 			addToCart() {
 				this.toast("加入购物车");
@@ -285,7 +290,8 @@
 		border-radius: 10px;
 		/* justify-content: space-between; */
 	}
-	.reitemS{
+
+	.reitemS {
 		width: 336px;
 	}
 
@@ -344,20 +350,21 @@
 		font-weight: bold;
 		margin-right: 5px;
 	}
+
 	.reduce {
 		color: red;
 		margin-right: 5px;
 	}
-	
+
 	.shopType {
 		color: red;
 	}
-	
+
 	.shopIcon {
 		font-size: 32px;
 		margin-left: 10px;
 	}
-	
+
 	.acenter {
 		align-items: center;
 	}
@@ -365,17 +372,19 @@
 	.imgDemo {
 		background-color: #FFF;
 	}
-	
-	.moreRelate{
+
+	.moreRelate {
 		background-color: #F2F2F2;
 	}
-	.RelatedT{
+
+	.RelatedT {
 		color: #BA8833;
 		font-size: 32px;
-		font-weight:600;
+		font-weight: 600;
 		text-align: center;
 		margin: 32px 0;
 	}
+
 	.goods-detail {
 		/* background-color: #f5f5f5; */
 		padding: 20px 0;

@@ -161,7 +161,7 @@
 				navigator.push("root:app/msg/chat.js");
 			},
 			toCart() {
-				navigator.push("root:app/main/cart.js");
+				// navigator.push("root:app/main/cart.js");
 			},
 
 			hideShare() {

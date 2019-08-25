@@ -1,6 +1,6 @@
 <template>
 	<div class="layout">
-		<head :hasleft="false" @rightClick="rightClick">
+		<head :hasleft="false" :back="false" @rightClick="rightClick">
 			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
 			<div slot="center" class="inputbox" @click="searchClick">
 				<text class="searchIcon iconfont">&#xe62a;</text>
@@ -377,12 +377,13 @@
 	.inputbox {
 		background-color: #fff;
 		flex-direction: row;
-		justify-content: flex-start;
+		justify-content: flex-start; 
 		align-items: center;
 		flex: 1;
 		border-radius: 40px;
 		height: 80px;
 		padding: 0 40px;
+		margin: 0 20px;
 		/* margin-left: 32px; */
 	}
 
