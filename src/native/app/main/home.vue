@@ -196,7 +196,7 @@
 					keywords: "",
 					categoryid: "",
 					type: "1,2",
-					status: "",
+					status: "1",
 					page: 1,
 				}, (res, flag) => {
 
@@ -214,7 +214,7 @@
 					keywords: "",
 					categoryid: "",
 					type: "2",
-					status: "",
+					status: "1",
 					page: 1,
 				}, (res, flag) => {
 					if (flag) {
