@@ -5,7 +5,7 @@
 				<!-- 商品主图轮播 -->
 				<div class="swiper-box">
 					<slider class="slider" interval="3000" auto-play="true">
-						<div class="frame" v-for="(item,index) in goodInfo.thumb_url.split(',')" :key="index">
+						<div class="frame" v-if="goodInfo.thumb_url" v-for="(item,index) in goodInfo.thumb_url.split(',')" :key="index">
 							<image class="itemImg" :src="item"></image>
 						</div>
 						<indicator></indicator>
@@ -19,7 +19,9 @@
 						<text class="goods-old_price">{{goodInfo.old_price}} <!-- NEW --></text>
 						<!-- <text class="goods_cul">Pinkage</text> -->
 					</div>
+					{{goodInfo.is_collection}}
 					<div class="collections" @click="keep">
+
 						<text class="iconfont isKeep" v-if="goodInfo.is_collection==1">&#xe653;</text>
 						<text class="iconfont collecIcon" v-else>&#xe7b9;</text>
 						<!-- <text>Adding Collections</text> -->
@@ -32,7 +34,7 @@
 				</div>
 				<div class="delivery mt20 h100" @click="changeAlert('parmarAlert','show')">
 					<text class="de_title">About this item</text>
-					<text class="de_cont">Texture Style</text>
+					<text class="de_cont">{{goodParmar[0].title}} {{goodParmar[0].description}} ...</text>
 				</div>
 				<!-- 评价-->
 				<div class="userInfo">
@@ -154,6 +156,7 @@
 		add_goods_collection,
 		del_goods_collection,
 		add_order_info,
+		get_address_list,
 		get_orderConfirm
 	} from "../../mixin/ajax.js";
 	import asCore from "../../mixin/core";
@@ -164,16 +167,19 @@
 				goodId: "",
 				userId: "",
 				showWay: "",
-				goodParmar: [],
+				goodParmar: [{
+					description: "",
+					title: ""
+				}],
 				selectSpec: [],
-				option_id:"",//规格属性ID
+				option_id: "", //规格属性ID
 				shopSpec: [],
 				reviewList: {
 					headimgurl: "",
 					"nickname": "",
 					"message": "阿萨德2",
 				}, //评价
-
+				addressData: {},
 				//是否显示遮罩层
 				showMask: false,
 				number: 1,
@@ -186,9 +192,10 @@
 				shareClass: "", //分享弹窗css类，控制开关动画
 				// 商品信息
 				goodInfo: {
+					is_collection: "",
 					thumb_url: "root:img/user.jpg",
 					subtitle: "",
-					postage:"",
+					postage: "",
 					price: "1",
 					old_price: "1",
 					type: "", // 0 自营商品 1 平台二手商品 2 用户发布商品
@@ -205,7 +212,6 @@
 		mounted() {},
 		methods: {
 			onLoad(param) {
-
 				if (param && param.id) {
 					this.goodId = param.id;
 				}
@@ -226,6 +232,20 @@
 							}
 						}
 					})
+					get_address_list({
+						users_id: userId,
+						page: 1,
+						page_num: 10
+					}, (res, flag) => {
+						if (flag) {
+							this.log("地址----" + res.data.list.length)
+							if (res.code == 200) {
+								if (res.data.list.length > 0) {
+									this.addressData = res.data.list[0];
+								}
+							}
+						}
+					})
 				});
 			},
 			confirm() {
@@ -236,26 +256,28 @@
 				}
 
 			},
-			toPay(){
+			toPay() {
 				get_orderConfirm({
 					users_id: this.userId,
 					order_id: "",
-					option_id:this.option_id,
+					option_id: this.option_id,
 					goods_id: this.goodId,
 					number: this.number,
 					take_type: "",
-					address_id: "",
+					address_id: this.addressData.id,
 					is_coupon: 1
-					
-				},(res,flag)=>{ 
-					if(flag){ 
-						if(res.code==200){
-							this.push("root:app/order/confirm.js",{id:res.data.co_order_id});
-						}else{
+
+				}, (res, flag) => {
+					if (flag) {
+						if (res.code == 200) {
+							this.push("root:app/order/confirm.js", {
+								id: res.data.co_order_id
+							});
+						} else {
 							this.toast(res.message)
 						}
 					}
-					
+
 				})
 			},
 			// 加入购物车
@@ -264,7 +286,7 @@
 					users_id: this.userId,
 					goods_id: this.goodId,
 					option_id: "",
-					address_id: "",
+					address_id: this.addressData.id,
 					number: 1,
 				}, (res, flag) => {
 					if (flag) {
@@ -279,14 +301,17 @@
 				this.log(this.selectSpec)
 			},
 			getGoodInfo() {
+				let that = this;
 				get_goods_info({
 					users_id: this.userId,
 					id: this.goodId
 				}, (res, flag) => {
 					if (flag) {
-						this.log("商品信息：" + JSON.stringify(res))
+						this.log("商品信息---：" + JSON.stringify(res.data))
 						if (res.code == "200") {
-							this.goodInfo = res.data;
+							Object.assign(this.goodInfo, res.data)
+							// this.goodInfo = res.data;
+							// this.log(this.goodInfo)
 						}
 					}
 				})
@@ -294,10 +319,10 @@
 					goods_id: this.goodId
 				}, (res, flag) => {
 					if (flag) {
-						this.log("商品参数：" + JSON.stringify(res))
+						this.log("商品参数---：" + JSON.stringify(res.data))
 						if (res.code == "200") {
 							if (res.data.length > 0) {
-								this.goodParmar = res.data;
+								that.goodParmar = res.data;
 							}
 						}
 					}
@@ -307,7 +332,7 @@
 					goods_id: this.goodId
 				}, (res, flag) => {
 					if (flag) {
-						this.log("商品规格：" + JSON.stringify(res))
+						this.log("商品规格---：" + JSON.stringify(res.data))
 						if (res.code == "200") {
 
 							this.shopSpec = res.data;
@@ -372,8 +397,6 @@
 			},
 			//收藏
 			keep() {
-
-
 				if (this.goodInfo.is_collection == 0) {
 					add_goods_collection({
 						users_id: this.userId,
@@ -383,7 +406,8 @@
 						if (flag) {
 							this.toast(res.message);
 							if (res.code == 200) {
-								this.goodInfo.is_collection == 1;
+								this.$set(this.goodInfo, "is_collection", 1)
+								// this.goodInfo.is_collection = 1;
 							}
 						}
 					})
@@ -395,7 +419,8 @@
 						if (flag) {
 							this.toast(res.message);
 							if (res.code == 200) {
-								this.goodInfo.is_collection == 0;
+								this.$set(this.goodInfo, "is_collection", 0)
+								// this.goodInfo.is_collection = 0;
 							}
 						}
 					})

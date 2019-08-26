@@ -16,7 +16,7 @@
 		</x-tabbar>
 	</div>
 </template>
-<script>
+<script> 
 	const navigator = weex.requireModule("navigator");
 	const loginBroad = new BroadcastChannel("login");
 	import Utils from "./mixin/utils";

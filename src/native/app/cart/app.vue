@@ -1,6 +1,6 @@
 <template>
 	<div class="layout">
-		<head   @letfClick="letfClick" @rightClick="rightClick">
+		<head @letfClick="letfClick" @rightClick="rightClick">
 			<text class="leftIcon iconfont" slot="left">&#xe64a;</text>
 			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
 		</head>

@@ -177,6 +177,7 @@
 			loadData(users_id) {
 				let that = this;
 				that.users_id = users_id;
+				//
 				get_banner_list({
 					type: 1
 				}, (res, flag) => {
@@ -192,12 +193,13 @@
 				})
 				// 二手商品 
 				get_goods_list({
-					users_id: users_id,
+					users_id: "",
 					keywords: "",
 					categoryid: "",
 					type: "1,2",
 					status: "1",
 					page: 1,
+					page_num:"10"
 				}, (res, flag) => {
 
 					if (flag) {
@@ -210,17 +212,16 @@
 				})
 				// 推荐商品
 				get_goods_list({
-					users_id: users_id,
+					users_id: "",
 					keywords: "",
 					categoryid: "",
-					type: "2",
+					type: "0",
 					status: "1",
 					page: 1,
 				}, (res, flag) => {
 					if (flag) {
-
-						if (res.code == "200") {
-
+						this.log("商品列表---"+JSON.stringify(res.data))
+						if (res.code == "200") { 
 							that.shopList = res.data.list;
 						} else {
 							that.toast(res.message)

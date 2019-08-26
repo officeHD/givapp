@@ -1,6 +1,11 @@
 <template>
 	<div class="layout">
-		<head :hasleft="false" title="Cart"></head>
+		<head :hasleft="false" title="Cart" @rightClick="showDel=!showDel">
+			<div slot="right">
+				<text v-if="showDel" class="complete">cancel</text>
+				<text v-else class="delIcon">&#xe6e4;</text>
+			</div>
+		</head>
 		<!-- 商品列表 -->
 		<scroller class="goods-list">
 			<div class="goods-tis" v-if="goodsList.length==0">购物车是空的哦~</div>
@@ -13,13 +18,13 @@
 				<!-- 商品信息 -->
 				<div class="goods-info" @tap="toGoods(row)">
 					<div class="imgbox">
-						<image class="img" :src="row.img" />
+						<image class="img" :src="row.thumb" />
 					</div>
 					<div class="info">
-						<div class="title">{{row.name}}</div>
+						<div class="title">{{row.title}}</div>
 						<text class="infospec">{{row.spec}}</text>
 						<div class="price-number">
-							<text class="price">￥{{row.price}}</text>
+							<text class="price">￥{{row.total_price}}</text>
 							<div class="gnumber">
 								<div class="numaction" @click="sub(index)">
 									<text class="iconfont numIcon">&#xe630;</text>
@@ -58,84 +63,54 @@
 </template>
 <script>
 	const navigator = weex.requireModule("navigator");
-
+	const AddCart = new BroadcastChannel("AddCart");
+	import {
+		get_order_list
+	} from "../../mixin/ajax.js";
+	import asCore from "../../mixin/core";
 	export default {
 		data() {
 			return {
+				showDel: false,
 				sumPrice: "0.00",
 				headerPosition: "fixed",
 				headerTop: null,
 				statusTop: null,
 				selectedList: [],
 				isAllselected: false,
-				goodsList: [{
-						id: 1,
-						img: "../../static/img/goods/p1.jpg",
-						name: "商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
-						spec: "规格:S码",
-						price: 127.5,
-						number: 1,
-						selected: false
-					},
-					{
-						id: 2,
-						img: "../../static/img/goods/p2.png",
-						name: "商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
-						spec: "规格:S码",
-						price: 127.5,
-						number: 1,
-						selected: false
-					},
-					{
-						id: 3,
-						img: "../../static/img/goods/p3.png",
-						name: "商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
-						spec: "规格:S码",
-						price: 127.5,
-						number: 1,
-						selected: false
-					},
-					{
-						id: 4,
-						img: "../../static/img/goods/p4.jpg",
-						name: "商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
-						spec: "规格:S码",
-						price: 127.5,
-						number: 1,
-						selected: false
-					},
-					{
-						id: 5,
-						img: "../../static/img/goods/p5.jpg",
-						name: "商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题",
-						spec: "规格:S码",
-						price: 127.5,
-						number: 1,
-						selected: false
-					}
-				],
+				goodsList: [],
 				//控制滑动效果
 				theIndex: null,
 				oldIndex: null,
 				isStop: false
 			};
 		},
-		onPageScroll(e) {
-			//兼容iOS端下拉时顶部漂移
-			this.headerPosition = e.scrollTop >= 0 ? "fixed" : "absolute";
-			this.headerTop = e.scrollTop >= 0 ? null : 0;
-			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + "px";
+		created() {
+			asCore.getBsessionid(userId => {
+				 this.userId=userId
+			})
+			AddCart.onmessage = this.loadData(this.userId);
+			// this.loadData();
 		},
-		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-		onPullDownRefresh() {
-			setTimeout(function() {
-				uni.stopPullDownRefresh();
-			}, 1000);
-		},
-		onLoad() {},
 		methods: {
-			loadData(id){
-				this.log(id)
+
+			loadData(id) {
+				// this.log(id)
+				this.log("购物车----" + id)
+				let that = this;
+				get_order_list({
+					users_id: id,
+					goods_type: 2,
+					page: "1",
+					page_num: "10",
+				}, (res, flag) => {
+					if (flag) {
+						this.log("购物车列表----" + JSON.stringify(res.data.list))
+						if (res.code == 200 && res.data.list.length > 0) {
+							that.goodsList = res.data.list
+						}
+					}
+				})
 			},
 			//加入商品 参数 goods:商品数据
 			joinGoods(goods) {
@@ -301,6 +276,19 @@
 		right: 0px;
 	}
 
+	.delIcon {
+		flex: 1;
+		font-family: iconfont;
+		font-size: 38px;
+		color: #FFFFFF;
+	}
+
+	.complete {
+		flex: 1;
+		font-size: 28px;
+		color: #FFFFFF;
+	}
+
 	.goods-tis {
 		width: 100%;
 		height: 60px;
@@ -378,7 +366,14 @@
 	}
 
 	.imgbox {
-		width: 120px;
+		width: 180px;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	.img {
+		width: 100px;
+		height: 100px;
 	}
 
 	.infospec {
