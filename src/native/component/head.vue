@@ -1,21 +1,24 @@
 <template>
-	<div class="layout" :style="{'background-color':bgcolor,'height':height+'px','padding-top':top}">
-		<div style="flex-direction: row;align-items: center;flex: 1; justify-content:space-between ">
-			<div class="backbg" v-if="!back&&hasleft" @click="letfClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
-				<slot name="left"></slot>
-			</div>
-			<div class="leftIcon" v-if="back" @click="backTo" :style="{'height':height-top+'px','width':bgwidth+'px'}">
-				<!-- <image src="root:img/back.png" style="width: 70px;height: 70px;  "></image> -->
-				<text class="arricon" :style="{'color':titleColor}">&#xe603;</text>
-			</div>
-			<slot name="center"></slot>
-			<text v-if="title" style="text-align: center;font-size: 36;" :style="{'color':titleColor}" @click="titleClick">{{title}}</text>
-
-			<div class="rightBg" @click="rightClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
-				<slot name="right"></slot>
-			</div>
-		</div>
-	</div>
+	 <div :style="{'height':height+'px'}">
+		 <div class="layout" :style="{'background-color':bgcolor,'height':height+'px','padding-top':top}">
+		 	<div  style="flex-direction: row;align-items: center;flex: 1; justify-content:space-between ">
+		 		<div class="backbg" v-if="!back&&hasleft" @click="letfClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
+		 			<slot name="left"></slot>
+		 		</div>
+		 		<div class="leftIcon" v-if="back" @click="backTo" :style="{'height':height-top+'px','width':bgwidth+'px'}">
+		 			<!-- <image src="root:img/back.png" style="width: 70px;height: 70px;  "></image> -->
+		 			<text class="arricon" :style="{'color':titleColor}">&#xe603;</text>
+		 		</div>
+		 		<slot name="center"></slot>
+		 		<text v-if="title" style="text-align: center;font-size: 36;" :style="{'color':titleColor}" @click="titleClick">{{title}}</text>
+		 
+		 		<div class="rightBg" @click="rightClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
+		 			<slot name="right"></slot>
+		 		</div>
+		 	</div>
+		 </div>
+	 </div>
+	
 </template>
 <script>
 	export default {
@@ -144,9 +147,9 @@
 	}
 
 	.layout {
-		/*position: fixed;*/
-		/*top: 0;*/
-		/*left: 0;*/
+		position: fixed;
+		top: 0;
+		left: 0;
 		background-color: #02993c;
 		height: 128;
 		width: 750;

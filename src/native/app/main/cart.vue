@@ -8,7 +8,8 @@
 		</head>
 		<!-- 商品列表 -->
 		<scroller class="goods-list">
-			<div class="goods-tis" v-if="goodsList.length==0">购物车是空的哦~</div>
+			<empty v-if="goodsList.length==0" tips="Your Cart is empty"></empty>
+			<!-- <div class="goods-tis" v-if="goodsList.length==0">购物车是空的哦~</div> -->
 			<div class="goods-row" v-for="(row,index) in goodsList" :key="index">
 				<!-- checkbox -->
 				<div class="checkbox-box" @click="selected(index)">
@@ -42,7 +43,7 @@
 			</div>
 		</scroller>
 		<!-- 脚部菜单 -->
-		<div class="cartfooter">
+		<div class="cartfooter" v-if="goodsList.length>0">
 			<div class="footerLeft" @click="allSelect">
 				<div class="checkbox-box">
 					<text v-if="isAllselected" class="iconfont selectIcon">&#xe602;</text>
@@ -96,16 +97,18 @@
 
 			loadData(id) {
 				// this.log(id)
-				this.log("购物车----" + id)
+				 if(!id){
+					 return false;
+				 }
 				let that = this;
 				get_order_list({
 					users_id: id,
 					goods_type: 2,
 					page: "1",
-					page_num: "10",
+					page_num: "10", 
 				}, (res, flag) => {
 					if (flag) {
-						this.log("购物车列表----" + JSON.stringify(res.data.list))
+						this.log("购物车列表--1--" + JSON.stringify(res.data.list))
 						if (res.code == 200 && res.data.list.length > 0) {
 							that.goodsList = res.data.list
 						}

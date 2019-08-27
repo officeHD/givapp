@@ -4,7 +4,7 @@
 		<scroller class="scroller">
 			<div class="imgDemo">
 				<!-- 用户信息 -->
-				<div class="userInfo">
+				<div class="userInfo" @click="gonext('root:app/goods/userCenter.js',{id:goodInfo.users_id})">
 					<image class="userAvator" :src="goodInfo.headimgurl"></image>
 					<div class="userCenter">
 						<div class="row acenter">
@@ -40,7 +40,7 @@
 				<text class="RelatedT">Related</text>
 				<div class="recontent">
 					<div class="reitem" v-for="item in shopList" :key="item">
-						<image class="goodsImga" :src="item.thumb" @click="gonext('root:app/goods/goods.js',{id:item.id})" />
+						<image class="goodsImga" :src="item.thumb" @click="gonext('root:app/goods/goods2.js',{id:item.id})" />
 						<view class="contentBox">
 							<text class="goodsTitle2">{{item.title}}</text>
 							<view class="priceInfo">
@@ -120,7 +120,8 @@
 					price: "1",
 					old_price: "1",
 					type: "", // 0 自营商品 1 平台二手商品 2 用户发布商品
-					is_collection: ""
+					is_collection: "",
+					users_id:""
 				},
 				selectSpec: null, //选中规格
 				isKeep: false, //收藏
@@ -230,7 +231,8 @@
 						if (flag) {
 							this.toast(res.message);
 							if (res.code == 200) {
-								this.goodInfo.is_collection == 1;
+								// this.goodInfo.is_collection == 1;
+								this.$set(this.goodInfo,"is_collection",1)
 							}
 						}
 					})
@@ -242,7 +244,7 @@
 						if (flag) {
 							this.toast(res.message);
 							if (res.code == 200) {
-								this.goodInfo.is_collection == 0;
+								this.$set(this.goodInfo,"is_collection",0)
 							}
 						}
 					})

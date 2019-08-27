@@ -61,8 +61,8 @@
 		beforeCreate() {
 			let navbar = weex.requireModule("navbar");
 			navbar.setStatusBarStyle("white");
-			let that = this;
-			
+			let that = this; 
+			// asCore.setBsessionid("")
 			/* 判断是否登录过和是否超时(超时将自动从登) */
 			asCore.getBsessionid(sessionid => {
 				if (!sessionid) {

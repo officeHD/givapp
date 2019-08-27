@@ -96,7 +96,8 @@ var data = {
 				"status": 0,
 				"create_time": "2019-07-05 15:32:44",
 				"nickname": null,
-				"headimgurl": null
+				"headimgurl":  "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 			},{
 				"id": 33,
 				"users_id": "2cf751e717424373b99dc74c68927ee2",
@@ -108,7 +109,8 @@ var data = {
 				"status": 0,
 				"create_time": "2019-07-05 15:32:44",
 				"nickname": null,
-				"headimgurl": null
+				"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 			},{
 				"id": 23,
 				"users_id": "2cf751e717424373b99dc74c68927ee2",
@@ -120,7 +122,8 @@ var data = {
 				"status": 0,
 				"create_time": "2019-07-05 15:32:44",
 				"nickname": null,
-				"headimgurl": null
+				"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 			},{
 				"id": 25,
 				"users_id": "2cf751e717424373b99dc74c68927ee2",
@@ -384,7 +387,7 @@ var data = {
 				"postage": "6.00",
 				"number": 2,
 				"nickname": "tll",
-				"headimgurl": "",
+				"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
 				"show": 0,
 				"thumb": null,
 				"title": "商品白色",
@@ -623,7 +626,8 @@ var data = {
 			"logistic": null,
 			"shipper_code": null,
 			"nickname": "tll",
-			"headimgurl": "",
+			"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 			"list": [{
 				"id": 117,
 				"title": "用户二手商品1",
@@ -684,7 +688,8 @@ var data = {
 			},
 			"users": {
 				"nickname": "tll",
-				"headimgurl": "",
+				"headimgurl":  "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 				"refund_name": "檀",
 				"refund_phone": "13635697675",
 				"refund_address": "测试地址"
@@ -750,7 +755,8 @@ var data = {
 			"logistic": null,
 			"shipper_code": null,
 			"nickname": "tll",
-			"headimgurl": "",
+			"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 			"list": [{
 				"id": 117,
 				"title": "用户二手商品1",
@@ -787,7 +793,8 @@ var data = {
 				"end_time": "1563438522",
 				"take_end_time": null,
 				"nickname": "tll",
-				"headimgurl": "",
+				"headimgurl":  "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 				"phone_number": "13635697675",
 				"title": null,
 				"thumb": null,
@@ -830,7 +837,8 @@ var data = {
 					"type": 2
 				}],
 				"nickname": "iff_2vG7PG",
-				"headimgurl": null
+				"headimgurl":  "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 			}]
 		}
 	},
@@ -1027,7 +1035,8 @@ var data = {
 			"create_time": "2019-07-17 10:10:00",
 			"prize": "四等奖",
 			"nickname": "tll",
-			"headimgurl": "",
+			"headimgurl":  "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			
 			"phone_number": "13635697675"
 		}]
 	}
