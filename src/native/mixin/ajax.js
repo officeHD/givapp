@@ -1,7 +1,7 @@
 import asCore from './core'
 import data from './data'
 const net = weex.requireModule("net");
-var debug = true;
+var debug = false;
 // 查询物流上传文件
 export const upload = (state, cb) => {
 	if (debug) {
@@ -97,7 +97,7 @@ export const reset_password = (state, cb) => {
 // 用户信息接口
 export const get_users_info = (state, cb) => {
 	if (debug) {
-		cb(data.userInfo, true);
+		cb(data.userInfo, true); 
 	} else {
 		asCore.post(`web/users/get_users_info`, state, cb)
 	}

@@ -3,7 +3,8 @@
 		<head title="My receipt address" @rightClick="add">
 			<text class=" addIcon" slot="right">&#xe601;</text>
 		</head>
-		<scroller class="contentList">
+		<empty v-if="addressList.length==0" tips="Your Address is empty"></empty>
+		<scroller class="contentList" v-if="addressList.length>0">
 			<div class="listrow" v-for="(row,index) in addressList" :key="index" @click="select(row)" bubble="true">
 				<div class="left">
 					<text class="head"> {{row.name[0]}} </text>
@@ -35,8 +36,8 @@
 		data() {
 			return {
 				isSelect: false,
-				userId:"",
-				page:1,
+				userId: "",
+				page: 1,
 				addressList: []
 			};
 		},

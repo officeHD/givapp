@@ -66,7 +66,7 @@
 					"account": "10000000134",
 					"status": 1,
 					"phone_number": "13635697675",
-					"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+					"headimgurl": "",
 					"nickname": "tll",
 					"email": "111111@qq.com",
 					"sex": 2,
@@ -92,7 +92,9 @@
 					get_users_info({
 						users_id: param.id,
 					}, (res, flag) => {
-						// this.log(this.userInfo )
+						this.log("-----------------")
+						this.log(res)
+						this.log("-----------------")
 						if (flag) {
 							if (res.code == "200") {
 								this.userInfo = res.data;
