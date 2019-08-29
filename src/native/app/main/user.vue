@@ -36,6 +36,13 @@
 					<text class="itemTitle">After sale</text>
 				</div>
 			</div>
+			
+			
+			<x-cell title="Balance" :hasArrow="true" @cellClick="gonext('root:app/user/balance/balance.js')">
+				<div slot="label" class="list-icon">
+					<text class="iconfont" :style="{fontSize:40}">&#xe670;</text>
+				</div>
+			</x-cell>
 			<x-cell title="Selling" :hasArrow="true" @cellClick="gonext('root:app/selling/selling.js')">
 				<div slot="label" class="list-icon">
 					<text class="iconfont" :style="{fontSize:40}">&#xe670;</text>
@@ -59,7 +66,7 @@
 			</x-cell>
 
 
-			<x-cell title="Help" :hasArrow="true"  >
+			<x-cell title="Help" :hasArrow="true"  @cellClick="gonext('root:app/user/help/help.js')"    >
 				<div slot="label" class="list-icon">
 					<text class="iconfont" :style="{fontSize:40}">&#xe6cf;</text>
 				</div>

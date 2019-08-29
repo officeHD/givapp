@@ -86,7 +86,7 @@ Mixins.install = (Vue, options) => {
 			let domModule = weex.requireModule('dom');
 			domModule.addRule('fontFace', {
 				'fontFamily': "iconfont",
-				'src': "url('http://at.alicdn.com/t/font_1280399_ixqnqk5kb2h.ttf')"
+				'src': "url('http://at.alicdn.com/t/font_1280399_xtxiemp7w9a.ttf')"
 			});
 			globalEvent.addEventListener("onPageInit", (param) => {
 				let p = param

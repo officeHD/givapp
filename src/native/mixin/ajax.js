@@ -839,3 +839,82 @@ export const get_raffle_list = (state, cb) => {
 		asCore.post(`web/raffle/get_raffle_list`, state, cb)
 	}
 }
+
+// 帮助分类列表接口
+export const get_help_type = (state, cb) => {
+	if (debug) {
+		cb(data.raffle_list, true);
+	} else {
+		asCore.post(`web/users/get_help_type`, state, cb)
+	}
+}
+// 帮助分类列表接口
+export const get_help_list = (state, cb) => {
+	if (debug) {
+		cb(data.raffle_list, true);
+	} else {
+		asCore.post(`web/users/get_help_list`, state, cb)
+	}
+}
+
+// 帮助分类列表接口
+export const get_help_info = (state, cb) => {
+	if (debug) {
+		cb(data.raffle_list, true);
+	} else {
+		asCore.post(`web/users/get_help_info`, state, cb)
+	}
+}
+
+
+// 帮助分类列表接口
+export const add_help_info = (state, cb) => {
+	if (debug) {
+		cb(data.raffle_list, true);
+	} else {
+		asCore.post(`web/users/add_help_info`, state, cb)
+	}
+}
+
+// 卖家余额接口
+export const get_users_balance = (state, cb) => {
+	if (debug) {
+		cb(data.raffle_list, true);
+	} else {
+		asCore.post(`web/withdraw/get_users_balance`, state, cb)
+	}
+}
+ // 卖家余额接口
+ export const get_system_info = (state, cb) => {
+ 	if (debug) {
+ 		cb(data.raffle_list, true);
+ 	} else {
+ 		asCore.post(`web/users/get_system_info`, state, cb)
+ 	}
+ }
+ //卖家余额接口
+ export const add_withdraw_info = (state, cb) => {
+ 	if (debug) {
+ 		cb(data.raffle_list, true);
+ 	} else {
+ 		asCore.post(`web/withdraw/add_withdraw_info`, state, cb)
+ 	}
+ }
+ 
+ 
+ //卖家余额接口
+ export const get_withdraw_list = (state, cb) => {
+ 	if (debug) {
+ 		cb(data.raffle_list, true);
+ 	} else {
+ 		asCore.post(`web/withdraw/get_withdraw_list`, state, cb)
+ 	}
+ }
+ 
+ 
+ 
+
+
+
+
+
