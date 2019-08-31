@@ -10,7 +10,7 @@
 				<text class="lineR"></text>
 			</div>
 			<text class="acNum">{{balance}}</text>
-			<text class="bBtn">Balance withdrawal</text>
+			<text class="bBtn" @click="withDraw">Balance withdrawal</text>
 		</div>
 		<text class="titA">Withdrawal rules</text>
 		<text class="tit">1. Over {{min_price}} can be withdrawn</text>
@@ -21,6 +21,10 @@
 </template>
 
 <script>
+	const navigator = weex.requireModule('navigator');
+	const navbar = weex.requireModule('navbar');
+	
+	
 	import {
 		get_system_info,
 		get_users_balance
@@ -36,7 +40,13 @@
 			}
 		},
 		methods: {
+			onResume(){
+				navbar.setStatusBarStyle("white");
+				
+			},
 			onLoad() {
+				navigator.setRoot('balance')
+				navigator.setPageId('balance')
 				asCore.getBsessionid(userId => {
 					this.log(userId)
 					get_users_balance({
@@ -59,6 +69,9 @@
 					}
 				})
 
+			},
+			withDraw(){
+				this.push("root:app/user/balance/withdrawal.js")	
 			},
 			gonext(url, parmar) {
 				this.push(url, parmar)

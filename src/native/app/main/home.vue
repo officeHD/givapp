@@ -1,11 +1,12 @@
 <template>
 	<div class="layout">
 		<head :hasleft="false" :back="false" @rightClick="rightClick">
-			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
 			<div slot="center" class="inputbox" @click="searchClick">
 				<text class="searchIcon iconfont">&#xe62a;</text>
 				<text class="tips">noteBook</text>
 			</div>
+			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
+			
 		</head>
 		<div class="pageContent">
 			<div class="header"></div>
@@ -112,7 +113,6 @@
 	</div>
 </template>
 <script>
-	const navigator = weex.requireModule("navigator");
 	import asCore from "../../mixin/core";
 	import {
 		get_goods_list,
@@ -232,19 +232,19 @@
 			gonext(url, parmar) {
 				this.push(url, parmar)
 				// this.log("jdksdjsk", "error");
-				// navigator.push(url);
 			},
 
 			searchClick() {
-				this.toast("搜索跳转");
+				// this.toast("搜索跳转");
+				this.push("root:app/goods/searchGoods.js");
 			},
 			letfClick() {
-				this.toast("左边按钮跳转");
+				// this.toast("左边按钮跳转");
 			},
 			rightClick() {
 				// this.toast("右边边按钮跳转");
 
-				navigator.push("root:app/msg/msg.js");
+				this.push("root:app/msg/msg.js");
 			}, //定时器
 			Timer() {
 				let that = this;

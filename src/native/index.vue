@@ -18,6 +18,9 @@
 </template>
 <script> 
 	const navigator = weex.requireModule("navigator");
+	const navbar = weex.requireModule("navbar");
+	
+	
 	const loginBroad = new BroadcastChannel("login");
 	import Utils from "./mixin/utils";
 	import asCore from "./mixin/core";
@@ -35,6 +38,9 @@
 			};
 		},
 		methods: {
+			onResume(){
+				navbar.setStatusBarStyle("white");
+			},
 			onLoad(param) {},
 			gonext(url) {
 				//this.push('test.js',{name:"ssss"})
@@ -46,10 +52,7 @@
 			letfClick() {
 				this.toast("左边按钮跳转");
 			},
-			onLoad() {
-				// const page = weex.requireModule("page");
-				// page.doubleBack();
-			},
+			 
 			rightClick() {
 				this.toast("右边边按钮跳转");
 			}
@@ -59,8 +62,7 @@
 		},
 
 		beforeCreate() {
-			let navbar = weex.requireModule("navbar");
-			navbar.setStatusBarStyle("white");
+			 
 			let that = this; 
 			// asCore.setBsessionid("")
 			/* 判断是否登录过和是否超时(超时将自动从登) */

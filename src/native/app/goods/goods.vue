@@ -147,6 +147,7 @@
 <script>
 	const navigator = weex.requireModule("navigator");
 	const animation = weex.requireModule("animation");
+	const navbar = weex.requireModule("navbar");
 	import {
 		get_goods_info,
 		get_goods_param,
@@ -205,12 +206,12 @@
 				descriptionStr: ''
 			};
 		},
-		beforeCreate() {
-			let navbar = weex.requireModule("navbar");
-			navbar.setStatusBarStyle("black");
-		},
+	 
 		mounted() {},
 		methods: {
+			onResume(){
+				navbar.setStatusBarStyle("black");
+			},
 			onLoad(param) {
 				if (param && param.id) {
 					this.goodId = param.id;

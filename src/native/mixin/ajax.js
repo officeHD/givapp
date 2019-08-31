@@ -879,7 +879,7 @@ export const add_help_info = (state, cb) => {
 // 卖家余额接口
 export const get_users_balance = (state, cb) => {
 	if (debug) {
-		cb(data.raffle_list, true);
+		cb(data.users_balance, true);
 	} else {
 		asCore.post(`web/withdraw/get_users_balance`, state, cb)
 	}
@@ -887,7 +887,7 @@ export const get_users_balance = (state, cb) => {
  // 卖家余额接口
  export const get_system_info = (state, cb) => {
  	if (debug) {
- 		cb(data.raffle_list, true);
+ 		cb(data.system_info, true);
  	} else {
  		asCore.post(`web/users/get_system_info`, state, cb)
  	}
@@ -895,7 +895,7 @@ export const get_users_balance = (state, cb) => {
  //卖家余额接口
  export const add_withdraw_info = (state, cb) => {
  	if (debug) {
- 		cb(data.raffle_list, true);
+ 		cb(data.returnSucces, true);
  	} else {
  		asCore.post(`web/withdraw/add_withdraw_info`, state, cb)
  	}
@@ -905,7 +905,7 @@ export const get_users_balance = (state, cb) => {
  //卖家余额接口
  export const get_withdraw_list = (state, cb) => {
  	if (debug) {
- 		cb(data.raffle_list, true);
+ 		cb(data.withdraw_list, true);
  	} else {
  		asCore.post(`web/withdraw/get_withdraw_list`, state, cb)
  	}
