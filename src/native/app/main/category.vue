@@ -15,10 +15,10 @@
 			
 		</scroller> -->
 		<slider class="slider" @change="slideChange" :index="tabCurrentIndex">
-			<div v-for="(item, index) in navList">
+			<div class="sliderContent" v-for="(item, index) in navList">
 				<div class="header">
-					<div class="input-box">
-						<input class="input" placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()" />
+					<div class="input-box" @click="searchClick()">
+						<input class="input" placeholder="默认关键字" placeholder-style="color:#c0c0c0;" />
 						<text class="iconfont iconSearch">&#xe62a;</text>
 					</div>
 				</div>
@@ -36,17 +36,19 @@
 						<!-- 右侧子导航 -->
 						<block v-for="(category,index) in item.List" :key="category.id">
 							<div class="categoryList" v-if="index==showCategoryIndex">
-								<div class="catelist">
+								<div class="catelist" v-for="(box,i) in category.two" :key="i" >
+									<text class="catetext">{{box.name}}</text>
 									<div class="listBox">
-										<div class="listitem" v-for="(box,i) in category.list" :key="i" @tap="toCategory(box)">
-											<image class="itemImg" :src="box.thumb" />
-											<text class="itemName">{{box.name}}</text>
+										<div class="listitem" v-for="(item,index) in box.three" :key="index" @click="searchClick(item.name)">
+											<image class="itemImg" :src="item.thumb" />
+											<text class="itemName">{{item.name}}</text>
 										</div>
 										<div class="listitema"></div>
 										<div class="listitema"></div>
 									</div>
 								</div>
 							</div>
+
 						</block>
 					</scroller>
 				</div>
@@ -58,7 +60,8 @@
 <script>
 	const navigator = weex.requireModule("navigator");
 	import {
-		get_category_list
+		get_category_list,
+		get_all_category_list
 	} from "../../mixin/ajax"
 
 
@@ -105,20 +108,13 @@
 			getGoodList(type) {
 				let index = this.tabCurrentIndex;
 				let navItem = this.navList[index];
-				let subItenm = [];
+
 				if (type === 'tabChange' && navItem.loaded === true) {
 					//tab切换只有第一次需要加载数据
 					return;
 				}
-				if (type === "subChange") {
-					subItenm = navItem.List.filter(item => item.id == this.parentid);
 
-					if (subItenm[0] && subItenm[0].loaded == true) {
-						return;
-					}
-				}
-				get_category_list({
-					parentid: this.parentid,
+				get_all_category_list({
 					type: navItem.type
 				}, (res, flag) => {
 					this.log(navItem.type)
@@ -132,24 +128,10 @@
 							})
 							this.navList.forEach(item => {
 								if (item.type == navItem.type) {
-
 									this.$set(item, "List", list);
 									this.$set(item, "loaded", true);
 								}
 							})
-							if (res.data.length > 0) {
-								this.parentid = res.data[0].id;
-								this.getGoodList()
-							}
-							//this.log(this.navList) 
-						} else {
-							navItem.List.forEach(item => {
-								if (item.id == this.parentid) {
-									this.$set(item, "list", res.data);
-									this.$set(item, "loaded", true);
-								}
-							})
-
 						}
 					}
 
@@ -160,6 +142,16 @@
 					return
 				}
 				this.typeClass = type
+			},
+			searchClick(name) {
+				// this.toast("搜索跳转");
+				let parmar = {
+					name: name
+				};
+				if (!name) {
+					parmar = null
+				}
+				this.push("root:app/goods/searchGoods.js", parmar);
 			},
 			tabClick(index) {
 				if (this.tabCurrentIndex == index) {
@@ -185,13 +177,12 @@
 			showCategory(index, id) {
 				this.showCategoryIndex = index;
 				this.parentid = id;
-				this.getGoodList('subChange')
+				// this.getGoodList('subChange')
 			},
 			toCategory(e) {
 				//uni.showToast({title: e.name,icon:"none"});
-				uni.navigateTo({
-					url: "../goods/goods-list?cid=" + e.id + "&name=" + e.name
-				});
+
+
 			},
 			//搜索跳转
 			toSearch() {
@@ -246,6 +237,18 @@
 	.slider {
 		flex: 1;
 		position: relative;
+		width: 750px;
+		display: flex;
+		/* background-color: #41EFF2; */
+
+	}
+
+	.sliderContent {
+		width: 750px;
+		position: relative;
+		background-color: #FFF;
+		flex: 1;
+
 	}
 
 	.off {
@@ -286,6 +289,7 @@
 		bottom: 0px;
 		left: 0px;
 		right: 0px;
+		/* background-color: #000000; */
 	}
 
 	.scroller {
@@ -324,20 +328,30 @@
 	.iconSearch {
 		margin-right: 15px;
 		font-size: 30px;
+		color: #999;
 	}
 
 	.category-list {
-		width: 750px;
-		background-color: #fff;
-		display: flex;
 		flex: 1;
+		/* background-color:#02993C; */
 		flex-direction: row;
+		position: absolute;
+		left: 0;
+		top: 100px;
+		bottom: 0;
+		right: 0;
 	}
 
 	.scrollerleft {
-		flex: 2;
+		/* flex: 2; */
 		background-color: #f2f2f2;
 		padding: 0;
+		position: absolute;
+		width: 213px;
+		bottom: 0;
+		left: 0;
+		top: 0;
+
 	}
 
 	.leftrow {
@@ -367,13 +381,18 @@
 	}
 
 	.scrollerright {
-		flex: 5;
-		background-color: #f2f2f2;
+		/* flex: 5; */
+		/* background-color: #FFFFFF; */
+		position: absolute;
+		width: 537px;
+		bottom: 0;
+		left: 213px;
+		top: 0;
 	}
 
 	.categoryList {
 		width: 537px;
-		background-color: #f2f2f2;
+		/* background-color: #f2f2f2; */
 
 	}
 
@@ -415,8 +434,8 @@
 	}
 
 	.itemImg {
-		width: 120px;
-		height: 140px;
+		width: 130px;
+		height: 130px;
 		background-color: #f2f2f2;
 		margin-bottom: 10px;
 	}
@@ -467,16 +486,10 @@
 
 	image {
 		width: 100%;
-		height: 24.262vw;
+
 	}
 
-	.banner {
-		width: 100%;
-		height: 24.262vw;
-		border-radius: 10px;
-		overflow: hidden;
-		box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
-	}
+
 
 	.right {
 		width: 76%;
@@ -503,10 +516,7 @@
 		flex-wrap: wrap;
 	}
 
-	image {
-		width: 60%;
-		height: calc(71.44vw / 3 * 0.6);
-	}
+
 
 	.text {
 		margin-top: 5px;

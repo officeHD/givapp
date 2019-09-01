@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
-		<head title="Edit data" @rightClick="rightClick" bgwidth=140 >
-			<text slot="right" class="complete">Confirm</text>
+		<head title="Edit data" bgwidth="140" >
+			<text slot="right" class="complete" @click="rightClick">Confirm</text>
 		</head>
 		<div class="userImg" @click="changePhoto">
 			<image class="avator" :src="user.headimgurl" />

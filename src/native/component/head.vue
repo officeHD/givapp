@@ -2,10 +2,10 @@
 	 <div :style="{'height':height+'px'}">
 		 <div class="layout" :style="{'background-color':bgcolor,'height':height+'px','padding-top':top}">
 		 	<div  style="flex-direction: row;align-items: center;flex: 1; justify-content:space-between ">
-		 		<div class="backbg" v-if="!back&&hasleft" @click="letfClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
+		 		<div class="backbg" v-if="!backFlag&&hasleft" @click="letfClick" :style="{'height':height-top+'px','width':bgwidth+'px'}">
 		 			<slot name="left"></slot>
 		 		</div>
-		 		<div class="leftIcon" v-if="back" @click="backTo" :style="{'height':height-top+'px','width':bgwidth+'px'}">
+		 		<div class="leftIcon" v-if="backFlag" @click="backTo" :style="{'height':height-top+'px','width':bgwidth+'px'}">
 		 			<!-- <image src="root:img/back.png" style="width: 70px;height: 70px;  "></image> -->
 		 			<text class="arricon" :style="{'color':titleColor}">&#xe603;</text>
 		 		</div>
@@ -27,14 +27,17 @@
 				default:100
 			},
 			hasleft: {
+				type: Boolean,
+				default: true
+			},
+			backFlag: {
+				type: Boolean,
 				default: true
 			},
 			title: {
 				default: ""
 			},
-			back: {
-				default: true
-			},
+			
 			titleColor: {
 				default: "#ffffff"
 			},
@@ -114,7 +117,8 @@
 		},
 
 		created: function() {
-			this.adjust();
+			this.adjust();  
+			 
 		},
 		ready: function() {}
 	};

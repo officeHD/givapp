@@ -1,16 +1,16 @@
 <template>
 	<div class="layout">
-		<head :hasleft="false" :back="false" @rightClick="rightClick">
-			<div slot="center" class="inputbox" @click="searchClick">
+		<head :hasleft="false" :backFlag="false" @rightClick="rightClick">
+			<div slot="center" class="inputbox" @click="searchClick('')">
 				<text class="searchIcon iconfont">&#xe62a;</text>
 				<text class="tips">noteBook</text>
 			</div>
 			<text class="leftIcon iconfont" slot="right">&#xe600;</text>
-			
+
 		</head>
 		<div class="pageContent">
 			<div class="header"></div>
-			<scroller class="scroller">
+			<scroller class="scroller" @loadmore="onloadmore" loadmoreoffset="200" :show-scrollbar="false">
 				<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
 					<loading-indicator class="indicator"></loading-indicator>
 				</refresh>
@@ -25,7 +25,7 @@
 					</div>
 					<div class="bgcf">
 						<div class="tabSection">
-							<div class="tabItem" v-for="(item,index) in tabSection" :key="index">
+							<div class="tabItem" v-for="(item,index) in tabSection" :key="index" @click="searchClick(item.title)">
 								<image class="tabImg" :src="item.img" />
 								<text class="tips">{{item.title}}</text>
 							</div>
@@ -107,6 +107,10 @@
 						</div>
 					</div>
 				</div>
+				<div class="loadingbox" v-if="hasMore">
+					<image class="loading" src="https://img.alicdn.com/tfs/TB1CWnby7yWBuNjy0FpXXassXXa-32-32.gif" />
+				</div>
+				<text class="loadingbox" v-if="!hasMore">No more</text>
 			</scroller>
 		</div>
 
@@ -122,7 +126,10 @@
 		data() {
 			return {
 				users_id: "",
+				page: 1,
+				hasMore: true,
 				refreshing: false,
+				shopTotal: 0,
 				bannerList: [1, 2], //banner图
 				tabSection: [{
 						img: "root:img/nav1.png",
@@ -170,12 +177,25 @@
 			onrefresh(event) {
 				var s = this;
 				s.refreshing = true;
+				let that = this;
+				that.loadData(that.users_id)
 				setTimeout(() => {
+
 					s.refreshing = false;
 				}, 1000);
 			},
+			onloadmore() {
+
+				this.log("page----")
+				if (this.hasMore) {
+					this.page++;
+					this.getGoodList();
+				}
+				
+			},
 			loadData(users_id) {
 				let that = this;
+				that.page=1;
 				that.users_id = users_id;
 				//
 				get_banner_list({
@@ -199,7 +219,7 @@
 					type: "1,2",
 					status: "1",
 					page: 1,
-					page_num:"10"
+					page_num: "10"
 				}, (res, flag) => {
 
 					if (flag) {
@@ -210,6 +230,10 @@
 						}
 					}
 				})
+				this.getGoodList()
+			},
+			getGoodList() {
+				let that = this;
 				// 推荐商品
 				get_goods_list({
 					users_id: "",
@@ -217,12 +241,20 @@
 					categoryid: "",
 					type: "0",
 					status: "1",
-					page: 1,
+					page: this.page,
 				}, (res, flag) => {
 					if (flag) {
-						this.log("商品列表---"+JSON.stringify(res.data))
-						if (res.code == "200") { 
-							that.shopList = res.data.list;
+						this.log("商品列表---" + JSON.stringify(res.data))
+						if (res.code == "200") {
+							that.shopTotal == res.total;
+							if (this.page == 1) {
+								that.shopList = res.data.list;
+							} else {
+								that.shopList = that.shopList.concat(res.data.list);
+							}
+							if (res.data.list.length == 0) {
+								that.hasMore = false;
+							}
 						} else {
 							that.toast(res.message)
 						}
@@ -234,9 +266,15 @@
 				// this.log("jdksdjsk", "error");
 			},
 
-			searchClick() {
+			searchClick(name) {
 				// this.toast("搜索跳转");
-				this.push("root:app/goods/searchGoods.js");
+				let parmar = {
+					name: name
+				};
+				if (!name) {
+					parmar = null
+				}
+				this.push("root:app/goods/searchGoods.js", parmar);
 			},
 			letfClick() {
 				// this.toast("左边按钮跳转");
@@ -338,6 +376,20 @@
 		flex: 1;
 	}
 
+	.loadingbox {
+		align-items: center;
+		padding: 20px;
+		height: 80px;
+		margin-bottom: 20px;
+		text-align: center;
+		color: #999999;
+	}
+
+	.loading {
+		height: 40px;
+		width: 40px;
+	}
+
 	.pageContent {
 		flex: 1;
 		position: relative;
@@ -378,7 +430,7 @@
 	.inputbox {
 		background-color: #fff;
 		flex-direction: row;
-		justify-content: flex-start; 
+		justify-content: flex-start;
 		align-items: center;
 		flex: 1;
 		border-radius: 40px;

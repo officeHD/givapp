@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
 		<head title="Coupon"> </head>
-		<empty v-if="couponValidList.length==0" tips="Your vouchers is empty"></empty>
+		<empty v-if="couponValidList.length==0" tips="Your vouchers is empty" img="root:img/e_eva.png"></empty>
 		<list class="sub-list" v-if="couponValidList.length>0">
 			<cell class="rowcell" v-for="(row,index) in couponValidList" :key="index">
 				<div class="cellBox">

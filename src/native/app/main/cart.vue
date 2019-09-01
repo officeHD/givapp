@@ -1,15 +1,17 @@
 <template>
 	<div class="layout">
-		<head :hasleft="false" title="Cart" @rightClick="showDel=!showDel">
+		<head :hasleft="false" title="Cart">
 			<div slot="right">
-				<text v-if="showDel" class="complete">cancel</text>
-				<text v-else class="delIcon">&#xe6e4;</text>
+				<text v-if="showDel" class="complete" @click="showDel=false">cancel</text>
+				<text v-else class="delIcon" @click="showDel=true">&#xe6e4;</text>
 			</div>
 		</head>
 		<!-- 商品列表 -->
 		<scroller class="goods-list">
-			<empty v-if="goodsList.length==0" tips="Your Cart is empty"></empty>
-			<!-- <div class="goods-tis" v-if="goodsList.length==0">购物车是空的哦~</div> -->
+			<empty v-if="goodsList.length==0" tips="Your Cart is empty" img="root:img/e_car.png"></empty>
+			<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
+				<loading-indicator class="indicator"></loading-indicator>
+			</refresh>
 			<div class="goods-row" v-for="(row,index) in goodsList" :key="index">
 				<!-- checkbox -->
 				<div class="checkbox-box" @click="selected(index)">
@@ -51,14 +53,18 @@
 				</div>
 				<text class="selecttext">Select all</text>
 			</div>
-			<text class="cardelBtn" @tap="deleteList" v-if="selectedList.length>0">删除</text>
+
 			<div class="settlement">
-				<div class="sum">
-					合计:
-					<text class="money">￥{{sumPrice}}</text>
+				<div class="settlement" v-if="!showDel">
+					<div class="sum">
+						Total:
+						<text class="money">￥{{sumPrice}}</text>
+					</div>
+					<text class="cartbtn" :style="{'background-color':sumPrice>0?'#333':'#9A9A9A'}" @tap="toConfirmation">Pay</text>
 				</div>
-				<text class="cartbtn" @tap="toConfirmation">Pay</text>
+				<text class="cardelBtn" @click="deleteList" v-if="showDel">delete</text>
 			</div>
+
 		</div>
 	</div>
 </template>
@@ -72,6 +78,7 @@
 	export default {
 		data() {
 			return {
+				refreshing: false,
 				showDel: false,
 				sumPrice: "0.00",
 				headerPosition: "fixed",
@@ -83,29 +90,37 @@
 				//控制滑动效果
 				theIndex: null,
 				oldIndex: null,
-				isStop: false
+				isStop: false,
+				userId: ""
 			};
 		},
 		created() {
 			asCore.getBsessionid(userId => {
-				 this.userId=userId
+				this.userId = userId
 			})
 			AddCart.onmessage = this.loadData(this.userId);
 			// this.loadData();
 		},
 		methods: {
-
+			onrefresh(event) {
+				var s = this;
+				s.refreshing = true;
+				s.loadData(s.userId)
+				setTimeout(() => {
+					s.refreshing = false;
+				}, 1000);
+			},
 			loadData(id) {
-				// this.log(id)
-				 if(!id){
-					 return false;
-				 }
+				this.log("购物车用户ID" + id)
+				if (!id) {
+					return false;
+				}
 				let that = this;
 				get_order_list({
 					users_id: id,
-					goods_type: 2,
+					goods_type: 1,
 					page: "1",
-					page_num: "10", 
+					page_num: "10",
 				}, (res, flag) => {
 					if (flag) {
 						this.log("购物车列表--1--" + JSON.stringify(res.data.list))
@@ -244,7 +259,7 @@
 			},
 			// 合计
 			sum(e, index) {
-				this.sumPrice = 0;
+				this.sumPrice = 0.00;
 				let len = this.goodsList.length;
 				for (let i = 0; i < len; i++) {
 					if (this.goodsList[i].selected) {
@@ -448,6 +463,24 @@
 		justify-content: flex-end;
 	}
 
+	.refresh {
+		width: 750px;
+		-ms-flex-align: center;
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		align-items: center;
+	}
+
+
+	.indicator {
+		margin-top: 30px;
+		margin-bottom: 20px;
+		height: 70px;
+		width: 70px;
+		color: #ce2020;
+		text-align: center;
+	}
+
 	.footer {
 		width: 92%;
 		padding: 0 4%;
@@ -491,8 +524,15 @@
 	}
 
 	.cardelBtn {
-		color: #f06c7a;
-		margin-left: 20px;
+		color: #2A2A2A;
+		width: 228px;
+		height: 68px;
+		line-height: 68px;
+		background-color: #2A2A2A;
+		text-align: center;
+		border-radius: 8px;
+		font-size: 32px;
+		color: #FFFFFF;
 
 	}
 
@@ -512,11 +552,12 @@
 	}
 
 	.cartbtn {
-		width: 200px;
+		width: 230px;
 		height: 100px;
 		text-align: center;
 		line-height: 100px;
 		color: #fff;
+		font-size: 32px;
 		background-color: #9A9A9A;
 	}
 </style>

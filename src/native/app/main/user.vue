@@ -8,7 +8,7 @@
 						<image class="avator" :src="userData.headimgurl" />
 					</div>
 					<div class="userInfo">
-						<text class="username">{{userData.user_name}}</text>
+						<text class="username">{{userData.nickname}}</text>
 						<text class="userPhone">{{userData.phone_number}}</text>
 					</div>
 					<text class="iconfont righticon">&#xe6a1;</text>
@@ -128,6 +128,7 @@
 				}, (res, flag) => {
 					if (flag) {
 						if (res.code == 200) {
+							this.log(res.data)
 							this.userData = res.data;
 							asCore.setContext(res.data)
 						}
