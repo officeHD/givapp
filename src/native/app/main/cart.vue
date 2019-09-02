@@ -7,19 +7,22 @@
 			</div>
 		</head>
 		<!-- 商品列表 -->
-		<scroller class="goods-list">
+		<scroller class="goods-list" @loadmore="onloadmore" loadmoreoffset="200" :show-scrollbar="false">
 			<empty v-if="goodsList.length==0" tips="Your Cart is empty" img="root:img/e_car.png"></empty>
 			<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
 				<loading-indicator class="indicator"></loading-indicator>
 			</refresh>
 			<div class="goods-row" v-for="(row,index) in goodsList" :key="index">
 				<!-- checkbox -->
-				<div class="checkbox-box" @click="selected(index)">
-					<text v-if="row.selected" class="iconfont selectIcon">&#xe602;</text>
-					<text v-else class="iconfont noselect">&#xe67f;</text>
+				<div class="checkBx" @click="selected(index)">
+					<div class="checkbox-box ">
+						<text v-if="row.selected" class="iconfont selectIcon">&#xe602;</text>
+						<text v-else class="iconfont noselect">&#xe67f;</text>
+					</div>
 				</div>
+
 				<!-- 商品信息 -->
-				<div class="goods-info" @tap="toGoods(row)">
+				<div class="goods-info" @click="toGoods(row)">
 					<div class="imgbox">
 						<image class="img" :src="row.thumb" />
 					</div>
@@ -43,6 +46,10 @@
 					</div>
 				</div>
 			</div>
+			<div class="loadingbox" v-if="hasMore">
+				<image class="loading" src="https://img.alicdn.com/tfs/TB1CWnby7yWBuNjy0FpXXassXXa-32-32.gif" />
+			</div>
+			<text class="loadingbox" v-if="!hasMore">No more</text>
 		</scroller>
 		<!-- 脚部菜单 -->
 		<div class="cartfooter" v-if="goodsList.length>0">
@@ -58,9 +65,10 @@
 				<div class="settlement" v-if="!showDel">
 					<div class="sum">
 						Total:
-						<text class="money">￥{{sumPrice}}</text>
+						<text class='symbol'>$</text>
+						<text class="money"> {{sumPrice}}</text>
 					</div>
-					<text class="cartbtn" :style="{'background-color':sumPrice>0?'#333':'#9A9A9A'}" @tap="toConfirmation">Pay</text>
+					<text class="cartbtn" :style="{'background-color':sumPrice>0?'#333':'#9A9A9A'}" @click="toConfirmation">Pay</text>
 				</div>
 				<text class="cardelBtn" @click="deleteList" v-if="showDel">delete</text>
 			</div>
@@ -72,7 +80,10 @@
 	const navigator = weex.requireModule("navigator");
 	const AddCart = new BroadcastChannel("AddCart");
 	import {
-		get_order_list
+		get_order_list,
+		update_order_num,
+		del_order_info,
+		get_order_price
 	} from "../../mixin/ajax.js";
 	import asCore from "../../mixin/core";
 	export default {
@@ -80,6 +91,9 @@
 			return {
 				refreshing: false,
 				showDel: false,
+				hasMore: true,
+
+
 				sumPrice: "0.00",
 				headerPosition: "fixed",
 				headerTop: null,
@@ -91,7 +105,8 @@
 				theIndex: null,
 				oldIndex: null,
 				isStop: false,
-				userId: ""
+				userId: "",
+				page: 1
 			};
 		},
 		created() {
@@ -105,67 +120,60 @@
 			onrefresh(event) {
 				var s = this;
 				s.refreshing = true;
+				s.page = 1;
 				s.loadData(s.userId)
 				setTimeout(() => {
 					s.refreshing = false;
 				}, 1000);
 			},
 			loadData(id) {
+				this.userId = id;
 				this.log("购物车用户ID" + id)
 				if (!id) {
 					return false;
 				}
+				this.getOrerList();
+
+			},
+			onloadmore() {
+				if (this.hasMore) {
+					this.page++;
+					this.getOrerList();
+				}
+			},
+			getOrerList() {
 				let that = this;
 				get_order_list({
-					users_id: id,
+					users_id: this.userId,
 					goods_type: 1,
-					page: "1",
+					page: this.page,
 					page_num: "10",
 				}, (res, flag) => {
 					if (flag) {
 						this.log("购物车列表--1--" + JSON.stringify(res.data.list))
 						if (res.code == 200 && res.data.list.length > 0) {
-							that.goodsList = res.data.list
+							let list = res.data.list;
+							list.forEach(item => {
+								this.$set(item, "selected", false)
+							})
+							if (this.page > 1) {
+								that.goodsList = that.goodsList.concat(list);
+							} else {
+								that.goodsList = list
+							}
+						} else {
+							this.hasMore = false;
 						}
 					}
 				})
 			},
-			//加入商品 参数 goods:商品数据
-			joinGoods(goods) {
-				/*
-				 * 这里只是展示一种添加逻辑，模板并没有做从其他页面加入商品到购物车的具体动作，
-				 * 在实际应用上，前端并不会直接插入记录到goodsList这一个动作，一般是更新列表和本地列表缓存。
-				 * 一般商城购物车的增删改动作是由后端来完成的,
-				 * 后端记录后返回前端更新前端缓存
-				 */
-				let len = this.goodsList.length;
-				let isFind = false; //是否找到ID一样的商品
-				for (let i = 0; i < len; i++) {
-					let row = this.goodsList[i];
-					if (row.id == goods.id) {
-						//找到商品一样的商品
-						this.goodsList[i].number++; //数量自增
-						isFind = true; //找到一样的商品
-						break; //跳出循环
-					}
-				}
-				if (!isFind) {
-					//没有找到一样的商品，新增一行到购物车商品列表头部
-					this.goodsList[i].unshift(goods);
-				}
-			},
-
 			//控制左滑删除效果-end
 
 			//商品跳转
-			toGoods(e) {
-				uni.showToast({
-					title: "商品" + e.id,
-					icon: "none"
-				});
-				uni.navigateTo({
-					url: "../goods/goods"
-				});
+			toGoods(item) {
+				this.push('root:app/goods/goods.js', {
+					id: item.id
+				})
 			},
 			//跳转确认订单页面
 			toConfirmation() {
@@ -176,22 +184,21 @@
 						tmpList.push(this.goodsList[i]);
 					}
 				}
-				if (tmpList.length < 1) {
-					uni.showToast({
-						title: "请选择商品结算",
-						icon: "none"
-					});
+				if (tmpList.length < 1) { 
+					this.toast(请选择商品结算)
 					return;
 				}
-				uni.setStorage({
-					key: "buylist",
-					data: tmpList,
-					success: () => {
-						uni.navigateTo({
-							url: "../order/confirmation"
-						});
-					}
-				});
+				// this.log(tmpList) 
+				this.push("root:app/order/confirm.js",{data:JSON.stringify(tmpList)})
+				// uni.setStorage({
+				// 	key: "buylist",
+				// 	data: tmpList,
+				// 	success: () => {
+				// 		uni.navigateTo({
+				// 			url: "../order/confirmation"
+				// 		});
+				// 	}
+				// });
 			},
 			//删除商品
 			deleteGoods(id) {
@@ -202,6 +209,7 @@
 						break;
 					}
 				}
+
 				this.selectedList.splice(this.selectedList.indexOf(id), 1);
 				this.sum();
 				this.oldIndex = null;
@@ -210,24 +218,32 @@
 			// 删除商品s
 			deleteList() {
 				let len = this.selectedList.length;
+
+				del_order_info({
+					users_id: this.userId,
+					order_id: this.selectedList.join(',')
+				}, (res, flag) => {
+					if (flag) {
+						this.log(res);
+						if (res.code == 200) {
+
+						}
+					}
+				})
 				while (this.selectedList.length > 0) {
+
 					this.deleteGoods(this.selectedList[0]);
 				}
 				this.selectedList = [];
-				this.isAllselected =
-					this.selectedList.length == this.goodsList.length &&
-					this.goodsList.length > 0;
+				this.isAllselected = this.selectedList.length == this.goodsList.length && this.goodsList.length > 0;
 				this.sum();
 			},
 			// 选中商品
 			selected(index) {
-				this.goodsList[index].selected = this.goodsList[index].selected ?
-					false :
-					true;
+
+				this.goodsList[index].selected = this.goodsList[index].selected ? false : true;
 				let i = this.selectedList.indexOf(this.goodsList[index].id);
-				i > -1 ?
-					this.selectedList.splice(i, 1) :
-					this.selectedList.push(this.goodsList[index].id);
+				i > -1 ? this.selectedList.splice(i, 1) : this.selectedList.push(this.goodsList[index].id);
 				this.isAllselected = this.selectedList.length == this.goodsList.length;
 				this.sum();
 			},
@@ -249,31 +265,63 @@
 				if (this.goodsList[index].number <= 1) {
 					return;
 				}
-				this.goodsList[index].number--;
-				this.sum();
+
+				let number = this.goodsList[index].number - 1
+				this.upadtenumber(index, number)
 			},
 			// 增加数量
 			add(index) {
-				this.goodsList[index].number++;
-				this.sum();
+				// this.goodsList[index].number++;
+				let number = this.goodsList[index].number + 1
+				this.upadtenumber(index, number)
+
+
+			},
+			upadtenumber(index, number) {
+				update_order_num({
+					users_id: this.userId,
+					order_id: this.goodsList[index].id,
+					number: number
+				}, (res, flag) => {
+					this.log(res);
+					if (flag) {
+						if (res.code == 200) {
+							this.goodsList[index].number = res.data.number;
+							this.goodsList[index].total_price = res.data.total_price;
+						}
+						this.toast(res.message);
+					}
+					this.sum();
+				})
 			},
 			// 合计
 			sum(e, index) {
 				this.sumPrice = 0.00;
-				let len = this.goodsList.length;
-				for (let i = 0; i < len; i++) {
-					if (this.goodsList[i].selected) {
-						if (e && i == index) {
-							this.sumPrice =
-								this.sumPrice + e.detail.value * this.goodsList[i].price;
-						} else {
-							this.sumPrice =
-								this.sumPrice +
-								this.goodsList[i].number * this.goodsList[i].price;
+				// let len = this.goodsList.length;
+				// for (let i = 0; i < len; i++) {
+				// 	if (this.goodsList[i].selected) {
+				// 		if (e && i == index) {
+				// 			this.sumPrice =
+				// 				this.sumPrice + e.detail.value * this.goodsList[i].price;
+				// 		} else {
+				// 			this.sumPrice =
+				// 				this.sumPrice +
+				// 				this.goodsList[i].number * this.goodsList[i].price;
+				// 		}
+				// 	}
+				// }
+				// this.sumPrice = this.sumPrice.toFixed(2);
+				// this.log(this.selectedList.join(','))
+				get_order_price({
+					users_id: this.userId,
+					order_id: this.selectedList.join(',')
+				}, (res, flag) => {
+					if (flag) {
+						if (res.code == 200) {
+							this.sumPrice = res.data.total_price
 						}
 					}
-				}
-				this.sumPrice = this.sumPrice.toFixed(2);
+				})
 			},
 			discard() {
 				//丢弃
@@ -299,6 +347,20 @@
 		font-family: iconfont;
 		font-size: 38px;
 		color: #FFFFFF;
+	}
+
+	.loadingbox {
+		align-items: center;
+		padding: 20px;
+		height: 80px;
+		margin-bottom: 20px;
+		text-align: center;
+		color: #999999;
+	}
+
+	.loading {
+		height: 40px;
+		width: 40px;
 	}
 
 	.complete {
@@ -374,6 +436,11 @@
 		font-size: 32px;
 	}
 
+	.checkBx {
+		width: 100px;
+		height: 120px;
+	}
+
 	.goods-info {
 		flex: 1;
 		flex-direction: row;
@@ -384,9 +451,9 @@
 	}
 
 	.imgbox {
-		width: 180px;
+		width: 140px;
 		justify-content: flex-start;
-		align-items: center;
+		align-items: flex-start;
 	}
 
 	.img {
@@ -450,9 +517,17 @@
 		align-items: center;
 	}
 
+	.symbol {
+		color: #EC414D;
+		margin-left: 8px;
+		font-size: 22px;
+	}
+
 	.money {
 		font-weight: 600;
 		margin-right: 20px;
+		color: #EC414D;
+		font-size: 36px;
 	}
 
 	.sum {

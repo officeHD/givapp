@@ -4,15 +4,17 @@
 		<head title="Order details"></head>
 		<div class="pageContent">
 			<div class="orderDetail">
-				<div class="order_top">
-					<image class="googPic" :src="goodInfo.thumb"></image>
+				<div class="order_top" v-for="item in goodLst">
+					<div class="imgBox">
+						<image class="googPic" :src="item.thumb" resize="contain"></image>
+					</div>
 					<div class="goods_info">
-						<text class="goods_title">{{goodInfo.title}}</text>
+						<text class="goods_title">{{item.title}}</text>
 						<div class="goods_spec">
 							<div class="priceInfo">
-								<text class="symbol">$</text> <text class="money">{{goodInfo.price}}</text>
+								<text class="symbol">$</text> <text class="money">{{item.price}}</text>
 							</div>
-							<div class="specInfo" v-if="goodInfo.sss">
+							<div class="specInfo" v-if="item.sss">
 								<text class="specText">red</text>
 								<text class="iconDown">&#xe613;</text>
 							</div>
@@ -25,9 +27,10 @@
 				<div class="locationBox row jbew atop ">
 					<text class="meth_title locaTit">Address</text>
 					<div class="meth_right   row jend acen">
-						<text class="cityName " v-if="addressData.id">{{addressData.province}} {{addressData.city}} {{addressData.area}} {{addressData.address}}</text>
+						<text class="cityName " v-if="addressData.id">{{addressData.province}} {{addressData.city}} {{addressData.area}}
+							{{addressData.address}}</text>
 						<text class="cityName " v-if="!addressData.id"> Set place</text>
-						
+
 						<text class="rightIcon">&#xe6a1;</text>
 					</div>
 				</div>
@@ -41,7 +44,7 @@
 			</div>
 			<div class="methodBox row jbew acen ">
 				<text class="meth_title">Delivery Fee</text>
-				<div class="meth_right row jend acen"  >
+				<div class="meth_right row jend acen">
 					<!-- <text class="shipping">{{selected.label}}</text> -->
 					<text class="shippingMoney">${{goodInfo.postage}}</text>
 				</div>
@@ -90,6 +93,7 @@
 					value: "1",
 					label: "Australia post"
 				},
+				goodLst: [],
 				shippWay: [{
 						value: "1",
 						label: "Australia post"
@@ -112,7 +116,7 @@
 					is_collection: ""
 				},
 				addressData: {
-					 
+
 				},
 				sumPrice: "52.30",
 				goods_title: " "
@@ -123,14 +127,18 @@
 		},
 		methods: {
 			onLoad(param) {
-
+				this.log(param.data)
+				let list = JSON.parse(param.data)
+				this.goodLst = list;
 				if (param && param.id) {
 					this.goodId = param.id;
+
 				}
+
 				asCore.getBsessionid(userId => {
 					this.log(userId)
 					this.userId = userId;
-					this.getGoodInfo()
+
 					this.getList()
 
 
@@ -172,7 +180,7 @@
 						if (res.code == 200) {
 							if (res.data.list.length > 0) {
 								this.addressData = res.data.list[0];
-							} 
+							}
 						}
 					}
 				})
@@ -258,17 +266,26 @@
 		border-bottom-style: solid;
 		border-bottom-color: #e6e6e6;
 		border-bottom-width: 2px;
-		padding-bottom: 40px;
+		padding-bottom: 20px;
+		padding-top: 10px;
+	}
+
+	.imgBox {
+		width: 220px;
+		height: 200px;
+		justify-content: flex-start;
+		align-items: center;
 	}
 
 	.googPic {
 		width: 220px;
-		height: 220px;
+		height: 200px;
 	}
 
 	.goods_info {
 		height: 220px;
 		padding-left: 30px;
+		padding-bottom: 10px;
 		flex: 1;
 		justify-content: space-between;
 	}
