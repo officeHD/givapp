@@ -3,11 +3,11 @@
   <head title="Raffle"></head>
   <div class="wrapper">
     <div class="topBtn">
-      <div class="btnBox">
+      <div class="btnBox" @click="goNext('root:app/active/luckRule.js')">
         <text class="boxIcon">&#xe612;</text>
         <text class="boxText">Rule</text>
       </div>
-      <div class="btnBox">
+      <div class="btnBox" @click="goNext('root:app/active/luckPrize.js')">
         <text class="boxIcon">&#xe636;</text>
         <text class="boxText">Prize</text>
       </div>
@@ -112,7 +112,13 @@
     </div>
     <div class="looperBox">
       <text class="loopIcon">&#xe60c;</text>
-      <looper font-size="18" @click="ok" :data="items" color="#333" style="width: 552;height: 25;"></looper>
+      <looper
+        font-size="18"
+        @click="ok"
+        :data="items"
+        color="#303030"
+        style="width: 552;height: 25;"
+      ></looper>
     </div>
   </div>
 </div>
@@ -191,6 +197,9 @@ export default {
   methods: {
     onLoad() {
       this.get();
+    },
+    goNext(url) {
+      this.push(url);
     },
     get() {
       coRefundTake(
