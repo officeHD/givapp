@@ -73,12 +73,7 @@
 </div>
 </template> 
 
-<script>
-// import noSelect from '@/assets/img/lottery/border.png'
-// import isSelect from '@/assets/img/lottery/borderSelect.png'
-// import notStart from '@/assets/img/lottery/noStart.png'
-// import endLottery from '@/assets/img/lottery/endLottery.png'
-// import prizeBtn from '@/assets/img/lottery/prizeBtn.png'
+<script> 
 const navigator = weex.requireModule("navigator");
 const animation = weex.requireModule("animation");
 
@@ -129,11 +124,7 @@ export default {
       timeFlag: 0, // 时间标记，抽奖请求时间过长，则返回错误
       startStatus: "", // 活动开始的状态，
       items: [
-        "2017年11月9日，网络设计平台app",
-        "2017年11月9日，网络设计平台app",
-        "2017年11月9日，网络设计平台app",
-        "2017年11月9日，网络设计平台app",
-        "2017年11月9日，网络设计平台app"
+        
       ]
     };
   },
