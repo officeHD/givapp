@@ -1,7 +1,7 @@
 import asCore from './core'
 import data from './data'
 const net = weex.requireModule("net");
-var debug = false;
+var debug = true;
 // 查询物流上传文件
 export const upload = (state, cb) => {
 	if (debug) {
@@ -814,7 +814,7 @@ export const coRefundTake = (state, cb) => {
 }
 
 // 抽奖页面接口点击抽奖
-export const raffle = (state, cb) => {
+export const getraffle = (state, cb) => {
 	if (debug) {
 		cb(data.raffleRes, true);
 	} else {
@@ -823,7 +823,7 @@ export const raffle = (state, cb) => {
 }
 
 // 用户奖品列表接口
-export const get_users_raffle_list = (state, cb) => {
+export const getUserRaffle_list = (state, cb) => {
 	if (debug) {
 		cb(data.raffleList, true);
 	} else {

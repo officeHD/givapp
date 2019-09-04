@@ -8,35 +8,35 @@ var data = {
 		"State": 3,
 		"Reason": null,
 		"Traces": [{
-				"AcceptTime": "2014/06/25 08:05:37",
-				"AcceptStation": "正在派件..(派件人:邓裕富,电话:18718866310)[深圳 市]",
-				"Remark": null
-			},
-			{
-				"AcceptTime": "2014/06/25 04:01:28",
-				"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
-				"Remark": null
-			},
-			{
-				"AcceptTime": "2014/06/25 04:01:28",
-				"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
-				"Remark": null
-			},
-			{
-				"AcceptTime": "2014/06/25 04:01:28",
-				"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
-				"Remark": null
-			},
-			{
-				"AcceptTime": "2014/06/25 04:01:28",
-				"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
-				"Remark": null
-			},
-			{
-				"AcceptTime": "2014/06/25 04:01:28",
-				"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
-				"Remark": null
-			}
+			"AcceptTime": "2014/06/25 08:05:37",
+			"AcceptStation": "正在派件..(派件人:邓裕富,电话:18718866310)[深圳 市]",
+			"Remark": null
+		},
+		{
+			"AcceptTime": "2014/06/25 04:01:28",
+			"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
+			"Remark": null
+		},
+		{
+			"AcceptTime": "2014/06/25 04:01:28",
+			"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
+			"Remark": null
+		},
+		{
+			"AcceptTime": "2014/06/25 04:01:28",
+			"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
+			"Remark": null
+		},
+		{
+			"AcceptTime": "2014/06/25 04:01:28",
+			"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
+			"Remark": null
+		},
+		{
+			"AcceptTime": "2014/06/25 04:01:28",
+			"AcceptStation": "快件在 深圳集散中心 ,准备送往下一站 深圳 [深圳市]",
+			"Remark": null
+		}
 		]
 	},
 	returnSucces: {
@@ -172,15 +172,15 @@ var data = {
 		"code": 200,
 		"message": "获取信息成功！",
 		"data": [{
-				"id": 53,
-				"title": "品牌",
-				"description": "茵曼"
-			},
-			{
-				"id": 54,
-				"title": "适用年龄",
-				"description": "18-25周岁"
-			},
+			"id": 53,
+			"title": "品牌",
+			"description": "茵曼"
+		},
+		{
+			"id": 54,
+			"title": "适用年龄",
+			"description": "18-25周岁"
+		},
 		]
 	},
 	shopSpec: {
@@ -190,13 +190,13 @@ var data = {
 			"id": 28,
 			"title": "颜色",
 			"content": [{
-					"id": 28,
-					"name": "白色"
-				},
-				{
-					"id": 29,
-					"name": "黑色"
-				}
+				"id": 28,
+				"name": "白色"
+			},
+			{
+				"id": 29,
+				"name": "黑色"
+			}
 			]
 		}]
 	},
@@ -371,7 +371,7 @@ var data = {
 			"end_time": "2019-06-25 11:35:13",
 			"create_time": "2019-06-25 10:48:46",
 			"use_time": "2019-07-01 14:36:17"
-		}, ]
+		},]
 	},
 	cartList: {
 		"code": 200,
@@ -987,26 +987,90 @@ var data = {
 				"id": 1,
 				"raffle_id": "1",
 				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/1-2.png",
+				"position": "1",
 				"probability": 50,
-				"min_angle": "32, 92, 152, 212, 272, 332",
-				"max_angle": "58, 118, 178, 238, 298, 358",
 				"number": null,
 				"num": 1000000,
 				"type": 2,
 				"create_time": "2019-07-17 10:04:00",
-				"update_time": null
 			}, {
-				"id": 1,
+				"id": 2,
 				"raffle_id": "1",
 				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/2-2.png",
+				"position": "1",
 				"probability": 50,
-				"min_angle": "32, 92, 152, 212, 272, 332",
-				"max_angle": "58, 118, 178, 238, 298, 358",
 				"number": null,
 				"num": 1000000,
 				"type": 2,
 				"create_time": "2019-07-17 10:04:00",
-				"update_time": null
+			}, {
+				"id": 3,
+				"raffle_id": "1",
+				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/3-2.png",
+				"position": "1",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
+			}, {
+				"id": 4,
+				"raffle_id": "1",
+				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/4-2.png",
+				"position": "1",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
+			}, {
+				"id": 5,
+				"raffle_id": "1",
+				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/5-2.png",
+				"position": "1",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
+			}, {
+				"id": 6,
+				"raffle_id": "1",
+				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/6-1.png",
+				"position": "1",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
+			}, {
+				"id": 7,
+				"raffle_id": "1",
+				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/7-1.png",
+				"position": "1",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
+			}, {
+				"id": 8,
+				"raffle_id": "1",
+				"name": "未中奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/8-1.png",
+				"position": "1",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
 			}]
 		}
 	},
@@ -1031,6 +1095,22 @@ var data = {
 		"code": 200,
 		"message": "获取信息成功！",
 		"data": [{
+			"uid": "2cf751e717424373b99dc74c68927ee2",
+			"create_time": "2019-07-17 10:10:00",
+			"prize": "四等奖",
+			"nickname": "tll",
+			"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+
+			"phone_number": "13635697675"
+		},{
+			"uid": "2cf751e717424373b99dc74c68927ee2",
+			"create_time": "2019-07-17 10:10:00",
+			"prize": "四等奖",
+			"nickname": "tll",
+			"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+
+			"phone_number": "13635697675"
+		},{
 			"uid": "2cf751e717424373b99dc74c68927ee2",
 			"create_time": "2019-07-17 10:10:00",
 			"prize": "四等奖",
