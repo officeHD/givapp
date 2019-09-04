@@ -21,12 +21,54 @@
         <image src="root:img/activity/whiteBar.png" />
       </div> 
     </div>-->
-    <div class="box">
-      <div class="imgItem" v-for="imgLi in prizeList" :key="imgLi.image_url">
-        <image class="imgItemLi" :src="imgLi.image_url" v-if="imgLi.image_url" />
+    <image class="luckBg" src="root:img/activity/luckBg.png" />
+    <div class="luckBox">
+      <div class="imgItem img1Item" :class="[prizeIndex==0?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[0].name}}</text>
+        </div>
+      </div>
+      <div class="imgItem img2Item" :class="[prizeIndex==1?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[1].name}}</text>
+        </div>
+      </div>
+      <div class="imgItem img3Item" :class="[prizeIndex==2?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[2].name}}</text>
+        </div>
+      </div>
+      <div class="imgItem img4Item" :class="[prizeIndex==7?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[3].name}}</text>
+        </div>
+      </div>
+      <div class="imgItem img5Item" @click="prizeZhuan">
+        <text class="lottery">lottery</text>
+        <text class="lotteryTime">（{{raffle.users_number}} times）</text>
+      </div>
+      <div class="imgItem img6Item" :class="[prizeIndex==3?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[4].name}}</text>
+        </div>
+      </div>
+      <div class="imgItem img7Item" :class="[prizeIndex==6?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[5].name}}</text>
+        </div>
+      </div>
+      <div class="imgItem img8Item" :class="[prizeIndex==5?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[6].name}}</text>
+        </div>
+      </div>
+      <div class="imgItem img9Item" :class="[prizeIndex==4?'activeBg':'']">
+        <div class="imgItemLi">
+          <text class="lName">{{prizeList[7].name}}</text>
+        </div>
       </div>
     </div>
-    <div class="massage" v-if="prizeInfoShow" @touchmove="touchMove($event)">
+    <div class="massage" v-if="prizeInfoShow">
       <div class="noPrize" v-if="noPrizeShow">
         <div class="close" @click="close()">
           <img src="root:img/activity/close.png" alt />
@@ -40,15 +82,11 @@
       <img src="root:img/activity/circleLight.png" class="circleLight" v-if="havePrizeShow" alt />
       <div class="havePrize" v-if="havePrizeShow">
         <div class="oneBar">
-          <img src="root:img/activity/yellowCycle.png" />
+          <text class="closeIcon">&#xe608;</text>
         </div>
-        <text>恭喜您抽中{{prizeName}}</text>
-        <div class="proImg">
-          <img :src="prizeUrl" alt />
-        </div>
-        <div class="btn" @click="lotteryRecord">
-          <text>立即领取</text>
-        </div>
+        <text class="infroma">Congratulations on winning, you can check in the prizes</text>
+
+        <text class="btnDraw" @click="lotteryRecord">Get it right now</text>
       </div>
       <div class="haveLottery" v-if="haveLottery">
         <div class="close" @click="close()">
@@ -73,7 +111,7 @@
 </div>
 </template> 
 
-<script> 
+<script>
 const navigator = weex.requireModule("navigator");
 const animation = weex.requireModule("animation");
 
@@ -87,6 +125,19 @@ import {
 export default {
   data() {
     return {
+      raffle: {
+        id: 1,
+        title: "标题",
+        num: 1,
+        number: 0,
+        cost: "10.00",
+        content: null,
+        status: 1,
+        goods_id: "25,28",
+        create_time: "2019-07-17 10:00:07",
+        update_time: null,
+        users_number: 2
+      },
       swiperName: {
         // 获奖名单
         loop: true, // 当获奖人数大于等于5的时候滚动，否则不滚动
@@ -98,8 +149,8 @@ export default {
         autoplay: 1000
       },
       // mobile: '15114785236',
-      prizeIndex: 0,
-      arrNum: [0, 1, 2, 5, 8, 7, 6, 3], // 定义转动的顺序
+      prizeIndex: 8,
+      arrNum: [0, 1, 2, 4, 7, 6, 5, 3], // 定义转动的顺序
       clickFlage: true, // 点击事件，防止重复点击
       prizeInfoShow: false, // 显示中奖信息的遮罩层
       noPrizeShow: false, // 没中奖
@@ -122,10 +173,8 @@ export default {
       prizeUrl: "", // 奖品图片
       prizers: [], // 获奖名单
       timeFlag: 0, // 时间标记，抽奖请求时间过长，则返回错误
-      startStatus: "", // 活动开始的状态，
-      items: [
-        
-      ]
+      startStatus: 1, // 活动开始的状态，
+      items: []
     };
   },
   beforeCreate() {
@@ -146,22 +195,18 @@ export default {
           if (flag) {
             if (res.code == 200) {
               this.prizeList = res.data.prize;
-              this.prizeList[8] = res.data.prize[1];
-              // this.prizeList[1] = res.data.prize[1];
-              // this.prizeList[2] = res.data.prize[2];
-              // this.prizeList[3] = res.data.prize[3];
-              // this.prizeList[4] = res.data.prize[4];
-              // this.prizeList[5] = res.data.prize[5];
-              // this.prizeList[6] = res.data.prize[6];
-              // this.prizeList[7] = res.data.prize[7];
+              this.raffle = res.data.raffle;
             }
           }
         }
       );
-       get_raffle_list({},(res,flag)=>{
-         this.log(res)
-         this.items=res.data
-       })
+      get_raffle_list({}, (res, flag) => {
+        this.log(res);
+        this.items = res.data.map(
+          item =>
+            item.create_time + " 用户" + item.nickname + " 获得" + item.prize
+        );
+      });
     },
     statusFun(c, s, e) {
       this.$nextTick(() => {
@@ -181,27 +226,10 @@ export default {
       });
     },
     move() {
-      // if (this.prizeIndex === 0) {
-      //   this.$refs.pice[this.arrNum[7]].style.backgroundImage =
-      //     "url(" + noSelect + ")";
-      //   this.$refs.pice[this.arrNum[this.prizeIndex]].style.backgroundImage =
-      //     "url(" + isSelect + ")";
-      //   this.prizeIndex++;
-      // } else if (this.prizeIndex === 8) {
-      //   this.prizeIndex = 0;
-      //   this.$refs.pice[this.arrNum[7]].style.backgroundImage =
-      //     "url(" + noSelect + ")";
-      //   this.$refs.pice[this.arrNum[this.prizeIndex]].style.backgroundImage =
-      //     "url(" + isSelect + ")";
-      //   this.prizeIndex++;
-      // } else {
-      //   this.$refs.pice[
-      //     this.arrNum[this.prizeIndex - 1]
-      //   ].style.backgroundImage = "url(" + noSelect + ")";
-      //   this.$refs.pice[this.arrNum[this.prizeIndex]].style.backgroundImage =
-      //     "url(" + isSelect + ")";
-      //   this.prizeIndex++;
-      // }
+      this.prizeIndex++;
+      if (this.prizeIndex > 7) {
+        this.prizeIndex = 0;
+      }
       if (this.s2 && this.prizeIndex == this.s2) {
         clearInterval(this.timer1);
         clearInterval(this.timer2);
@@ -211,16 +239,8 @@ export default {
       if (this.timeFlag >= 10000 && !this.prizeName) {
         clearInterval(this.timer1);
         clearInterval(this.timer2);
-        Toast({
-          message: "当前抽奖人数过多，稍后再来",
-          position: "middle",
-          duration: 1500
-        });
+        this.toast("当前抽奖人数过多，稍后再来");
         this.clickFlage = true; // 能点击
-        setTimeout(() => {
-          // 刷新后重新加载
-          location.reload();
-        }, 1500);
       }
     },
     // 停止
@@ -250,61 +270,42 @@ export default {
     },
 
     prizeZhuan() {
-      if (this.remainingTimes > 0) {
+      if (this.raffle.users_number > 0) {
         // 判断剩余抽奖次数
         // console.log(this.$refs.pice)
         if (this.clickFlage) {
           if (this.startStatus === 1) {
             // 活动开始
             this.clickFlage = false; // 不能点击
-            this.timer1 = setInterval(this.move, 100);
+            this.timer1 = setInterval(this.move, 50);
             //获取抽奖结果
-            // this.$http.get("../../../static/data/prizeInfo.json").then(
-            //   myData => {
-            //     let res = myData.data;
-            //     console.log(res);
-            //     if (res.success) {
-            //       this.prozeLevel = res.data.level;
-            //       this.prizeName = res.data.commodityName;
-            //       this.prizeUrl = res.data.picUrlWinning;
-            //       console.log(this.prozeLevel);
-            //       setTimeout(() => {
-            //         clearInterval(this.timer1);
-            //         this.lowSpeed();
-            //       }, 1200);
-            //     } else {
-            //       Toast({
-            //         message: res.bizMessage,
-            //         position: "middle",
-            //         duration: 1500
-            //       });
-            //       this.clickFlage = false; // 不能点击
-            //       clearInterval(this.timer1);
-            //       clearInterval(this.timer2);
-            //       // setTimeout(() => { // 刷新后重新加载
-            //       //   location.reload()
-            //       // }, 1500)
-            //     }
-            //   },
-            //   false,
-            //   true
-            // );
+            getraffle({}, (res, flag) => {
+              if (flag) {
+                if (res.code == 200) {
+                  this.prozeLevel = res.data.position;
+                  this.prizeName = res.data.prize;
+                  this.prizeUrl = res.data.prize;
+                  setTimeout(() => {
+                    clearInterval(this.timer1);
+                    this.lowSpeed();
+                  }, 1200);
+                } else {
+                  this.toast(res.message);
+                  this.clickFlage = false; // 不能点击
+                  clearInterval(this.timer1);
+                  clearInterval(this.timer2);
+                }
+              }
+            });
+
             // this.timer1 = setInterval(this.move, 100)
             // 请求，返回后给s定值
           } else if (this.startStatus === 0) {
+            this.toast("活动尚未开始");
             // 没开始
-            Toast({
-              message: "活动尚未开始",
-              position: "middle",
-              duration: 1500
-            });
           } else if (this.startStatus === 2) {
             // 已经结束
-            Toast({
-              message: "活动已经结束",
-              position: "middle",
-              duration: 1500
-            });
+            this.toast("活动已经结束");
           }
         }
       } else {
@@ -374,6 +375,7 @@ export default {
   width: 200px;
   height: 127px;
 }
+
 .priceChanceBtn {
   height: 0.6 * 10px;
   border-radius: 0.6 * 10px;
@@ -423,34 +425,97 @@ img {
   width: 7.9 * 10px;
   height: 1.36 * 10px;
 }
-.box {
-  margin: 26px;
-  width: 641px;
-  /* height: 690px; */
-  padding: 20px;
-  background-color: #d80115;
-  border-radius: 10px;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-around;
+.luckBg {
+  width: 640px;
+  height: 608px;
+}
+.luckBox {
+  width: 640px;
+  height: 608px;
+  margin-top: -608px;
+  position: relative;
 }
 .imgItem {
-  width: 170px;
-  background-color: #fff;
-  height: 160px;
-  margin: 10px;
+  width: 168px;
+
+  height: 141px;
+
   justify-content: center;
 
   align-items: center;
+  position: absolute;
+  /* background-color: #FFEDEF; */
+  box-shadow: 0px 10px 5px #b0adae;
+  border-radius: 20px;
+}
+.activeBg {
+  background-color: #b0adae;
+}
+
+.img1Item {
+  left: 62px;
+  top: 57px;
+}
+
+.img2Item {
+  left: 237px;
+  top: 57px;
+}
+.img3Item {
+  left: 414px;
+  top: 57px;
+}
+
+.img4Item {
+  left: 62px;
+  top: 217px;
+}
+
+.img5Item {
+  left: 237px;
+  top: 217px;
+}
+.img6Item {
+  left: 414px;
+  top: 217px;
+}
+.img7Item {
+  left: 62px;
+  top: 375px;
+}
+.img8Item {
+  left: 237px;
+  top: 375px;
+}
+.img9Item {
+  left: 414px;
+  top: 375px;
 }
 .imgItemLi {
-  width: 170px;
-  height: 160px;
+  width: 146px;
+  height: 80px;
+  background-color: #ec3e33;
+  justify-content: center;
+  align-items: center;
+}
+.lName {
+  font-size: 20px;
+  color: #ffffff;
+  line-height: 28px;
+  text-align: center;
+  lines: 2;
+}
+.lottery {
+  color: #f44035;
+  font-size: 36px;
+  line-height: 50px;
+}
+.lotteryTime {
+  font-size: 24px;
+  color: #f44035;
 }
 
 .massage {
-  width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
@@ -542,47 +607,57 @@ p {
   transform-origin: 50% 50%;
 }
 .havePrize {
-  width: 5.3 * 10px;
-  padding-bottom: 0.5 * 10px;
-  border-radius: 0.4 * 10px;
+  width: 526px;
+  padding-bottom: 50px;
+  border-radius: 40px;
   position: absolute;
-  top: 2.42 * 10px;
-  left: 1.1 * 10px;
-  /* background: #fff url("root:img/lottery/prizinig.png") no-repeat; */
-  background-position: top center;
-  background-size: 5.3 * 10px 1.42 * 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  top: 242px;
+  left: 110px;
+  align-items: center;
+  overflow: hidden;
 }
 .oneBar {
-  width: 1.18 * 10px;
-  height: 0.46 * 10px;
+  width: 526px;
+  height: 249px;
+  background-color: #ffedef;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  position: relative;
+}
+.closeIcon {
   position: absolute;
-  top: -0.1 * 10px;
-  right: 1.1 * 10px;
-}
-p {
-  padding: 0 0.1 * 10px;
-  font-size: 0.3 * 10px;
-  color: #707070;
-  font-weight: 600;
-  margin: 1.72 * 10px auto 0.2 * 10px;
+  right: 20px;
+  top: 20px;
+  font-family: iconfont;
+  font-size: 30px;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: #bfbfbf;
   text-align: center;
+  line-height: 48px;
 }
-.proImg {
-  width: 4.1 * 10px;
-  height: 2 * 10px;
-  margin: 0 auto 0.36 * 10px;
-}
-img {
-  width: 100%;
-  height: 100%;
-}
-.btn {
-  width: 3.7 * 10px;
-  height: 0.9 * 10px;
-  margin: 0 auto;
-  /* background-image: url("root:img/lottery/btn.png") no-repeat; */
-  background-size: 100%;
+
+.infroma {
+  width: 430px;
+  margin: 40px 0;
   text-align: center;
+  color: #333;
+  font-size: 26px;
+  line-height: 37px;
+}
+.btnDraw {
+  width: 370;
+  height: 68px;
+  line-height: 68px;
+  color: #fff;
+  font-size: 34px;
+  text-align: center;
+  background-color: #303030;
+  border-radius: 34px;
 }
 a {
   font-size: 0.36 * 10px;

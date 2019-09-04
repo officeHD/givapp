@@ -981,7 +981,8 @@ var data = {
 				"status": 1,
 				"goods_id": "25,28",
 				"create_time": "2019-07-17 10:00:07",
-				"update_time": null
+				"update_time": null,
+				"users_number":100
 			},
 			"prize": [{
 				"id": 1,
@@ -1030,7 +1031,7 @@ var data = {
 			}, {
 				"id": 5,
 				"raffle_id": "1",
-				"name": "未中奖",
+				"name": "Men's casual boat socks",
 				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/5-2.png",
 				"position": "1",
 				"probability": 50,
@@ -1078,8 +1079,11 @@ var data = {
 		"code": 200,
 		"message": "抽奖成功！",
 		"data": {
-			"angle": 190,
-			"prize": "四等奖"
+		 
+			"id":1,
+			"position":1,
+			"type":1,
+			"prize":"四等奖"
 		}
 	},
 	raffleList: {
