@@ -1,7 +1,18 @@
 <template>
 <div>
-  <head bgcolor="transparent" title="raffle" titleColor="#333"></head>
+  <head title="Raffle"></head>
   <div class="wrapper">
+    <div class="topBtn">
+      <div class="btnBox">
+        <text class="boxIcon">&#xe612;</text>
+        <text class="boxText">Rule</text>
+      </div>
+      <div class="btnBox">
+        <text class="boxIcon">&#xe636;</text>
+        <text class="boxText">Prize</text>
+      </div>
+    </div>
+    <text class="luckTit">lucky wheel</text>
     <!-- <div class="banner">
       <image class="bannerImg" src="root:img/activity/banner.png" />  
       <div class="prizeInfoBtn" @click="activityRecord" v-if="hasRecord">
@@ -99,14 +110,10 @@
         <text class="btn" @click="close()">我知道啦</text>
       </div>
     </div>
-
-    <looper
-      font-size="25"
-      @click="ok"
-      :data="items"
-      color="#BA8833"
-      style="  border-radius: 30px;width: 602;height: 50;background-color:#FDF2E9;padding-left:20px"
-    ></looper>
+    <div class="looperBox">
+      <text class="loopIcon">&#xe60c;</text>
+      <looper font-size="18" @click="ok" :data="items" color="#333" style="width: 552;height: 25;"></looper>
+    </div>
   </div>
 </div>
 </template> 
@@ -178,8 +185,8 @@ export default {
     };
   },
   beforeCreate() {
-    let navbar = weex.requireModule("navbar");
-    navbar.setStatusBarStyle("black");
+    // let navbar = weex.requireModule("navbar");
+    // navbar.setStatusBarStyle("black");
   },
   methods: {
     onLoad() {
@@ -353,7 +360,45 @@ export default {
   align-items: center;
   flex: 1;
 }
-
+.topBtn {
+  width: 750px;
+  padding: 24px 32px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.btnBox {
+  width: 136px;
+  height: 48px;
+  border-radius: 29px;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 15px;
+  align-items: center;
+  background-image: linear-gradient(to right, #ff7868, #ff4337);
+}
+.boxText {
+  color: #fff;
+  font-size: 30px;
+}
+.boxIcon {
+  color: #ff4337;
+  font-family: iconfont;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #fff;
+  text-align: center;
+  line-height: 32px;
+}
+.luckTit {
+  line-height: 112px;
+  text-align: center;
+  font-size: 80px;
+  color: #fb4136;
+  margin-top: 54px;
+  margin-bottom: 30px;
+}
 .banner {
   width: 750px;
   height: 350px;
@@ -659,11 +704,19 @@ p {
   background-color: #303030;
   border-radius: 34px;
 }
-a {
-  font-size: 0.36 * 10px;
-  color: #fff;
-  line-height: 0.9 * 10px;
-  text-align: center;
-  font-weight: 600;
+.looperBox {
+  width: 602px;
+  height: 40px;
+  margin-top: 27px;
+  background-color: rgba(255, 181, 181, 1);
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.loopIcon {
+  font-family: iconfont;
+  font-size: 28px;
+  margin: 0 12px;
+  color: #d80115;
 }
 </style>
