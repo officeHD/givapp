@@ -982,12 +982,12 @@ var data = {
 				"goods_id": "25,28",
 				"create_time": "2019-07-17 10:00:07",
 				"update_time": null,
-				"users_number":100
+				"users_number": 100
 			},
 			"prize": [{
 				"id": 1,
 				"raffle_id": "1",
-				"name": "未中奖",
+				"name": "一等奖",
 				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/1-2.png",
 				"position": "1",
 				"probability": 50,
@@ -998,31 +998,9 @@ var data = {
 			}, {
 				"id": 2,
 				"raffle_id": "1",
-				"name": "未中奖",
+				"name": "2等奖",
 				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/2-2.png",
-				"position": "1",
-				"probability": 50,
-				"number": null,
-				"num": 1000000,
-				"type": 2,
-				"create_time": "2019-07-17 10:04:00",
-			}, {
-				"id": 3,
-				"raffle_id": "1",
-				"name": "未中奖",
-				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/3-2.png",
-				"position": "1",
-				"probability": 50,
-				"number": null,
-				"num": 1000000,
-				"type": 2,
-				"create_time": "2019-07-17 10:04:00",
-			}, {
-				"id": 4,
-				"raffle_id": "1",
-				"name": "未中奖",
-				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/4-2.png",
-				"position": "1",
+				"position": "2",
 				"probability": 50,
 				"number": null,
 				"num": 1000000,
@@ -1033,7 +1011,7 @@ var data = {
 				"raffle_id": "1",
 				"name": "Men's casual boat socks",
 				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/5-2.png",
-				"position": "1",
+				"position": "5",
 				"probability": 50,
 				"number": null,
 				"num": 1000000,
@@ -1042,9 +1020,9 @@ var data = {
 			}, {
 				"id": 6,
 				"raffle_id": "1",
-				"name": "未中奖",
+				"name": "6等奖",
 				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/6-1.png",
-				"position": "1",
+				"position": "6",
 				"probability": 50,
 				"number": null,
 				"num": 1000000,
@@ -1053,9 +1031,31 @@ var data = {
 			}, {
 				"id": 7,
 				"raffle_id": "1",
-				"name": "未中奖",
+				"name": "7等奖",
 				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/7-1.png",
-				"position": "1",
+				"position": "7",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
+			}, {
+				"id": 3,
+				"raffle_id": "1",
+				"name": "3等奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/3-2.png",
+				"position": "3",
+				"probability": 50,
+				"number": null,
+				"num": 1000000,
+				"type": 2,
+				"create_time": "2019-07-17 10:04:00",
+			}, {
+				"id": 4,
+				"raffle_id": "1",
+				"name": "4等奖",
+				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/4-2.png",
+				"position": "4",
 				"probability": 50,
 				"number": null,
 				"num": 1000000,
@@ -1064,9 +1064,9 @@ var data = {
 			}, {
 				"id": 8,
 				"raffle_id": "1",
-				"name": "未中奖",
+				"name": "8等奖",
 				"image_url": "http://qdtalk.com/wp-content/uploads/2017/09/8-1.png",
-				"position": "1",
+				"position": "8",
 				"probability": 50,
 				"number": null,
 				"num": 1000000,
@@ -1079,11 +1079,11 @@ var data = {
 		"code": 200,
 		"message": "抽奖成功！",
 		"data": {
-		 
-			"id":1,
-			"position":1,
-			"type":1,
-			"prize":"四等奖"
+
+			"id": 1,
+			"position": 6,
+			"type": 2,
+			"prize": "四等奖"
 		}
 	},
 	raffleList: {
@@ -1092,7 +1092,10 @@ var data = {
 		"data": [{
 			"create_time": "2019-07-17 10:27:27",
 			"type": 2,
-			"prize": "未中奖"
+			"prize": "未中奖",
+			"image_url": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+			"address": "地址",
+			"status": "0",
 		}]
 	},
 	raffle_list: {
@@ -1106,7 +1109,7 @@ var data = {
 			"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
 
 			"phone_number": "13635697675"
-		},{
+		}, {
 			"uid": "2cf751e717424373b99dc74c68927ee2",
 			"create_time": "2019-07-17 10:10:00",
 			"prize": "四等奖",
@@ -1114,7 +1117,7 @@ var data = {
 			"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
 
 			"phone_number": "13635697675"
-		},{
+		}, {
 			"uid": "2cf751e717424373b99dc74c68927ee2",
 			"create_time": "2019-07-17 10:10:00",
 			"prize": "四等奖",

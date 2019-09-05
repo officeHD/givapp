@@ -1,7 +1,7 @@
 import asCore from './core'
 import data from './data'
 const net = weex.requireModule("net");
-var debug = true;
+var debug = false;
 // 查询物流上传文件
 export const upload = (state, cb) => {
 	if (debug) {

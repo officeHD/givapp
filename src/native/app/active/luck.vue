@@ -4,7 +4,7 @@
   <image class="pageBg" src="root:img/activity/pageBg.png" />
   <div class="wrapper">
     <div class="topBtn">
-      <div class="btnBox" @click="goNext('root:app/active/luckRule.js')">
+      <div class="btnBox" @click="goNext('root:app/active/luckRule.js',{data: raffle.content})">
         <text class="boxIcon">&#xe612;</text>
         <text class="boxText">Rule</text>
       </div>
@@ -33,59 +33,54 @@
       </div>
       <div class="imgItem img4Item" :class="[prizeIndex==7?'activeBg':'']">
         <div class="imgItemLi">
-          <text class="lName">{{prizeList[3].name}}</text>
+          <text class="lName">{{prizeList[7].name}}</text>
         </div>
       </div>
       <div class="imgItem img5Item" @click="prizeZhuan">
         <text class="lottery">lottery</text>
-        <text class="lotteryTime">（{{raffle.users_number}} times）</text>
+        <text class="lotteryTime">（{{raffle.users_number||0}} times）</text>
       </div>
       <div class="imgItem img6Item" :class="[prizeIndex==3?'activeBg':'']">
         <div class="imgItemLi">
-          <text class="lName">{{prizeList[4].name}}</text>
+          <text class="lName">{{prizeList[3].name}}</text>
         </div>
       </div>
       <div class="imgItem img7Item" :class="[prizeIndex==6?'activeBg':'']">
         <div class="imgItemLi">
-          <text class="lName">{{prizeList[5].name}}</text>
+          <text class="lName">{{prizeList[6].name}}</text>
         </div>
       </div>
       <div class="imgItem img8Item" :class="[prizeIndex==5?'activeBg':'']">
         <div class="imgItemLi">
-          <text class="lName">{{prizeList[6].name}}</text>
+          <text class="lName">{{prizeList[5].name}}</text>
         </div>
       </div>
       <div class="imgItem img9Item" :class="[prizeIndex==4?'activeBg':'']">
         <div class="imgItemLi">
-          <text class="lName">{{prizeList[7].name}}</text>
+          <text class="lName">{{prizeList[4].name}}</text>
         </div>
       </div>
     </div>
     <div class="massage" v-if="prizeInfoShow">
-      <div class="noPrize" v-if="noPrizeShow">
-        <div class="oneBar">
+      <div class="havePrize" v-if="noPrizeShow">
+        <div class="oneBar nopr">
           <text class="closeIcon" @click="close()">&#xe608;</text>
+          <text class="noPTit">Unfortunately, you didn't win the prize.～</text>
         </div>
-        <text>很遗憾，您没有中奖</text>
-        <div class="xiaofu"></div>
-        <text class="btnDraw" @click="goIndex">去逛逛吧</text>
+        <div class="noline"></div>
+        <text class="infroma nopDes">It’s okay, the next time the goddess of luck will care for you.</text>
+
+        <text class="btnDraw" @click="close()">Okay, I know</text>
       </div>
 
       <div class="havePrize" v-if="havePrizeShow">
         <div class="oneBar">
+          <image class="prizeImg" :src="prizeList[prizePosition].image_url" />
           <text class="closeIcon" @click="close()">&#xe608;</text>
         </div>
         <text class="infroma">Congratulations on winning, you can check in the prizes</text>
 
         <text class="btnDraw" @click="lotteryRecord">Get it right now</text>
-      </div>
-      <div class="haveLottery" v-if="haveLottery">
-        <div class="oneBar">
-          <text class="closeIcon" @click="close()">&#xe608;</text>
-        </div>
-        <div class="xiaofu"></div>
-        <text>您已经抽过奖啦，不要太贪心哦！</text>
-        <text class="btnDraw" @click="close()">我知道啦</text>
       </div>
     </div>
     <div class="looperBox">
@@ -128,39 +123,23 @@ export default {
         goods_id: "25,28",
         create_time: "2019-07-17 10:00:07",
         update_time: null,
-        users_number: 2
+        users_number: 0
       },
-      swiperName: {
-        // 获奖名单
-        loop: true, // 当获奖人数大于等于5的时候滚动，否则不滚动
-        direction: "vertical",
-        slidesPerView: 5,
-        freeMode: true,
-        freeModeMomentum: true,
-        freeModeMomentumVelocityRatio: 1,
-        autoplay: 1000
-      },
+
       // mobile: '15114785236',
       prizeIndex: 8,
-      arrNum: [0, 1, 2, 4, 7, 6, 5, 3], // 定义转动的顺序
       clickFlage: true, // 点击事件，防止重复点击
       prizeInfoShow: false, // 显示中奖信息的遮罩层
       noPrizeShow: false, // 没中奖
       havePrizeShow: false, // 中奖了
-      haveLottery: false, // 已经抽过奖了
+
       timer1: "",
       timer2: "",
       s1: "",
       s2: "",
-      // lotteryDefineId: '3eb7b32ba51b4f9486e3dd368dad24c4', // 抽奖活动的id
-      lotteryDefineId: "", // 抽奖活动的id
-      winnerNum: "20",
-      prizeDesc: [], // 奖品说明
-      lotteryDesc: [], // 活动说明
-      hasRecord: false, // 是否显示获奖情况
-      remainingTimes: "", // 剩余抽奖次数
+
       prizeList: ["", "", "", "", "", "", "", "", ""], // 奖项列表
-      prizeLevel: "", // 中奖等级
+      prizePosition: "", // 中奖位置1-8
       prizeName: "", // 奖品名称
       prizeUrl: "", // 奖品图片
       prizers: [], // 获奖名单
@@ -180,42 +159,88 @@ export default {
         this.get();
       });
     },
-    goNext(url) {
-      this.push(url);
+    goNext(url, parmar) {
+      this.push(url, parmar);
     },
     get() {
       coRefundTake({ users_id: this.userId }, (res, flag) => {
         if (flag) {
           if (res.code == 200) {
-            this.prizeList = res.data.prize;
+            // this.log(res.data.prize)
+            this.prizeList = res.data.prize.sort((a, b) => {
+              return a.position - b.position;
+            });
             this.raffle = res.data.raffle;
+
+            get_raffle_list({ raffle_id: this.raffle.id }, (res, flag) => {
+              this.items = res.data.map(
+                item =>
+                  item.create_time +
+                  " 用户" +
+                  item.nickname +
+                  " 获得" +
+                  item.prize
+              );
+            });
           }
         }
       });
-      get_raffle_list({}, (res, flag) => {
-        this.log(res);
-        this.items = res.data.map(
-          item =>
-            item.create_time + " 用户" + item.nickname + " 获得" + item.prize
-        );
-      });
     },
-    statusFun(c, s, e) {
-      this.$nextTick(() => {
-        if (c < s) {
-          // 当前时间小于开始时间，未开始
-          this.startStatus = 0;
-          // this.$refs.pice[4].style.backgroundImage = "url(" + notStart + ")";
-        } else if (c > s && c < e) {
-          // 当前时间大于开始时间，并且小于结束时间，已经开始未结束
-          this.startStatus = 1;
-          // this.$refs.pice[4].style.backgroundImage = "url(" + prizeBtn + ")";
-        } else if (c > e) {
-          // 当前时间大于结束时间，已经结束
-          this.startStatus = 2;
-          // this.$refs.pice[4].style.backgroundImage = "url(" + endLottery + ")";
+    prizeZhuan() {
+      if (this.raffle.users_number > 0) {
+        // 判断剩余抽奖次数
+        // console.log(this.$refs.pice)
+        if (this.clickFlage) {
+          if (this.raffle.status === 1) {
+            // 活动开始
+            this.clickFlage = false; // 不能点击
+            this.timer1 = setInterval(this.move, 50);
+            this.raffle.users_number--;
+            //获取抽奖结果
+            getraffle(
+              { users_id: this.userId, raffle_id: this.raffle.id },
+              (res, flag) => {
+                if (flag) {
+                  if (res.code == 200) {
+                    this.prizeName = res.data.prize;
+                    this.prizeUrl = res.data.prize;
+                    for (let i = 0; i < this.prizeList.length; i++) {
+                      if (res.data.position == this.prizeList[i].position) {
+                        this.prizePosition = i;
+                      }
+                    }
+
+                    if (res.data.type == 1) {
+                      this.havePrizeShow = true;
+                      this.noPrizeShow = false;
+                    } else {
+                      this.noPrizeShow = true;
+                      this.havePrizeShow = false;
+                    }
+
+                    setTimeout(() => {
+                      clearInterval(this.timer1);
+                      this.lowSpeed();
+                    }, 1200);
+                  } else {
+                    this.toast(res.message);
+                    this.clickFlage = false; // 不能点击
+                    clearInterval(this.timer1);
+                    clearInterval(this.timer2);
+                  }
+                }
+              }
+            );
+            // 请求，返回后给s定值
+          } else if (this.startStatus === 2) {
+            // 已经结束
+            this.toast("活动已经结束");
+          }
         }
-      });
+      } else {
+        // 没有抽奖机会了
+        this.toast("没有抽奖机会");
+      }
     },
     move() {
       this.prizeIndex++;
@@ -235,96 +260,35 @@ export default {
         this.clickFlage = true; // 能点击
       }
     },
-    // 停止
-    stop() {
-      this.clickFlage = false; // 不能点击
-      this.prizeInfo(); // 弹出是否中奖
-    },
+
     // 降速
     lowSpeed() {
       clearInterval(this.timer1);
       this.clickFlage = false; // 不能点击
       this.timer2 = setInterval(this.move, 300);
       setTimeout(() => {
-        // 顺序打乱
-        if (this.prozeLevel == 2) {
-          this.s2 = 7;
-        } else if (this.prozeLevel == 3) {
-          this.s2 = 4;
-        } else if (this.prozeLevel == 4) {
-          this.s2 = 3;
-        } else if (this.prozeLevel == 7) {
-          this.s2 = 2;
-        } else {
-          this.s2 = this.prozeLevel;
-        }
+        this.s2 = this.prizePosition;
       }, 900);
     },
-    prizeZhuan() {
-      if (this.raffle.users_number > 0) {
-        // 判断剩余抽奖次数
-        // console.log(this.$refs.pice)
-        if (this.clickFlage) {
-          if (this.startStatus === 1) {
-            // 活动开始
-            this.clickFlage = false; // 不能点击
-            this.timer1 = setInterval(this.move, 50);
-            //获取抽奖结果
-            getraffle({}, (res, flag) => {
-              if (flag) {
-                if (res.code == 200) {
-                  this.prozeLevel = res.data.position;
-                  this.prizeName = res.data.prize;
-                  this.prizeUrl = res.data.prize;
-                  setTimeout(() => {
-                    clearInterval(this.timer1);
-                    this.lowSpeed();
-                  }, 1200);
-                } else {
-                  this.toast(res.message);
-                  this.clickFlage = false; // 不能点击
-                  clearInterval(this.timer1);
-                  clearInterval(this.timer2);
-                }
-              }
-            });
+    // 停止
+    stop() {
+      this.clickFlage = false; // 不能点击
+      this.prizeInfo(); // 弹出是否中奖
+    },
 
-            // this.timer1 = setInterval(this.move, 100)
-            // 请求，返回后给s定值
-          } else if (this.startStatus === 0) {
-            this.toast("活动尚未开始");
-            // 没开始
-          } else if (this.startStatus === 2) {
-            // 已经结束
-            this.toast("活动已经结束");
-          }
-        }
-      } else {
-        // 没有抽奖机会了
-        this.prizeInfoShow = true;
-        this.haveLottery = true;
-      }
-    },
-    touchMove(e) {
-      e.preventDefault(); // 禁止滚动
-      e.stopPropagation();
-    },
     prizeInfo() {
       setTimeout(() => {
         this.prizeInfoShow = true;
-        this.havePrizeShow = true;
+        this.s2 = ""; // 不能点击
       }, 800);
     },
     close() {
-      // 关闭没中奖
+      // 关闭中奖
       this.prizeInfoShow = false;
       this.noPrizeShow = false;
-      this.haveLottery = false;
-    },
-    goIndex() {
-      this.$router.push({ name: "preferIndex" });
-      this.prizeInfoShow = false; // 显示中奖信息的遮罩层
-      this.noPrizeShow = false; // 没中奖
+      this.havePrizeShow = false;
+      this.clickFlage = true;
+      this.prizeIndex = 8;
     },
     lotteryRecord() {
       this.toast("去领奖");
@@ -498,16 +462,6 @@ export default {
   margin: 0 auto 0.3 * 10px;
 }
 
-.haveLottery {
-  width: 5.3 * 10px;
-  height: 4.4 * 10px;
-  background-color: #fff;
-  position: absolute;
-  top: 3.2 * 10px;
-  left: 1.1 * 10px;
-  border-radius: 0.4 * 10px;
-}
-
 .havePrize {
   width: 526px;
   padding-bottom: 50px;
@@ -515,10 +469,10 @@ export default {
   position: absolute;
   background-color: #fff;
   border-radius: 10px;
-  top: 242px;
+  top: 342px;
   left: 110px;
-  align-items: center;
   overflow: hidden;
+  align-items: center;
 }
 .oneBar {
   width: 526px;
@@ -527,6 +481,21 @@ export default {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   position: relative;
+  justify-content: center;
+  align-items: center;
+}
+.nopr {
+  background-color: #fff;
+}
+.noline {
+  border-bottom-color: #303030;
+  border-bottom-style: dashed;
+  border-bottom-width: 1px;
+  width: 443px;
+}
+.prizeImg {
+  width: 265px;
+  height: 140px;
 }
 .closeIcon {
   position: absolute;
@@ -542,7 +511,17 @@ export default {
   text-align: center;
   line-height: 48px;
 }
-
+.noPTit {
+  font-size: 34px;
+  line-height: 48px;
+  color: #333333;
+  width: 388px;
+  text-align: center;
+}
+.nopDes {
+  font-size: 26px;
+  color: #ea2536;
+}
 .infroma {
   width: 430px;
   margin: 40px 0;

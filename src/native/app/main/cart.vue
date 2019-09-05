@@ -169,6 +169,9 @@ export default {
               } else {
                 that.goodsList = list;
               }
+              if (res.data.list.length < 10) {
+                this.hasMore = false;
+              }
             } else {
               this.hasMore = false;
             }

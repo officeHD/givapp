@@ -1,10 +1,16 @@
 <template>
 <div class="wrapper">
   <head title="Prize"></head>
-  <scroller class="scroller">
-    <div class="pizeItem" v-for="(item,index) in prizeList" :key="index">
+  <empty v-if="prizeList.length==0" tips="Your Prize is empty"></empty>
+  <scroller class="scroller" v-if="prizeList.length==0">
+    <div
+      class="pizeItem"
+      v-for="(item,index) in prizeList"
+      :key="index"
+      @click="goNext('root:app/active/luckDetail.js',{data:JSON.stringify(item)})"
+    >
       <div class="leftItem">
-        <image class="pImg" resize="container" :src="item.headimgurl" />
+        <image class="pImg" resize="container" :src="item.image_url" />
       </div>
       <div class="rightItem">
         <text class="pName">{{item.prize}}</text>
@@ -31,6 +37,9 @@ export default {
         this.getList();
       });
     },
+    goNext(url, parmar) {
+      this.push(url, parmar);
+    },
     getList() {
       getUserRaffle_list({ users_id: this.userId }, (res, flag) => {
         if (flag) {
@@ -47,14 +56,14 @@ export default {
 </script>
 <style  scoped>
 .wrapper {
-  background-color: #fff;
+  background-color: #f5f5f5;
 }
 .scroller {
   flex: 1;
 }
 .pizeItem {
-  width: 680px;
-  margin-left: 35px;
+  width: 700px;
+  margin-left: 25px;
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: #fff;
@@ -74,15 +83,22 @@ export default {
   height: 138px;
 }
 .rightItem {
-  align-items: center;
+  align-items: flex-start;
+  padding-left: 20px;
+  flex: 1;
+  justify-content: center;
 }
 .pName {
   font-size: 32px;
   color: #1e1e1e;
+  text-align: left;
+  line-height: 45px;
 }
 .pTime {
   font-size: 22px;
   color: #888;
   margin-top: 10px;
+  text-align: left;
+  line-height: 30px;
 }
 </style>
