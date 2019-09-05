@@ -13,7 +13,7 @@
         <text class="boxText">Prize</text>
       </div>
     </div>
-    <text class="luckTit">lucky wheel</text> 
+    <text class="luckTit">lucky wheel</text>
     <image class="luckBg" src="root:img/activity/luckBg.png" />
     <div class="luckBox">
       <div class="imgItem img1Item" :class="[prizeIndex==0?'activeBg':'']">
@@ -63,33 +63,29 @@
     </div>
     <div class="massage" v-if="prizeInfoShow">
       <div class="noPrize" v-if="noPrizeShow">
-        <div class="close" @click="close()">
-          <img src="root:img/activity/close.png" alt />
+        <div class="oneBar">
+          <text class="closeIcon" @click="close()">&#xe608;</text>
         </div>
         <text>很遗憾，您没有中奖</text>
-        <div class="xiaofu">
-          <img src="root:img/activity/noprizeXF.png" alt />
-        </div>
-        <text class="btn" @click="goIndex">去逛逛吧</text>
+        <div class="xiaofu"></div>
+        <text class="btnDraw" @click="goIndex">去逛逛吧</text>
       </div>
-      <img src="root:img/activity/circleLight.png" class="circleLight" v-if="havePrizeShow" alt />
+
       <div class="havePrize" v-if="havePrizeShow">
         <div class="oneBar">
-          <text class="closeIcon">&#xe608;</text>
+          <text class="closeIcon" @click="close()">&#xe608;</text>
         </div>
         <text class="infroma">Congratulations on winning, you can check in the prizes</text>
 
         <text class="btnDraw" @click="lotteryRecord">Get it right now</text>
       </div>
       <div class="haveLottery" v-if="haveLottery">
-        <div class="close" @click="close()">
-          <img src="root:img/activity/close.png" alt />
+        <div class="oneBar">
+          <text class="closeIcon" @click="close()">&#xe608;</text>
         </div>
-        <div class="xiaofu">
-          <img src="root:img/activity/receivedXF1.png" alt />
-        </div>
+        <div class="xiaofu"></div>
         <text>您已经抽过奖啦，不要太贪心哦！</text>
-        <text class="btn" @click="close()">我知道啦</text>
+        <text class="btnDraw" @click="close()">我知道啦</text>
       </div>
     </div>
     <div class="looperBox">
@@ -331,19 +327,14 @@ export default {
       this.noPrizeShow = false; // 没中奖
     },
     lotteryRecord() {
-      this.$router.push({
-        name: "lotteryRecord",
-        query: {
-          lotteryDefineId: this.lotteryDefineId
-        }
-      });
+      this.toast("去领奖");
     }
   }
 };
 </script>
 
 <style scoped>
-.pageBg{
+.pageBg {
   flex: 1;
 }
 .wrapper {
@@ -394,77 +385,7 @@ export default {
   margin-top: 54px;
   margin-bottom: 30px;
 }
-.banner {
-  width: 750px;
-  height: 350px;
-  position: relative;
-}
-.bannerImg {
-  width: 750px;
-  height: 350px;
-}
 
-.prizeInfoBtn {
-  width: 200px;
-  height: 127px;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.prizeInfoBtnImg {
-  width: 200px;
-  height: 127px;
-}
-
-.priceChanceBtn {
-  height: 0.6 * 10px;
-  border-radius: 0.6 * 10px;
-  background-color: #ff7a00;
-  position: absolute;
-  bottom: -0.3 * 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  line-height: 0.6 * 10px;
-  font-size: 0.34 * 10px;
-  color: #fff;
-  font-weight: 500;
-  text-align: center;
-  padding: 0.06 * 10px 0.4 * 10px;
-}
-.whiteBar {
-  position: absolute;
-  z-index: 0;
-  transform: rotate(-30deg);
-}
-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.whiteBar1 {
-  top: 4 * 10px;
-  left: -3 * 10px;
-  width: 7.9 * 10px;
-  height: 1.8 * 10px;
-}
-.whiteBar2 {
-  top: 4.2 * 10px;
-  right: -2 * 10px;
-  width: 7.9 * 10px;
-  height: 2.3 * 10px;
-}
-.whiteBar3 {
-  top: 9.3 * 10px;
-  left: -1.8 * 10px;
-  width: 7.9 * 10px;
-  height: 1.75 * 10px;
-}
-.whiteBar4 {
-  top: 9.2 * 10px;
-  left: 2.5 * 10px;
-  width: 7.9 * 10px;
-  height: 1.36 * 10px;
-}
 .luckBg {
   width: 640px;
   height: 608px;
@@ -477,11 +398,8 @@ img {
 }
 .imgItem {
   width: 168px;
-
   height: 141px;
-
   justify-content: center;
-
   align-items: center;
   position: absolute;
   /* background-color: #FFEDEF; */
@@ -572,31 +490,14 @@ img {
   left: 1.1 * 10px;
   border-radius: 0.4 * 10px;
 }
-.close {
-  position: absolute;
-  width: 0.51 * 10px;
-  height: 0.51 * 10px;
-  top: -0.8 * 10px;
-  right: 0;
-}
+
 .xiaofu {
   width: 1.7 * 10px;
   height: 1.7 * 10px;
   border-radius: 100%;
   margin: 0 auto 0.3 * 10px;
 }
-.btn {
-  width: 3.7 * 10px;
-  height: 0.9 * 10px;
-  margin: 0 auto;
-  /* background: url("root:img/lottery/btn.png") no-repeat; */
-  background-size: 100%;
-  font-size: 0.36 * 10px;
-  color: #fff;
-  line-height: 0.9 * 10px;
-  text-align: center;
-  font-weight: 600;
-}
+
 .haveLottery {
   width: 5.3 * 10px;
   height: 4.4 * 10px;
@@ -606,46 +507,7 @@ img {
   left: 1.1 * 10px;
   border-radius: 0.4 * 10px;
 }
-.close {
-  position: absolute;
-  width: 0.51 * 10px;
-  height: 0.51 * 10px;
-  top: -0.8 * 10px;
-  right: 0;
-}
-.xiaofu {
-  width: 1.7 * 10px;
-  height: 1.7 * 10px;
-  margin: 0.3 * 10px auto 0.2 * 10px;
-}
-p {
-  font-size: 0.3 * 10px;
-  color: #707070;
-  margin: 0.21 * 10px auto 0.37 * 10px;
-  text-align: center;
-}
-.btn {
-  width: 3.7 * 10px;
-  height: 0.9 * 10px;
-  margin: 0 auto;
-  /* background: url("root:img/lottery/btn.png") no-repeat; */
-  background-size: 100%;
-  font-size: 0.36 * 10px;
-  color: #fff;
-  line-height: 0.9 * 10px;
-  text-align: center;
-  font-weight: 600;
-}
-.circleLight {
-  width: 9.22 * 10px;
-  height: 9.22 * 10px;
-  position: absolute;
-  top: 0.8 * 10px;
-  left: 50%;
-  margin-left: -4.61 * 10px;
-  animation: rotate 20s infinite linear;
-  transform-origin: 50% 50%;
-}
+
 .havePrize {
   width: 526px;
   padding-bottom: 50px;
