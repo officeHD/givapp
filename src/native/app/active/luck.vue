@@ -1,6 +1,7 @@
 <template>
 <div>
   <head title="Raffle"></head>
+  <image class="pageBg" src="root:img/activity/pageBg.png" />
   <div class="wrapper">
     <div class="topBtn">
       <div class="btnBox" @click="goNext('root:app/active/luckRule.js')">
@@ -12,26 +13,7 @@
         <text class="boxText">Prize</text>
       </div>
     </div>
-    <text class="luckTit">lucky wheel</text>
-    <!-- <div class="banner">
-      <image class="bannerImg" src="root:img/activity/banner.png" />  
-      <div class="prizeInfoBtn" @click="activityRecord" v-if="hasRecord">
-        <img class="prizeInfoBtnImg" src="root:img/activity/prizeInfo.png" />
-      </div>
-      <text class="priceChanceBtn">您有{{remainingTimes}}次抽奖机会</text>
-    <div class="whiteBar1 whiteBar">
-        <image src="root:img/activity/whiteBar.png" />
-      </div>
-      <div class="whiteBar2 whiteBar">
-        <image src="root:img/activity/whiteBar.png" />
-      </div>
-      <div class="whiteBar3 whiteBar">
-        <image src="root:img/activity/whiteBar.png" />
-      </div>
-      <div class="whiteBar4 whiteBar">
-        <image src="root:img/activity/whiteBar.png" />
-      </div> 
-    </div>-->
+    <text class="luckTit">lucky wheel</text> 
     <image class="luckBg" src="root:img/activity/luckBg.png" />
     <div class="luckBox">
       <div class="imgItem img1Item" :class="[prizeIndex==0?'activeBg':'']">
@@ -361,10 +343,17 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-  justify-content: flex-start;
-  align-items: center;
+.pageBg{
   flex: 1;
+}
+.wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
 }
 .topBtn {
   width: 750px;
