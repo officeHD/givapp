@@ -134,10 +134,11 @@ import {
   getUserRaffle_list,
   get_raffle_list
 } from "../../mixin/ajax";
-
+import asCore from "../../mixin/core";
 export default {
   data() {
     return {
+      userId: "",
       raffle: {
         id: 1,
         title: "标题",
@@ -196,26 +197,23 @@ export default {
   },
   methods: {
     onLoad() {
-      this.get();
+      asCore.getBsessionid(userId => {
+        this.userId = userId;
+        this.get();
+      });
     },
     goNext(url) {
       this.push(url);
     },
     get() {
-      coRefundTake(
-        {
-          users_id: "1212",
-          total_order_id: "333"
-        },
-        (res, flag) => {
-          if (flag) {
-            if (res.code == 200) {
-              this.prizeList = res.data.prize;
-              this.raffle = res.data.raffle;
-            }
+      coRefundTake({ users_id: this.userId }, (res, flag) => {
+        if (flag) {
+          if (res.code == 200) {
+            this.prizeList = res.data.prize;
+            this.raffle = res.data.raffle;
           }
         }
-      );
+      });
       get_raffle_list({}, (res, flag) => {
         this.log(res);
         this.items = res.data.map(
@@ -284,7 +282,6 @@ export default {
         }
       }, 900);
     },
-
     prizeZhuan() {
       if (this.raffle.users_number > 0) {
         // 判断剩余抽奖次数

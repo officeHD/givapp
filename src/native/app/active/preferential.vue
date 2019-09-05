@@ -1,42 +1,41 @@
 <template>
-	<div class="wrapper">
-		<head   bgcolor="#303030" title="preferential" ></head> 
-		<div class="curActC">
-			<scroller class="shopType"  scroll-direction="horizontal">
-				<text class="typeItem " 
-				:class="[activeType==item?'typeActive':'']"
-				v-for="(item,index) in shopType" :key="index" @click="activeType=item">{{item}}</text>
-				  
-			</scroller>
-			<text class="iconfont search">&#xe62a;</text>
-		</div>
-		<scroller class="shopScro">
-			<div class="shopItem" v-for="(item,index) in [1,1,1,1,1,1]" :key="index" @click="detail">
-				 <image class="shopImg" src="root:img/goods.png"></image>
-				 <div class="shopCon">
-				 	<div class="shopTop">
-					 	<text class="shopTit">Tata/2019 summer counter same asd dadsadf</text>
-				 		<text class="titBorder">2 pieces of eight fold</text>
-					 </div>
-				 	
-				 	<div class="shopBot">
-					 	<div class="priceInfo">
-						 	<div class="priceBx">
-							 <text class="symbol">$</text>
-							 <text class="cuPrice">52.30</text>
-							 
-							 </div>
-						 	
-				 			<text class="oldPrice">$ 333.00</text>
-						 </div>
-					 
-				 		<text class="payBtn">payment</text> 
-					 </div>
-				 </div>
-			</div>
-		 	<div class="mt20"></div>
-		</scroller>
-	</div>
+<div class="wrapper">
+  <head bgcolor="#303030" title="preferential"></head>
+  <div class="curActC">
+    <scroller class="shopType" scroll-direction="horizontal">
+      <text
+        class="typeItem"
+        :class="[activeType==item?'typeActive':'']"
+        v-for="(item,index) in shopType"
+        :key="index"
+        @click="activeType=item"
+      >{{item}}</text>
+    </scroller>
+    <text class="iconfont search">&#xe62a;</text>
+  </div>
+  <scroller class="shopScro">
+    <div class="shopItem" v-for="(item,index) in [1,1,1,1,1,1]" :key="index" @click="detail">
+      <image class="shopImg" src="root:img/goods.png" />
+      <div class="shopCon">
+        <div class="shopTop">
+          <text class="shopTit">Tata/2019 summer counter same asd dadsadf</text>
+          <text class="titBorder">2 pieces of eight fold</text>
+        </div>
+        <div class="shopBot">
+          <div class="priceInfo">
+            <div class="priceBx">
+              <text class="symbol">$</text>
+              <text class="cuPrice">52.30</text>
+            </div>
+            <text class="oldPrice">$ 333.00</text>
+          </div>
+          <text class="payBtn">payment</text>
+        </div>
+      </div>
+    </div>
+    <div class="mt20"></div>
+  </scroller>
+</div>
 </template>
 
 <script>
@@ -73,14 +72,13 @@ export default {
 </script>
 
 <style scoped>
- 
 .iconfont {
   font-family: iconfont;
 }
 .wrapper {
   background-color: #f5f5f5;
 }
- 
+
 .curActC {
   flex-direction: row;
   justify-content: space-between;
