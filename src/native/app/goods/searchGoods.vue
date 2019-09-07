@@ -6,9 +6,9 @@
       <input
         autofocus
         @focus="focusInput"
-        :value="searchVal"
+        :value="searchVal" 
         class="tips"
-        placeholder="noteBook "
+        placeholder="noteBook"
         ref="input1"
         @return="searchRet"
         return-key-type="search"
@@ -25,7 +25,12 @@
         <text class="iconfont hisDel" @click="clearHis">&#xe6e4;</text>
       </div>
       <div class="hisItem" v-if="searchArr.length>0">
-        <text class="itemLi" v-for="item in searchArr" :key="item" @click="searchRet({value:item})">{{item}}</text>
+        <text
+          class="itemLi"
+          v-for="item in searchArr"
+          :key="item"
+          @click="searchRet({value:item})"
+        >{{item}}</text>
       </div>
     </div>
     <scroller class="listMode" :style="{'left':pageType=='list'?0:'750px' }">

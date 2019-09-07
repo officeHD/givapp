@@ -8,13 +8,13 @@ export const upload = (state, cb) => {
 		cb(data.returnSucces, true);
 	} else {
 		net.postFile("http://gj.i2f2f.com/index.php/web/upload/upload", {
-				type: state.type
-			}, {}, {
+			type: state.type
+		}, {}, {
 				file: state.file
-			}, sta => {},
+			}, sta => { },
 			res => {
 				cb(res)
-			}, ove => {}, err => {}, true);
+			}, ove => { }, err => { }, true);
 	}
 
 }
@@ -97,7 +97,7 @@ export const reset_password = (state, cb) => {
 // 用户信息接口
 export const get_users_info = (state, cb) => {
 	if (debug) {
-		cb(data.userInfo, true); 
+		cb(data.userInfo, true);
 	} else {
 		asCore.post(`web/users/get_users_info`, state, cb)
 	}
@@ -224,16 +224,16 @@ export const get_goods_collection_List = (state, cb) => {
 	if (debug) {
 		cb(data.collectionListGood, true);
 	} else {
-		asCore.post(`zdapp/goods_collection/get_goods_collection_List`, state, cb)
+		asCore.post(`web/goods_collection/get_collection_List`, state, cb)
 	}
 }
 
 // 删除商品收藏接口
-export const del_goods_collection = (state, cb) => {
+export const del_all_collection = (state, cb) => {
 	if (debug) {
 		cb(data.returnSucces, true);
 	} else {
-		asCore.post(`web/goods_collection/del_goods_collection`, state, cb)
+		asCore.post(`web/goods_collection/del_all_collection`, state, cb)
 	}
 }
 // 用户发布二手商品 - 
@@ -884,35 +884,35 @@ export const get_users_balance = (state, cb) => {
 		asCore.post(`web/withdraw/get_users_balance`, state, cb)
 	}
 }
- // 卖家余额接口
- export const get_system_info = (state, cb) => {
- 	if (debug) {
- 		cb(data.system_info, true);
- 	} else {
- 		asCore.post(`web/users/get_system_info`, state, cb)
- 	}
- }
- //卖家余额接口
- export const add_withdraw_info = (state, cb) => {
- 	if (debug) {
- 		cb(data.returnSucces, true);
- 	} else {
- 		asCore.post(`web/withdraw/add_withdraw_info`, state, cb)
- 	}
- }
- 
- 
- //卖家余额接口
- export const get_withdraw_list = (state, cb) => {
- 	if (debug) {
- 		cb(data.withdraw_list, true);
- 	} else {
- 		asCore.post(`web/withdraw/get_withdraw_list`, state, cb)
- 	}
- }
- 
- 
- 
+// 卖家余额接口
+export const get_system_info = (state, cb) => {
+	if (debug) {
+		cb(data.system_info, true);
+	} else {
+		asCore.post(`web/users/get_system_info`, state, cb)
+	}
+}
+//卖家余额接口
+export const add_withdraw_info = (state, cb) => {
+	if (debug) {
+		cb(data.returnSucces, true);
+	} else {
+		asCore.post(`web/withdraw/add_withdraw_info`, state, cb)
+	}
+}
+
+
+//卖家余额接口
+export const get_withdraw_list = (state, cb) => {
+	if (debug) {
+		cb(data.withdraw_list, true);
+	} else {
+		asCore.post(`web/withdraw/get_withdraw_list`, state, cb)
+	}
+}
+
+
+
 
 
 

@@ -69,17 +69,14 @@
         </div>
         <div class="noline"></div>
         <text class="infroma nopDes">It’s okay, the next time the goddess of luck will care for you.</text>
-
         <text class="btnDraw" @click="close()">Okay, I know</text>
       </div>
-
       <div class="havePrize" v-if="havePrizeShow">
         <div class="oneBar">
           <image class="prizeImg" :src="prizeList[prizePosition].image_url" />
           <text class="closeIcon" @click="close()">&#xe608;</text>
         </div>
         <text class="infroma">Congratulations on winning, you can check in the prizes</text>
-
         <text class="btnDraw" @click="lotteryRecord">Get it right now</text>
       </div>
     </div>
