@@ -229,6 +229,15 @@ export const get_goods_collection_List = (state, cb) => {
 }
 
 // 删除商品收藏接口
+export const del_goods_collection = (state, cb) => {
+	if (debug) {
+		cb(data.returnSucces, true);
+	} else {
+		asCore.post(`web/goods_collection/del_goods_collection`, state, cb)
+	}
+}
+
+// 删除商品收藏接口
 export const del_all_collection = (state, cb) => {
 	if (debug) {
 		cb(data.returnSucces, true);

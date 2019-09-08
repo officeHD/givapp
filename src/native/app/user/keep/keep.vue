@@ -19,7 +19,7 @@
           v-for="(item,index) in items.orderList"
           :key="index"
           @longpress="showDel=true"
-          @click="toUrl"
+          @click="toUrl(item)"
         >
           <img class="cellImg" :src="item.thumb" resize="cover" />
           <div v-if="showDel" class="selectMask" @click="selected(index)">
@@ -181,8 +181,12 @@ export default {
         }
       );
     },
-    toUrl() {
-      this.toast("跳转");
+    toUrl(item) {
+      if (this.tabCurrentIndex == 1) {
+        this.push("root:app/goods/goods.js", { id: item.goods_id });
+      } else {
+        this.push("root:app/goods/goods2.js", { id: item.goods_id });
+      }
     },
     deleteC() {
       let pageNav = this.navList[this.tabCurrentIndex];
@@ -213,6 +217,13 @@ export default {
         }
       }
       pageNav.selectedList.splice(pageNav.selectedList.indexOf(id), 1);
+    },
+    slideChange(index) {
+      if (this.tabCurrentIndex == index.index) {
+        return false;
+      }
+      this.tabCurrentIndex = index.index;
+      this.getList("tabChange");
     }
   }
 };
