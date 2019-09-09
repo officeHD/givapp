@@ -4,9 +4,9 @@
   <scroller class="scroller">
     <div class="selBox">
       <div class="bb"></div>
-      <input class="titleInput" placeholder="Title" type="number" />
+      <input class="titleInput" placeholder="Title" v-model="title"   type="text" />
       <div class="bb"></div>
-      <textarea class="textarea"></textarea>
+      <textarea class="textarea" v-model="content"  ></textarea>
       <div class="imgBox">
         <image class="clickPhoto" :src="src" v-if="src" />
         <image @click="pickPhoto" class="clickPhoto" src="root:img/photo.png" />
@@ -18,7 +18,7 @@
       </div>
       <div class="cellItem">
         <text class="iconfont location">&#xe648;</text>
-        <text class="newType">Heifei High-tech Zone,Anhui Province</text>
+        <text class="newType">{{address.province}}{{address.city}}{{address.subLocality}}</text>
       </div>
     </div>
     <div class="mt20">
@@ -89,12 +89,22 @@ const photo = weex.requireModule("photo");
 const net = weex.requireModule("net");
 const animation = weex.requireModule("animation");
 const location = weex.requireModule("location");
+import {
+  upload,
+  add_twohand_goods,
+  edit_twohand_goods
+} from "../../mixin/ajax.js";
+
 export default {
   data() {
     return {
       showMask: false,
+      content:"",
+      title:"",
+      address: "",
       amount: 0,
       src: "",
+      imgList: "",
       user: {
         sex: 1
       }
@@ -105,6 +115,7 @@ export default {
     onLoad() {
       location.start({ once: false }, res => {
         this.log(res);
+        this.address = res;
       });
     },
     returnpage() {
@@ -136,34 +147,18 @@ export default {
       var self = this;
       photo.open(500, 800, "#000000", "#ffffff", "#ffffff", function(e) {
         self.src = e.path;
-        var param = {};
-        var header = {};
-        var path = {};
-        path.file = e.path;
-        net.postFile(
-          "http://xxx/upload",
-          param,
-          header,
-          path,
-          () => {
-            //start
+        upload(
+          {
+            type: 3,
+            file: e.path
           },
-          e => {
-            //succcess
-            var modal = weex.requireModule("modal");
-            modal.toast({
-              message: "上传成功！"
-            });
-          },
-          () => {
-            //compelete
-          },
-          () => {
-            //exception
-            var modal = weex.requireModule("modal");
-            modal.toast({
-              message: "上传异常！"
-            });
+          res => {
+            if (res.res.message) {
+              self.toast(res.res.message);
+            }
+            if (res.res.code == 200) {
+              this.imgList.push(res.res.data.file_url);
+            }
           }
         );
       });
