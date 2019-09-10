@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
 		<head title="evaluation"></head>
-		<div v-for="listLi in list">
+		<div v-for="(listLi,liIndex) in list" :key="liIndex">
 			<div class="order_top">
 				<image class="googPic" :src="listLi.thumb"></image>
 				<div class="goods_info">
@@ -15,7 +15,7 @@
 			<div class="selBox">
 				<textarea class="textarea" v-model="listLi.message"> </textarea>
 				<div class="imgBox">
-					<image v-if="listLi.imgList.length>0" class="clickPhoto reviewImg" resize="contain" v-for="item in listLi.imgList"
+					<image v-if="listLi.imgList.length>0" class="clickPhoto reviewImg" resize="contain" v-for="(item,index) in listLi.imgList" :key="index"
 					 :src="item.file_url"></image>
 					<image @click="pickPhoto(listLi)" class="clickPhoto" resize="contain" src="root:img/photo.png"></image>
 				</div>

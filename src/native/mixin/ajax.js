@@ -5,7 +5,7 @@ var debug = true;
 // 查询物流上传文件
 export const upload = (state, cb) => {
 	if (debug) {
-		cb(data.returnSucces, true);
+		cb({res:data.uploadSucces}, true);
 	} else {
 		net.postFile("http://gj.i2f2f.com/index.php/web/upload/upload", {
 			type: state.type

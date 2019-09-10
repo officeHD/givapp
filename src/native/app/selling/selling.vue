@@ -4,11 +4,14 @@
   <scroller class="scroller">
     <div class="selBox">
       <div class="bb"></div>
-      <input class="titleInput" placeholder="Title" v-model="title"   type="text" />
+      <input class="titleInput" placeholder="Title" v-model="title" type="text" />
       <div class="bb"></div>
-      <textarea class="textarea" v-model="content"  ></textarea>
+      <textarea class="textarea" v-model="content"></textarea>
       <div class="imgBox">
-        <image class="clickPhoto" :src="src" v-if="src" />
+        <div v-if="imgList.length>0" class="row">
+          <image class="clickPhoto" v-for="(item,index) in imgList" :src="item" :key="index" />
+        </div>
+
         <image @click="pickPhoto" class="clickPhoto" src="root:img/photo.png" />
       </div>
       <div class="bb"></div>
@@ -29,7 +32,7 @@
           <text class="rightIcon">&#xe6a1;</text>
         </div>
       </div>
-      <div class="locationBox bb" @click="changeAlert('show')">
+      <div class="locationBox bb" @click="gonext('root:app/selling/selling_categories.js')">
         <text class="meth_title">Categories</text>
         <div class="meth_right">
           <text class="cityName">Categories</text>
@@ -45,6 +48,7 @@
       </div>
     </div>
   </scroller>
+  <text class="confirmBtn" @click="postShop">confirm</text>
   <div :class="[showMask?'maskAlert':'hidemask']" @click="changeAlert('hide')"></div>
 
   <!-- 性别弹出框 -->
@@ -98,13 +102,15 @@ import {
 export default {
   data() {
     return {
+      goodsId: "",
       showMask: false,
-      content:"",
-      title:"",
+      content: "",
+      category: "",
+      title: "",
       address: "",
       amount: 0,
       src: "",
-      imgList: "",
+      imgList: [],
       user: {
         sex: 1
       }
@@ -117,6 +123,10 @@ export default {
         this.log(res);
         this.address = res;
       });
+    },
+    gonext(url, parmar) {
+      this.push(url, parmar);
+      // this.log("jdksdjsk", "error");
     },
     returnpage() {
       navigator.backTo("A");
@@ -143,9 +153,37 @@ export default {
         function() {}
       );
     },
+    postShop() {
+      let data = {
+        id: this.goodsId,
+        users_id: "",
+        categoryid: "",
+        price: "",
+        title: "",
+        thumb: "",
+        thumb_url: "",
+        label: "",
+        stock: "",
+        postage: "",
+        content: "",
+        trade_type: "",
+        trade_address: "",
+        refund_name: "",
+        refund_phone: "",
+        refund_address: "",
+        take_time: ""
+      };
+      add_twohand_goods(data, (res, flag) => {
+        if (flag) {
+          if (res.code == 200) {
+            this.log(res);
+          }
+        }
+      });
+    },
     pickPhoto() {
       var self = this;
-      photo.open(500, 800, "#000000", "#ffffff", "#ffffff", function(e) {
+      photo.open(500, 500, "#000000", "#ffffff", "#ffffff", function(e) {
         self.src = e.path;
         upload(
           {
@@ -157,7 +195,7 @@ export default {
               self.toast(res.res.message);
             }
             if (res.res.code == 200) {
-              this.imgList.push(res.res.data.file_url);
+              self.imgList.push(res.res.data.file_url);
             }
           }
         );
@@ -220,6 +258,10 @@ export default {
 .imgBox {
   margin-bottom: 30px;
   flex-direction: row;
+}
+.row {
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .clickPhoto {
@@ -379,6 +421,20 @@ export default {
   line-height: 80px;
   border-radius: 10px;
   margin-bottom: 14px;
+  background-color: #303030;
+  color: #fff;
+  text-align: center;
+  font-size: 30px;
+}
+.confirmBtn {
+  width: 686px;
+  height: 80px;
+  line-height: 80px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
   background-color: #303030;
   color: #fff;
   text-align: center;

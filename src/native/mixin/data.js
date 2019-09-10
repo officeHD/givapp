@@ -44,6 +44,12 @@ var data = {
 		"message": "验证码发送成功！",
 		"data": {}
 	},
+	uploadSucces: {
+		"code": 200,
+		"data": {
+			"file_url": "https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/51187/15/2471/83407/5d05bf93E44d7d08d/29051d47480623e6.jpg",
+		}
+	},
 	returnLogin: {
 		"code": 200,
 		"message": "登录成功！",
@@ -66,7 +72,7 @@ var data = {
 			"account": "10000000134",
 			"status": 1,
 			"phone_number": "13635697675",
-			"headimgurl":"https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/51187/15/2471/83407/5d05bf93E44d7d08d/29051d47480623e6.jpg",
+			"headimgurl": "https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/51187/15/2471/83407/5d05bf93E44d7d08d/29051d47480623e6.jpg",
 			"nickname": "tll",
 			"email": "111111@qq.com",
 			"sex": 2,
@@ -164,7 +170,7 @@ var data = {
 			"sell": null,
 			"collection": null,
 			"nickname": null,
-			"headimgurl":"https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/51187/15/2471/83407/5d05bf93E44d7d08d/29051d47480623e6.jpg",
+			"headimgurl": "https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/51187/15/2471/83407/5d05bf93E44d7d08d/29051d47480623e6.jpg",
 			"is_collection": 0
 		}
 	},
@@ -219,13 +225,31 @@ var data = {
 		"message": "获取信息成功！",
 		"data": [{
 			"id": 22,
-			"name": "",
+			"name": "closure",
 			"level": 1,
 			"thumb": null,
 			"parentid": 0
 		}, {
 			"id": 20,
-			"name": "",
+			"name": "bkkl",
+			"level": 1,
+			"thumb": null,
+			"parentid": 0
+		}, {
+			"id": 0,
+			"name": "option1",
+			"level": 1,
+			"thumb": null,
+			"parentid": 0
+		}, {
+			"id": 1,
+			"name": "option12",
+			"level": 1,
+			"thumb": null,
+			"parentid": 0
+		}, {
+			"id": 2,
+			"name": "option13",
 			"level": 1,
 			"thumb": null,
 			"parentid": 0
@@ -276,16 +300,16 @@ var data = {
 		"data": {
 			"total": 1,
 			"list": [{
-				"id":20,
-				"goods_id":"25",
-				"act_goods_id":"25",
-				"create_time":"2019-08-15 09:28:52",
-				"users_id":"2cf751e717424373b99dc74c68927ee2",
-				"title":"用户二手商品1",
-				"thumb":"https://www.i2f2f.com/attachment/images/26/2019/04/giXIQxrG74ZXPnLnnFxnd4Rn0QpCFP.jpg",
-				"status":1,
-				"nickname":"tll",
-				"headimgurl":""
+				"id": 20,
+				"goods_id": "25",
+				"act_goods_id": "25",
+				"create_time": "2019-08-15 09:28:52",
+				"users_id": "2cf751e717424373b99dc74c68927ee2",
+				"title": "用户二手商品1",
+				"thumb": "https://www.i2f2f.com/attachment/images/26/2019/04/giXIQxrG74ZXPnLnnFxnd4Rn0QpCFP.jpg",
+				"status": 1,
+				"nickname": "tll",
+				"headimgurl": ""
 			}]
 		}
 	},
@@ -394,7 +418,7 @@ var data = {
 				"nickname": "tll",
 				"headimgurl": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
 				"show": 0,
-				"thumb":"https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
+				"thumb": "https://img12.360buyimg.com/mobilecms/s372x372_jfs/t1/32689/33/8554/213115/5ca07ed7E513bdad3/4e4860ea94b85571.jpg",
 				"title": "商品白色",
 				"price": "101.00",
 				"goods_option": "白色;S",
