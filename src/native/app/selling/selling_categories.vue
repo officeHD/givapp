@@ -30,7 +30,10 @@ export default {
       });
     },
     select(item) {
-        this.log(item)
+      this.log(item);
+      const selectCategary = new BroadcastChannel("selectCategary");
+      selectCategary.postMessage(item);
+      this.back();
     }
   }
 };

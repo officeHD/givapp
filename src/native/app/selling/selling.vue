@@ -11,7 +11,6 @@
         <div v-if="imgList.length>0" class="row">
           <image class="clickPhoto" v-for="(item,index) in imgList" :src="item" :key="index" />
         </div>
-
         <image @click="pickPhoto" class="clickPhoto" src="root:img/photo.png" />
       </div>
       <div class="bb"></div>
@@ -24,18 +23,48 @@
         <text class="newType">{{address.province}}{{address.city}}{{address.subLocality}}</text>
       </div>
     </div>
-    <div class="mt20">
-      <div class="locationBox bb" @click="changeAlert('show')">
+    <div class="mt20 mb50">
+      <div class="locationBox bb" @click="showPrice=!showPrice">
         <text class="meth_title">Price</text>
         <div class="meth_right">
-          <text class="cityName">Woman</text>
+          <text class="cityName">$ {{price||""}}</text>
           <text class="rightIcon">&#xe6a1;</text>
+        </div>
+      </div>
+      <div class="alertScroll" v-if="showPrice">
+        <div class="selectLi">
+          <text class="liTit">Price</text>
+          <input class="liInput" type="number" v-model="price" placeholder="place Enter" />
+        </div>
+        <div class="selectLi">
+          <text class="liTit">Original price</text>
+          <input class="liInput" type="number" v-model="orgprice" placeholder="place Enter" />
+        </div>
+        <div class="selectLi">
+          <text class="liTit">GIV delivery</text>
+          <div class="liCon">
+            <div class="radioL" @click="trade_type=trade_type==1?2:1">
+              <text
+                class="liIcon"
+                :class="[trade_type=='1'?'selected':'']"
+              >{{trade_type=="1"?"&#xe602;":"&#xe67f;"}}</text>
+              <text class="liTxt" :class="[trade_type=='1'?'selected':'']">Free shipping</text>
+            </div>
+            <input
+              v-if="trade_type==2"
+              class="liInput"
+              type="number"
+              v-model="postage"
+              placeholder="place Enter"
+            />
+            <text class="liInput" v-if="trade_type==1">0.00</text>
+          </div>
         </div>
       </div>
       <div class="locationBox bb" @click="gonext('root:app/selling/selling_categories.js')">
         <text class="meth_title">Categories</text>
         <div class="meth_right">
-          <text class="cityName">Categories</text>
+          <text class="cityName">{{categoryName||"place pick"}}</text>
           <text class="rightIcon">&#xe6a1;</text>
         </div>
       </div>
@@ -93,6 +122,10 @@ const photo = weex.requireModule("photo");
 const net = weex.requireModule("net");
 const animation = weex.requireModule("animation");
 const location = weex.requireModule("location");
+const selectCategary = new BroadcastChannel("selectCategary");
+
+import asCore from "../../mixin/core";
+
 import {
   upload,
   add_twohand_goods,
@@ -102,13 +135,21 @@ import {
 export default {
   data() {
     return {
+      categoryName: "",
+      userId: "",
+      categoryid: "",
+      price: "",
+      orgprice: "",
+      showPrice: false,
       goodsId: "",
       showMask: false,
       content: "",
       category: "",
       title: "",
       address: "",
+      postage: "",
       amount: 0,
+      trade_type: "1",
       src: "",
       imgList: [],
       user: {
@@ -116,9 +157,14 @@ export default {
       }
     };
   },
-
+  created() {
+    selectCategary.onmessage = this.changeCategary;
+  },
   methods: {
     onLoad() {
+      asCore.getBsessionid(userId => {
+        this.userId = userId;
+      });
       location.start({ once: false }, res => {
         this.log(res);
         this.address = res;
@@ -153,20 +199,25 @@ export default {
         function() {}
       );
     },
+    changeCategary(res) {
+      this.log(res);
+      this.categoryid = res.data.id;
+      this.categoryName = res.data.name;
+    },
     postShop() {
       let data = {
         id: this.goodsId,
-        users_id: "",
-        categoryid: "",
-        price: "",
-        title: "",
-        thumb: "",
-        thumb_url: "",
+        users_id: this.userId,
+        categoryid: this.categoryid,
+        price: this.price,
+        title: this.title,
+        thumb: this.imgList[0],
+        thumb_url: this.imgList.join(","),
         label: "",
         stock: "",
-        postage: "",
-        content: "",
-        trade_type: "",
+        postage: this.postage,
+        content: this.content,
+        trade_type: this.trade_type,
         trade_address: "",
         refund_name: "",
         refund_phone: "",
@@ -222,7 +273,9 @@ export default {
 .mt20 {
   margin-top: 20px;
 }
-
+.mb50 {
+  padding-bottom: 350px;
+}
 .check {
   color: #bd8c3b;
   font-size: 40px;
@@ -337,11 +390,11 @@ export default {
   right: 0;
   bottom: 500px;
   top: 0;
-  /* background-color: rgba(0, 0, 0, 0); */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .shopAlert {
-  position: fixed;
+  position: absolute;
   left: 0;
   bottom: -500px;
   width: 750px;
@@ -363,12 +416,15 @@ export default {
 
 .alertScroll {
   flex: 1;
-  width: 686px;
+  width: 750px;
+  padding-left: 64px;
+  background-color: #fff;
 }
 
 .selectLi {
   /* margin-bottom: 30px; */
   width: 686px;
+  padding-right: 32px;
   height: 100px;
   flex-direction: row;
   align-items: center;
@@ -386,6 +442,7 @@ export default {
   text-align: right;
   /* background-color: #0088FB; */
   height: 80px;
+  line-height: 80px;
 }
 
 .liCon {
