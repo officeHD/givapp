@@ -74,8 +74,8 @@
 				}
 			});
 			/* 双击退出程序 */
-			const page = weex.requireModule("page");
-			page.doubleBack();
+			// const page = weex.requireModule("page");
+			// page.doubleBack();
 			loginBroad.onmessage = function(event) {
 				var data = event.data;
 				if (data.success == 1) {

@@ -14,8 +14,8 @@
 			</div>
 			<div class="inputBox bb">
 				<text class="iconfont inputIcon br">&#xe635;</text>
-				<input v-if="loginType=='account'" type="text" :value="password" class="input" placeholder="Enter password" @input="changep"
-				 placeholder-color="#c3c3c3" />
+				<input v-if="loginType=='account'" type="password" :value="password"    class="input" placeholder="Enter password" @input="changep"
+				 placeholder-color="#c3c3c3"  />
 				<input v-if="loginType=='phone'" type="text" :value="verify" class="input" placeholder="Enter verify" @input="changeV"
 				 placeholder-color="#c3c3c3" />
 				<text class="codeBtn" v-if="loginType=='phone'&&state">{{ currentTime }} s</text>
@@ -53,6 +53,7 @@
 	export default {
 		data() {
 			return {
+			 
 				loading: false,
 				loginType: "account",
 				phone_number: "",

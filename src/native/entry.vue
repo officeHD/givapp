@@ -10,8 +10,8 @@
 		},
 		methods: {
 			onLoad() {
-				// const page = weex.requireModule("page");
-				// page.doubleBack();
+				const page = weex.requireModule("page");
+    			page.doubleBack();
 				let url = 'root:index.js'
 				  this.goToMain(url)
 			},

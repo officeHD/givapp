@@ -1,17 +1,17 @@
 import asCore from './core'
 import data from './data'
 const net = weex.requireModule("net");
-var debug = true;
+var debug = false;
 // 查询物流上传文件
 export const upload = (state, cb) => {
 	if (debug) {
-		cb({res:data.uploadSucces}, true);
+		cb({ res: data.uploadSucces }, true);
 	} else {
 		net.postFile("http://gj.i2f2f.com/index.php/web/upload/upload", {
 			type: state.type
 		}, {}, {
-				file: state.file
-			}, sta => { },
+			file: state.file
+		}, sta => { },
 			res => {
 				cb(res)
 			}, ove => { }, err => { }, true);
@@ -575,7 +575,7 @@ export const get_order_coList = (state, cb) => {
 		asCore.post(`web/users_order/get_order_co_list`, state, cb)
 	}
 }
-// 订单详情接口
+// 卖家订单详情接口
 export const get_order_coInfo = (state, cb) => {
 	if (debug) {
 		cb(data.coOrderDetail, true);

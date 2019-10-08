@@ -1,6 +1,6 @@
 <template>
 <div class="content">
-  <head title="My order"></head>
+  <head title="Sold"></head>
   <scroller class="navbar" scroll-direction="horizontal">
     <text
       v-for="(item, index) in navList"
@@ -18,7 +18,7 @@
         v-for="(list, index2) in item.orderList"
         class="listItem"
         :key="index2"
-        @click="goUrl('root:app/user/order_list/order_details.js',{id:list.id})"
+        @click="goUrl('root:app/selling/sold_detail.js',{id:list.id})"
       >
         <div class="titList">
           <div class="titLeft">
@@ -48,7 +48,7 @@
         <div class="actionBox" v-if="list.type_2==2">
           <text
             class="actionItem"
-            @click="goUrl('root:app/user/order_list/order_details.js',{id:list.id})"
+            @click="goUrl('root:app/selling/sold_detail.js',{id:list.id})"
           >Delivery tracking</text>
           <text class="actionItem" @click="received(list.id)">Item received</text>
           <text class="actionItem" @click="refund(list.id)">refund</text>
@@ -189,7 +189,7 @@ export default {
       });
     },
     goDetail() {
-      this.push("root:app/user/order_list/order_details.js", {
+      this.push("root:app/selling/sold_detail.js", {
         name: "ssss"
       });
     },

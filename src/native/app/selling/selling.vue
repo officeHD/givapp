@@ -136,8 +136,12 @@ export default {
   data() {
     return {
       categoryName: "",
+      take_address: "",
+      refund_address: "",
+      take_time: "",
       userId: "",
       categoryid: "",
+      refund_name: "",
       price: "",
       orgprice: "",
       showPrice: false,
@@ -164,6 +168,14 @@ export default {
     onLoad() {
       asCore.getBsessionid(userId => {
         this.userId = userId;
+      });
+      asCore.getContext(data => {
+        this.log(data);
+        this.refund_name = data.refund_name;
+        this.refund_phone = data.refund_phone;
+        this.take_address = data.take_address;
+        this.take_time = data.take_time;
+        this.refund_address = data.refund_address;
       });
       location.start({ once: false }, res => {
         this.log(res);
@@ -205,6 +217,18 @@ export default {
       this.categoryName = res.data.name;
     },
     postShop() {
+      if (!this.title) {
+        this.toast("place enter Title");
+        return false;
+      }
+      if (!this.content) {
+        this.toast("place enter Content");
+        return false;
+      }
+      if (!this.price) {
+        this.toast("place enter Price");
+        return false;
+      }
       let data = {
         id: this.goodsId,
         users_id: this.userId,
@@ -218,16 +242,16 @@ export default {
         postage: this.postage,
         content: this.content,
         trade_type: this.trade_type,
-        trade_address: "",
-        refund_name: "",
-        refund_phone: "",
-        refund_address: "",
-        take_time: ""
+        trade_address: this.take_address,
+        refund_name: this.refund_name,
+        refund_phone: this.refund_phone,
+        refund_address: this.refund_address,
+        take_time: this.take_time
       };
       add_twohand_goods(data, (res, flag) => {
         if (flag) {
           if (res.code == 200) {
-            this.log(res);
+            this.back();
           }
         }
       });
